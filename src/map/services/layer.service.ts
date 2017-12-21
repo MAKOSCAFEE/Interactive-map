@@ -11,6 +11,7 @@ export class LayerService {
   getLayers(): Observable<Layer[]> {
 
     const sampleLayer = [{
+      id: 'VjWGCY5Yxbr',
       action: 'drawMap',
       layer: {
         name: 'themantic1',

@@ -2,7 +2,7 @@ import { Layer } from '../../models/layer.model';
 import * as fromLayers from './../actions/layers.action'
 
 export interface LayerState {
-  layers: Layer[],
+  entities: {[id: number] :Layer},
   currentLayer: any,
   loading: boolean,
   loaded: boolean
@@ -10,7 +10,7 @@ export interface LayerState {
 
 
 export const initialState: LayerState = {
-  layers: [],
+  entities: {},
   currentLayer: {},
   loaded: false,
   loading: false,
@@ -28,12 +28,23 @@ export function reducer(
       }
     }
     case fromLayers.LOAD_LAYERS_SUCCESS: {
-      const layers = action.payload
+      const layers = action.payload;
+      const entities = layers.reduce(
+       (entities: { [id: number]: Layer }, layer: Layer) => {
+         return {
+           ...entities,
+           [layer.id]: layer,
+         };
+       },
+       {
+         ...state.entities,
+       }
+     );
       return{
         ...state,
         loading: false,
         loaded: true,
-        layers
+        entities
       }
     }
 
@@ -49,4 +60,4 @@ export function reducer(
 export const getLayerLoading = (state: LayerState) => state.loading;
 export const getLayerLoaded = (state: LayerState) => state.loaded;
 export const getCurrentLayer = (state: LayerState) => state.currentLayer;
-export const getLayers = (state: LayerState) => state.layers;
+export const getLayersEntities = (state: LayerState) => state.entities;
