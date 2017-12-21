@@ -1,5 +1,5 @@
 import { Layer } from '../../models/layer.model';
-import * as fromLayers from './../actions/layer.action'
+import * as fromLayers from './../actions/layers.action'
 
 export interface LayerState {
   layers: Layer[],
@@ -28,8 +28,12 @@ export function reducer(
       }
     }
     case fromLayers.LOAD_LAYERS_SUCCESS: {
+      const layers = action.payload
       return{
-        ...state,loading: false, loaded: true
+        ...state,
+        loading: false,
+        loaded: true,
+        layers
       }
     }
 

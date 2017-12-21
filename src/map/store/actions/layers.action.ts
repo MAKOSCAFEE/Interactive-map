@@ -15,22 +15,22 @@ export class LoadLayers implements Action {
 
 export class LoadLayersFail implements Action {
   readonly type = LOAD_LAYERS_FAIL;
-  constructor(public payload: any) {}
+  constructor(public payload: any) { }
 }
 
 export class LoadLayersSuccess implements Action {
   readonly type = LOAD_LAYERS_SUCCESS;
-  constructor(public payload: Layer[]) {}
+  constructor(public payload: Layer[]) { }
 }
 
 export class AddLayers implements Action {
   readonly type = ADD_LAYERS;
-  constructor(public payload: Layer[]) {}
+  constructor(public payload: Layer[]) { }
 }
 
 export class RemoveLayers implements Action {
   readonly type = REMOVE_LAYERS;
-  constructor(public payload: Layer[]) {}
+  constructor(public payload: Layer[]) { }
 }
 
 // action types

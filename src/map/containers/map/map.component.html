@@ -1,6 +1,6 @@
 
 <div style="text-align:center">
-  <p>
-    map works!
+  <p *ngFor="let layer of layers$ | async">
+    {{ layer | json}}
   </p>
 </div>

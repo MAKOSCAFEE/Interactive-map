@@ -15,6 +15,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.layers$ = this.store.select(fromStore.getAllLayers);
+    this.store.dispatch(new fromStore.LoadLayers());
   }
 
 }
