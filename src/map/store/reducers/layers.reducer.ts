@@ -41,3 +41,8 @@ export function reducer(
   }
   return state;
 }
+
+export const getLayerLoading = (state: LayerState) => state.loading;
+export const getLayerLoaded = (state: LayerState) => state.loaded;
+export const getCurrentLayer = (state: LayerState) => state.currentLayer;
+export const getLayers = (state: LayerState) => state.layers;

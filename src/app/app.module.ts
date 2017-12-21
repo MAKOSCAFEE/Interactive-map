@@ -22,7 +22,7 @@ import { AppComponent } from './containers/app.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
