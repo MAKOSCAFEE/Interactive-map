@@ -6,5 +6,4 @@ export interface MapConfiguration {
   zoom: Number;
   latitude: String;
   longitude: String;
-
 }
