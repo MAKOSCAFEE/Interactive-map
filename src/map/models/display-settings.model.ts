@@ -3,7 +3,7 @@ export interface DisplaySettings{
   labelFontStyle?: string,
   labelFontSize?: string,
   labelFontWeight?: string,
-  labels: string,
+  labels: boolean,
   hideTitle?: boolean,
   hideSubtitle?: boolean,
 }

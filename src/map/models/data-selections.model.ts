@@ -13,8 +13,8 @@ export interface DataSelections {
   programName?: {
     id: string
   }
-  columns : Dimension,
-  filters: Dimension,
-  rows: Dimension,
+  columns : Dimension[],
+  filters: Dimension[],
+  rows: Dimension[],
   aggregationType: string
 }
