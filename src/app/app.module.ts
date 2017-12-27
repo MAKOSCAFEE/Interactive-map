@@ -2,7 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { StoreModule, MetaReducer } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { MapModule } from './../map/map.module'
+import { HttpClientModule } from '@angular/common/http';
+import { MapModule } from './../map/map.module';
+
+import * as fromServices from './services';
 
 // not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -29,9 +32,10 @@ import { AppComponent } from './containers/app.component';
     MapModule,
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),
+    HttpClientModule,
     environment.development ? StoreDevtoolsModule.instrument() : [],
   ],
-  providers: [],
+  providers: [fromServices.services],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
