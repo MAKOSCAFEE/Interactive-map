@@ -1,5 +1,5 @@
 export interface LayerOptions {
-  eventClustrering?: boolean,
+  eventClustering?: boolean,
   radiusLow?: number,
   radiusHigh?: number,
   eventPointRadius?: number,

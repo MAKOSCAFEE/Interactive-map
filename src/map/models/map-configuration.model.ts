@@ -1,8 +1,8 @@
 export interface MapConfiguration {
   id: String;
-  basemap: String;
+  basemap?: String;
   name: String;
-  subtitle: String;
+  subtitle?: String;
   zoom: Number;
   latitude: String;
   longitude: String;

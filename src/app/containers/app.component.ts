@@ -9,6 +9,7 @@ import * as fromServices  from '../services';
 export class AppComponent {
    title = 'app';
    public visualObject: any;
+   public isLoaded: boolean = false;
 
     constructor(private favoriteService: fromServices.FavouriteService, private mapService: fromServices.MapsService) {
     }
@@ -16,6 +17,7 @@ export class AppComponent {
     ngOnInit() {
       this.mapService.getMapFromFav().subscribe(data =>  {
         this.visualObject = data;
+        this.isLoaded = true;
       })
     }
 
