@@ -9,7 +9,10 @@ describe('GeoFeatureService', () => {
     });
   });
 
-  it('should be created', inject([GeoFeatureService], (service: GeoFeatureService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([GeoFeatureService], (service: GeoFeatureService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

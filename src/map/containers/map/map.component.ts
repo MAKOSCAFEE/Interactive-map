@@ -1,4 +1,4 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as fromStore from '../../store';
@@ -25,24 +25,23 @@ export class MapComponent implements OnInit {
     this.transhformVisualizationObject();
   }
 
-  transhformVisualizationObject(){
+  transhformVisualizationObject() {
     this.mapConfiguration = _.pick(this.visualizationObject, ['id', 'name', 'subtitle', 'latitude', 'longitude', 'basemap', 'zoom']);
 
     for (let key in this.visualizationObject.mapViews) {
-        let mapview = this.visualizationObject.mapViews[key];
-        let layer = _.pick(mapview, ['id','name', 'displayName', 'opacity', 'hidden', 'layer']);
-        let layerOptions = _.pick(mapview, ['eventClustering','eventPointRadius', 'radiusHigh','radiusLow']);
-        let legendProperties = _.pick(mapview, ['colorLow', 'colorHigh', 'colorScale', 'classes']);
-        let displaySettings = _.pick(mapview, ['labelFontColor', 'labelFontSize', 'labelFontStyle', 'labelFontWeight','labels', 'hideTitle', 'hideSubtitle']);
-        let dataSelections = _.pick(mapview, ['config', 'parentLevel', 'completedOnly', 'translations', 'interpretations', 'program', 'programName', 'columns', 'rows', 'filters', 'aggregationType']);
-        console.log({
-          ...layer,
-          layerOptions,
-          legendProperties,
-          displaySettings,
-          dataSelections
-        });
-
+      let mapview = this.visualizationObject.mapViews[key];
+      let layer = _.pick(mapview, ['id', 'name', 'displayName', 'opacity', 'hidden', 'layer']);
+      let layerOptions = _.pick(mapview, ['eventClustering', 'eventPointRadius', 'radiusHigh', 'radiusLow']);
+      let legendProperties = _.pick(mapview, ['colorLow', 'colorHigh', 'colorScale', 'classes']);
+      let displaySettings = _.pick(mapview, ['labelFontColor', 'labelFontSize', 'labelFontStyle', 'labelFontWeight', 'labels', 'hideTitle', 'hideSubtitle']);
+      let dataSelections = _.pick(mapview, ['config', 'parentLevel', 'completedOnly', 'translations', 'interpretations', 'program', 'programName', 'columns', 'rows', 'filters', 'aggregationType']);
+      console.log({
+        ...layer,
+        layerOptions,
+        legendProperties,
+        displaySettings,
+        dataSelections
+      });
 
     }
   }

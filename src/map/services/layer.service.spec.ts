@@ -9,7 +9,10 @@ describe('LayerService', () => {
     });
   });
 
-  it('should be created', inject([LayerService], (service: LayerService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([LayerService], (service: LayerService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

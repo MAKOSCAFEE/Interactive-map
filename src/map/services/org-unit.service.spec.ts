@@ -9,7 +9,10 @@ describe('OrgUnitService', () => {
     });
   });
 
-  it('should be created', inject([OrgUnitService], (service: OrgUnitService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([OrgUnitService], (service: OrgUnitService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });
