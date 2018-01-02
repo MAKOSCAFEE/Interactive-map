@@ -3,14 +3,12 @@ import * as fromLayers from './../actions/layers.action';
 
 export interface LayerState {
   entities: { [id: number]: Layer };
-  currentLayer: any;
   loading: boolean;
   loaded: boolean;
 }
 
 export const initialState: LayerState = {
   entities: {},
-  currentLayer: {},
   loaded: false,
   loading: false
 };
@@ -60,5 +58,4 @@ export function reducer(
 
 export const getLayerLoading = (state: LayerState) => state.loading;
 export const getLayerLoaded = (state: LayerState) => state.loaded;
-export const getCurrentLayer = (state: LayerState) => state.currentLayer;
 export const getLayersEntities = (state: LayerState) => state.entities;

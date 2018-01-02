@@ -1,7 +1,6 @@
 import { MapConfiguration } from './map-configuration.model';
-import { Layer } from './layer.model';
 
-export interface visualizationObject {
+export interface VisualizationObject {
   mapConfiguration: MapConfiguration;
-  layers: Layer[];
+  layers: string[];
 }
