@@ -1,46 +1,56 @@
 import { Layer } from '../../models/layer.model';
-import * as fromLayers from './../actions/layers.action'
+import * as fromLayers from './../actions/layers.action';
 
 export interface LayerState {
-  layers: Layer[],
-  currentLayer: any,
-  loading: boolean,
-  loaded: boolean
+  entities: { [id: number]: Layer };
+  loading: boolean;
+  loaded: boolean;
 }
-
 
 export const initialState: LayerState = {
-  layers: [],
-  currentLayer: {},
+  entities: {},
   loaded: false,
-  loading: false,
-}
+  loading: false
+};
 
 export function reducer(
   state = initialState,
   action: fromLayers.LayersAction
 ): LayerState {
-
-  switch(action.type){
+  switch (action.type) {
     case fromLayers.LOAD_LAYERS: {
-      return{
-        ...state,loading: true
-      }
+      return {
+        ...state,
+        loading: true
+      };
     }
     case fromLayers.LOAD_LAYERS_SUCCESS: {
-      const layers = action.payload
-      return{
+      const layers = action.payload;
+      const entities = layers.reduce(
+        (entities: { [id: string]: Layer }, layer: Layer) => {
+          return {
+            ...entities,
+            [layer.id]: layer
+          };
+        },
+        {
+          ...state.entities
+        }
+      );
+      return {
         ...state,
         loading: false,
         loaded: true,
-        layers
-      }
+        entities
+      };
     }
 
     case fromLayers.LOAD_LAYERS_FAIL: {
-      return{
-        ...state,loading: false, loaded: false
-      }
+      return {
+        ...state,
+        loading: false,
+        loaded: false
+      };
     }
   }
   return state;
@@ -48,5 +58,4 @@ export function reducer(
 
 export const getLayerLoading = (state: LayerState) => state.loading;
 export const getLayerLoaded = (state: LayerState) => state.loaded;
-export const getCurrentLayer = (state: LayerState) => state.currentLayer;
-export const getLayers = (state: LayerState) => state.layers;
+export const getLayersEntities = (state: LayerState) => state.entities;

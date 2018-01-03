@@ -9,7 +9,10 @@ describe('RelativePeriodService', () => {
     });
   });
 
-  it('should be created', inject([RelativePeriodService], (service: RelativePeriodService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([RelativePeriodService], (service: RelativePeriodService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

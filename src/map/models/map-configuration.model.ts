@@ -1,10 +1,9 @@
 export interface MapConfiguration {
-  id: String;
-  basemap: String;
-  name: String;
-  subtitle: String;
-  zoom: Number;
-  latitude: String;
-  longitude: String;
-
+  id: string;
+  basemap?: string;
+  name: string;
+  subtitle?: string;
+  zoom: number;
+  latitude: string;
+  longitude: string;
 }

@@ -3,11 +3,15 @@ import { Action } from '@ngrx/store';
 import { Layer } from '../../models/layer.model';
 
 // load layers
-export const LOAD_LAYERS = '[MAP] Load Layer';
-export const LOAD_LAYERS_FAIL = '[MAP] Load Layer Fail';
-export const LOAD_LAYERS_SUCCESS = '[MAP] Load Layer Success';
-export const ADD_LAYERS = '[MAP] Add Layer';
-export const REMOVE_LAYERS = '[MAP] Remove Layer';
+export const LOAD_LAYERS = '[Map] Load Layer';
+export const LOAD_LAYERS_FAIL = '[Map] Load Layer Fail';
+export const LOAD_LAYERS_SUCCESS = '[Map] Load Layer Success';
+export const CREATE_LAYERS = '[Map] Add Layer';
+export const CREATE_LAYERS_FAIL = '[Map] Create Layer Fail';
+export const CREATE_LAYERS_SUCCESS = '[Map] Create Layer Success';
+export const REMOVE_LAYERS = '[Map] Remove Layer';
+export const REMOVE_LAYERS_FAIL = '[Map] Remove Layer Fail';
+export const REMOVE_LAYERS_SUCCESS = '[Map] Remove Layer Success';
 
 export class LoadLayers implements Action {
   readonly type = LOAD_LAYERS;
@@ -15,23 +19,52 @@ export class LoadLayers implements Action {
 
 export class LoadLayersFail implements Action {
   readonly type = LOAD_LAYERS_FAIL;
-  constructor(public payload: any) { }
+  constructor(public payload: any) {}
 }
 
 export class LoadLayersSuccess implements Action {
   readonly type = LOAD_LAYERS_SUCCESS;
-  constructor(public payload: Layer[]) { }
+  constructor(public payload: Layer[]) {}
 }
 
-export class AddLayers implements Action {
-  readonly type = ADD_LAYERS;
-  constructor(public payload: Layer[]) { }
+export class CreateLayers implements Action {
+  readonly type = CREATE_LAYERS;
+  constructor(public payload: Layer[]) {}
+}
+
+export class CreateLayersFail implements Action {
+  readonly type = CREATE_LAYERS_FAIL;
+  constructor(public payload: any) {}
+}
+
+export class CreateLayersSuccess implements Action {
+  readonly type = CREATE_LAYERS_SUCCESS;
+  constructor(public payload: Layer) {}
 }
 
 export class RemoveLayers implements Action {
   readonly type = REMOVE_LAYERS;
-  constructor(public payload: Layer[]) { }
+  constructor(public payload: Layer[]) {}
+}
+
+export class RemoveLayersFail implements Action {
+  readonly type = REMOVE_LAYERS_FAIL;
+  constructor(public payload: any) {}
+}
+
+export class RemoveLayersSuccess implements Action {
+  readonly type = REMOVE_LAYERS_SUCCESS;
+  constructor(public payload: Layer) {}
 }
 
 // action types
-export type LayersAction = LoadLayers | LoadLayersFail | LoadLayersSuccess | AddLayers | RemoveLayers;
+export type LayersAction =
+  | LoadLayers
+  | LoadLayersFail
+  | LoadLayersSuccess
+  | CreateLayers
+  | CreateLayersFail
+  | CreateLayersSuccess
+  | RemoveLayers
+  | RemoveLayersFail
+  | RemoveLayersSuccess;
