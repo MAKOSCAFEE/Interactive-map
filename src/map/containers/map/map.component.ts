@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import * as fromStore from '../../store';
 import { Layer } from '../../models/layer.model';
+import * as fromUtils from '../../utils';
+import { VisualizationObject } from '../../models/visualization-object.model';
 import { MapConfiguration } from '../../models/map-configuration.model';
 import * as _ from 'lodash';
 
@@ -13,11 +15,13 @@ import * as _ from 'lodash';
 })
 export class MapComponent implements OnInit {
   public layers$: Observable<Layer[]>;
+  public visualizationObjects$: Observable<VisualizationObject>;
   private mapConfiguration: MapConfiguration;
-  private Layers: Layer[];
+  private Layers: Layer[] = [];
+  private visObject: VisualizationObject;
 
   @Input() visualizationObject: any;
-  constructor(private store: Store<fromStore.MapState>) { }
+  constructor(private store: Store<fromStore.MapState>) {}
 
   ngOnInit() {
     this.layers$ = this.store.select(fromStore.getAllLayers);
@@ -26,23 +30,19 @@ export class MapComponent implements OnInit {
   }
 
   transhformVisualizationObject() {
-    this.mapConfiguration = _.pick(this.visualizationObject, ['id', 'name', 'subtitle', 'latitude', 'longitude', 'basemap', 'zoom']);
+    const { visObject, Layers } = fromUtils.transformVisualizationObject(
+      this.visualizationObject
+    );
+    this.visObject = {
+      ...this.visObject,
+      mapConfiguration: visObject['mapConfiguration'],
+      layers: visObject['layers']
+    };
 
-    for (let key in this.visualizationObject.mapViews) {
-      let mapview = this.visualizationObject.mapViews[key];
-      let layer = _.pick(mapview, ['id', 'name', 'displayName', 'opacity', 'hidden', 'layer']);
-      let layerOptions = _.pick(mapview, ['eventClustering', 'eventPointRadius', 'radiusHigh', 'radiusLow']);
-      let legendProperties = _.pick(mapview, ['colorLow', 'colorHigh', 'colorScale', 'classes']);
-      let displaySettings = _.pick(mapview, ['labelFontColor', 'labelFontSize', 'labelFontStyle', 'labelFontWeight', 'labels', 'hideTitle', 'hideSubtitle']);
-      let dataSelections = _.pick(mapview, ['config', 'parentLevel', 'completedOnly', 'translations', 'interpretations', 'program', 'programName', 'columns', 'rows', 'filters', 'aggregationType']);
-      console.log({
-        ...layer,
-        layerOptions,
-        legendProperties,
-        displaySettings,
-        dataSelections
-      });
-
-    }
+    this.store.dispatch(
+      new fromStore.CreateVisualizationObject(this.visObject)
+    );
+    console.log('VisualizationObject:::', this.visObject);
+    console.log('Layers:::', Layers);
   }
 }

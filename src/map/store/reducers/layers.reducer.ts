@@ -27,7 +27,7 @@ export function reducer(
     case fromLayers.LOAD_LAYERS_SUCCESS: {
       const layers = action.payload;
       const entities = layers.reduce(
-        (entities: { [id: number]: Layer }, layer: Layer) => {
+        (entities: { [id: string]: Layer }, layer: Layer) => {
           return {
             ...entities,
             [layer.id]: layer

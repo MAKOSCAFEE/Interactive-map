@@ -29,6 +29,53 @@ export function reducer(
         loading: true
       };
     }
+    case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT_SUCCESS: {
+      const vizObjs = action.payload;
+      const entities = vizObjs.reduce(
+        (
+          entitie: { [id: string]: VisualizationObject },
+          vizObj: VisualizationObject
+        ) => {
+          return {
+            ...entitie,
+            [vizObj.mapConfiguration.id]: vizObj
+          };
+        },
+        {
+          ...state.entities
+        }
+      );
+      return {
+        ...state,
+        loaded: true,
+        loading: false,
+        entities
+      };
+    }
+    case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT_FAIL: {
+      return {
+        ...state,
+        loaded: false,
+        loading: false
+      };
+    }
+
+    case fromVisualizationObject.CREATE_VISUALIZATION_OBJECT_SUCCESS: {
+      const visualizationObject = action.payload;
+      const currentLayer = visualizationObject.layers[0];
+      const entities = {
+        ...state.entities,
+        [visualizationObject.mapConfiguration.id]: visualizationObject
+      };
+      console.log('success Reducers current Layer:::', currentLayer);
+      return {
+        ...state,
+        currentLayer,
+        loaded: false,
+        loading: false,
+        entities
+      };
+    }
   }
   return state;
 }
