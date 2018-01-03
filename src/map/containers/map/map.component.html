@@ -1,6 +1,23 @@
-
-<div style="text-align:center">
-  <p *ngFor="let layer of layers$ | async">
-    {{ layer | json}}
-  </p>
+<div class="col-lg-12 col-md-12 col-xs-12" [ngClass]="{fullScreen:isFullScreen}" style="padding-left: 5px!important;padding-right: 5px!important; text-align: centre;">
+  <app-map-loader *ngIf="!isLoaded$ | async"></app-map-loader>
+  <div class="map-control-widgets" [ngClass]="{hide: !isLoaded$ | async,paddingFullScreen:isFullScreen}">
+    <div class="zoom-control">
+      <div class="positive-zoom-button">
+        <a (click)="zoomIn('in')">
+          <i class="fa fa-plus"></i>
+        </a>
+      </div>
+      <div class="original-zoom" [ngClass]="{hide:!showCenterButton}">
+        <a (click)="recenterMap(map,centeringLayer)">
+          <i class="fa fa-home"></i>
+        </a>
+      </div>
+      <div class="negative-zoom-button">
+        <a (click)="zoomIn('out')">
+          <i class="fa fa-minus"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="map-view-port-{{visualizationObject.id}}" style="width:100%;margin-top: -10px"></div>
 </div>

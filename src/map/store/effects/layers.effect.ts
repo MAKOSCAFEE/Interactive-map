@@ -12,6 +12,7 @@ export class LayersEffects {
     private actions$: Actions,
     private layerService: fromServices.LayerService
   ) {}
+
   @Effect()
   loadLayers$ = this.actions$.ofType(layersActions.LOAD_LAYERS).pipe(
     switchMap(() => {
@@ -23,4 +24,15 @@ export class LayersEffects {
         );
     })
   );
+
+  @Effect()
+  createLayers$ = this.actions$
+    .ofType(layersActions.CREATE_LAYERS)
+    .pipe(
+      map(
+        (action: layersActions.CreateLayers) =>
+          new layersActions.LoadLayersSuccess(action.payload)
+      ),
+      catchError(error => of(new layersActions.LoadLayersFail(error)))
+    );
 }

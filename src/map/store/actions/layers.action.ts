@@ -6,9 +6,12 @@ import { Layer } from '../../models/layer.model';
 export const LOAD_LAYERS = '[Map] Load Layer';
 export const LOAD_LAYERS_FAIL = '[Map] Load Layer Fail';
 export const LOAD_LAYERS_SUCCESS = '[Map] Load Layer Success';
-export const CREATE_LAYERS = '[Map] Add Layer';
+export const CREATE_LAYERS = '[Map] create Layer';
 export const CREATE_LAYERS_FAIL = '[Map] Create Layer Fail';
 export const CREATE_LAYERS_SUCCESS = '[Map] Create Layer Success';
+export const ADD_LAYERS = '[Map] Add Layer';
+export const ADD_LAYERS_FAIL = '[Map] Add Layer Fail';
+export const ADD_LAYERS_SUCCESS = '[Map] Add Layer Success';
 export const REMOVE_LAYERS = '[Map] Remove Layer';
 export const REMOVE_LAYERS_FAIL = '[Map] Remove Layer Fail';
 export const REMOVE_LAYERS_SUCCESS = '[Map] Remove Layer Success';
@@ -38,6 +41,21 @@ export class CreateLayersFail implements Action {
 }
 
 export class CreateLayersSuccess implements Action {
+  readonly type = CREATE_LAYERS_SUCCESS;
+  constructor(public payload: Layer) {}
+}
+
+export class AddLayers implements Action {
+  readonly type = CREATE_LAYERS;
+  constructor(public payload: Layer) {}
+}
+
+export class AddLayersFail implements Action {
+  readonly type = CREATE_LAYERS_FAIL;
+  constructor(public payload: any) {}
+}
+
+export class AddLayersSuccess implements Action {
   readonly type = CREATE_LAYERS_SUCCESS;
   constructor(public payload: Layer) {}
 }
