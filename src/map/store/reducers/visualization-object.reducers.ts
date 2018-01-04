@@ -5,6 +5,7 @@ import * as fromVisualizationObject from '../actions/visualization-object.action
 export interface VisualizationObjectState {
   entities: { [id: number]: VisualizationObject };
   currentLayer: string;
+  currentMap: string;
   layers: Layer[];
   loading: boolean;
   loaded: boolean;
@@ -13,6 +14,7 @@ export interface VisualizationObjectState {
 export const initialState: VisualizationObjectState = {
   entities: {},
   currentLayer: null,
+  currentMap: null,
   layers: [],
   loaded: false,
   loading: false
@@ -63,6 +65,7 @@ export function reducer(
     case fromVisualizationObject.CREATE_VISUALIZATION_OBJECT_SUCCESS: {
       const visualizationObject = action.payload;
       const currentLayer = visualizationObject.layers[0];
+      const currentMap = visualizationObject.mapConfiguration.id;
       const entities = {
         ...state.entities,
         [visualizationObject.mapConfiguration.id]: visualizationObject
@@ -71,7 +74,8 @@ export function reducer(
       return {
         ...state,
         currentLayer,
-        loaded: false,
+        currentMap,
+        loaded: true,
         loading: false,
         entities
       };
@@ -91,3 +95,6 @@ export const getCurentlayerLoading = (state: VisualizationObjectState) =>
 export const getVisualizationObjectsLoaded = (
   state: VisualizationObjectState
 ) => state.loaded;
+export const getCurrentMap = (state: VisualizationObjectState) => {
+  return state.currentMap;
+};

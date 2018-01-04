@@ -14,7 +14,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 // TODO: Figure out way to remove these and use only cli environment
 const environment = {
   development: true,
-  production: false,
+  production: false
 };
 
 export const metaReducers: MetaReducer<any>[] = !environment.production
@@ -24,18 +24,16 @@ export const metaReducers: MetaReducer<any>[] = !environment.production
 import { AppComponent } from './containers/app.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     MapModule,
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),
     HttpClientModule,
-    environment.development ? StoreDevtoolsModule.instrument() : [],
+    environment.development ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [fromServices.services],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
