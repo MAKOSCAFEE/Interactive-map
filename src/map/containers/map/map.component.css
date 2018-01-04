@@ -408,6 +408,9 @@ div.leaflet-div-icon {
   background-color: transparent;
   border-color: transparent;
 }
+div.leaflet-container {
+  height: 100% !important;
+}
 
 .map-data-table {
   position: absolute;

@@ -6,14 +6,13 @@ import { Layer } from '../../models/layer.model';
 import * as fromUtils from '../../utils';
 import 'leaflet';
 import 'leaflet.markercluster';
-import { TileLayers } from '../../constants/tile-layer.constant';
 declare var L;
 import { VisualizationObject } from '../../models/visualization-object.model';
 import { MapConfiguration } from '../../models/map-configuration.model';
 import * as _ from 'lodash';
 
 import { of } from 'rxjs/observable/of';
-import { map, filter, tap } from 'rxjs/operators';
+import { map, filter, tap, flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-map',
@@ -22,6 +21,7 @@ import { map, filter, tap } from 'rxjs/operators';
 })
 export class MapComponent implements OnInit {
   public layers$: Observable<Layer[]>;
+  public currentMapLayers$: Observable<Layer[]>;
   public isLoaded$: Observable<boolean>;
   public visualizationObjects$: Observable<VisualizationObject[]>;
   public visualizationObject$: Observable<VisualizationObject>;
@@ -39,7 +39,7 @@ export class MapComponent implements OnInit {
   public legendMarginRight = '25px';
   public legendMarginLeft = '200px';
   private cardHeight: string = '490px';
-  private itemHeight: string = '465px';
+  private itemHeight: string = '90vh';
   public subtitle: string = '';
   public pinned: boolean = false;
   public operatingLayers: Array<any> = [];
@@ -79,27 +79,50 @@ export class MapComponent implements OnInit {
       new fromStore.CreateVisualizationObject(this.visObject)
     );
     this.store.dispatch(new fromStore.CreateLayers(Layers));
-
-    console.log('VisualizationObject:::', this.visObject);
-    console.log('Layers:::', Layers);
   }
 
   drawMap() {
-    this.visualizationObject$.subscribe(visualObject => {
-      this.loading = false;
-      const mapObject = fromUtils.getInitialMapObject(
-        visualObject.mapConfiguration
-      );
-      const mapHeight = fromUtils.refineHeight(this.itemHeight);
-      const container = fromUtils.prepareMapContainer(
-        mapObject.id,
-        mapHeight,
-        this.mapWidth,
-        this.isFullScreen
-      );
-      this.mapOptions = mapObject.options;
-      this.map = L.map(container, mapObject.options);
-    });
+    let visualizationObject: any = {};
+
+    this.visualizationObject$
+      .pipe(
+        flatMap(vizObj => {
+          visualizationObject = {
+            ...visualizationObject,
+            mapConfiguration: vizObj.mapConfiguration,
+            layers: vizObj.layers
+          };
+          return this.layers$;
+        }),
+        map(layers => {
+          const currentLayers = layers.filter(
+            layer => visualizationObject.layers.indexOf(layer.id) !== -1
+          );
+          return currentLayers;
+        })
+      )
+      .subscribe(currentLayers => {
+        this.loading = false;
+        const mapObject = fromUtils.getInitialMapObject(
+          visualizationObject.mapConfiguration
+        );
+        const layers = fromUtils.getMapLayers(
+          L,
+          visualizationObject.mapConfiguration.basemap,
+          mapObject.id
+        );
+        console.log('Layers:::', layers);
+        const mapHeight = fromUtils.refineHeight(this.itemHeight);
+        const container = fromUtils.prepareMapContainer(
+          mapObject.id,
+          mapHeight,
+          this.mapWidth,
+          this.isFullScreen
+        );
+        mapObject.options.layers = layers[0];
+        this.mapOptions = mapObject.options;
+        this.map = L.map(container, mapObject.options);
+      });
   }
 
   recenterMap(maP, layer) {
@@ -143,5 +166,9 @@ export class MapComponent implements OnInit {
       : zoomType === 'out'
         ? this.map.zoomOut()
         : this.map.setZoom(this.mapOptions.zoom);
+  }
+
+  getCurrentMapLayers(layers: string[]) {
+    console.log();
   }
 }

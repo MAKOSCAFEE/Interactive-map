@@ -3,6 +3,7 @@ import { createSelector } from '@ngrx/store';
 import * as fromFeature from '../reducers';
 import { VisualizationObject } from '../../models/visualization-object.model';
 import * as fromVisualizationObject from '../reducers/visualization-object.reducers';
+import * as fromLayers from '../reducers/layers.reducer';
 
 export const getVisualizationObjectState = createSelector(
   fromFeature.getMapState,
@@ -30,6 +31,16 @@ export const getCurrentMap = createSelector(
     return entities[currentMap];
   }
 );
+
+export const getCurrentMapLayers = createSelector(
+  getAllVisualizationObjectsEntities,
+  fromLayers.getLayersEntities,
+  _getCurrentMap,
+  (entities, layerEntities, currentMap): VisualizationObject => {
+    return entities[currentMap].layers.map(id => layerEntities[id]);
+  }
+);
+
 export const isVisualizationObjectsLoading = createSelector(
   getVisualizationObjectState,
   fromVisualizationObject.getVisualizationObjectsLoading

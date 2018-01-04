@@ -21,7 +21,10 @@ export function getInitialMapObject(mapConfiguration: MapConfiguration) {
     centeringLayer: null,
     operatingLayers: null,
     options: {
-      center: [mapConfiguration.latitude, mapConfiguration.longitude],
+      center: [
+        parseFloat(mapConfiguration.latitude) / 100000,
+        parseFloat(mapConfiguration.longitude) / 100000
+      ],
       zoom: mapConfiguration.zoom,
       maxZoom: 18,
       minZoom: 2,
