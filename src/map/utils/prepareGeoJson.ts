@@ -62,7 +62,7 @@ export function prepareGeoJson(
   }
 
   if (layer.layer.indexOf('thematic') > -1 && analytics) {
-    // LayerEvents = bindThematicLayerEvents(L, mapLayer, analytics);
+    LayerEvents = bindThematicLayerEvents(L, mapLayer, analytics);
   }
 
   if (LayerEvents) {

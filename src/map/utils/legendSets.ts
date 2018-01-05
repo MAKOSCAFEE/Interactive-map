@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 export function boundaryLayerClasses(mapVisualizationSettings, geoFeature) {
   const features = geoFeature;
-  const Levels = getBoundaryLevels(features);
+  const Levels = getBoundaryLevels(geoFeature);
   const legend: any[] = [];
 
   Levels.forEach(level => {
