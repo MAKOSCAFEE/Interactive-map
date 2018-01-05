@@ -88,9 +88,9 @@ export class MapComponent implements OnInit {
         const layers = fromUtils.getMapLayers(
           L,
           visualizationObject.mapConfiguration.basemap,
-          mapObject.id
+          mapObject.id,
+          visualizationObject.layers
         );
-        console.log('Layers:::', layers);
         const mapHeight = fromUtils.refineHeight(this.itemHeight);
         const container = fromUtils.prepareMapContainer(
           mapObject.id,

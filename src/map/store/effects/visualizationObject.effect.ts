@@ -18,11 +18,14 @@ export class VisualizationObjectEffects {
     .pipe(
       switchMap(
         (action: visualizationObjectActions.CreateVisualizationObject) => {
-          console.log(action.payload);
           return this.geofeatureService
             .getGeoFeatures('ImspTQPwCqd', 'LEVEL-2')
             .pipe(
-              map(geofeatures => {
+              map(geofeature => {
+                const geofeatures = {
+                  ...action.payload.geofeatures,
+                  [action.payload.layers[0].id]: geofeature
+                };
                 const vizObject = {
                   ...action.payload,
                   geofeatures

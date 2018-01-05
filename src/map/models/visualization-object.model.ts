@@ -5,5 +5,6 @@ import { Layer } from './layer.model';
 export interface VisualizationObject {
   mapConfiguration: MapConfiguration;
   layers?: Layer[];
-  geofeatures?: GeoFeature[];
+  geofeatures?: { [id: number]: GeoFeature[] };
+  analytics?: any;
 }

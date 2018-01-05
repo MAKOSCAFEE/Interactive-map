@@ -1,1 +1,3 @@
-export function prepareGeoJson(L, settings, analytics) {}
+export function prepareGeoJson(L, layer, analytics) {
+  return;
+}

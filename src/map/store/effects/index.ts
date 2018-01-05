@@ -1,13 +1,13 @@
 import { LayersEffects } from './layers.effect';
 import { VisualizationObjectEffects } from './visualizationObject.effect';
-import { GeoFeatureEffects } from './geo-feature.effect';
+import { AnalyticsEffects } from './analytics.effect';
 
 export const effects: any[] = [
   LayersEffects,
   VisualizationObjectEffects,
-  GeoFeatureEffects
+  AnalyticsEffects
 ];
 
 export * from './layers.effect';
 export * from './visualizationObject.effect';
-export * from './geo-feature.effect';
+export * from './analytics.effect';

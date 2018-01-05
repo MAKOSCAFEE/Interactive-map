@@ -1,4 +1,5 @@
 import * as fromTileLayers from '../constants/tile-layer.constant';
+import { prepareGeoJson } from './prepareGeoJson';
 
 export function getMapLayers(
   L,
@@ -16,6 +17,14 @@ export function getMapLayers(
     layerObject[basemap] = baseMap;
     mapLayersWithNames = [...mapLayersWithNames, layerObject];
   }
+
+  visualizationLayers.map((layer, layerIndex) => {
+    if (layer.hasOwnProperty('layer')) {
+      if (layer.layer === 'boundary') {
+        const centerLayer = prepareGeoJson(L, layer, layer.analytics);
+      }
+    }
+  });
 
   return [mapLayers, mapLayersWithNames];
 }
