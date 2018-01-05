@@ -8,19 +8,38 @@ import * as fromServices from '../../services';
 
 @Injectable()
 export class VisualizationObjectEffects {
-  constructor(private actions$: Actions) {}
+  constructor(
+    private actions$: Actions,
+    private geofeatureService: fromServices.GeoFeatureService
+  ) {}
   @Effect()
   createVisualizationObjet$ = this.actions$
     .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT)
     .pipe(
-      map(
-        (action: visualizationObjectActions.CreateVisualizationObject) =>
-          new visualizationObjectActions.CreateVisualizationObjectSuccess(
-            action.payload
-          )
-      ),
-      catchError(error =>
-        of(new visualizationObjectActions.CreateVisualizationObjectFail(error))
+      switchMap(
+        (action: visualizationObjectActions.CreateVisualizationObject) => {
+          console.log(action.payload);
+          return this.geofeatureService
+            .getGeoFeatures('ImspTQPwCqd', 'LEVEL-2')
+            .pipe(
+              map(geofeatures => {
+                const vizObject = {
+                  ...action.payload,
+                  geofeatures
+                };
+                return new visualizationObjectActions.CreateVisualizationObjectSuccess(
+                  vizObject
+                );
+              }),
+              catchError(error =>
+                of(
+                  new visualizationObjectActions.CreateVisualizationObjectFail(
+                    error
+                  )
+                )
+              )
+            );
+        }
       )
     );
 }

@@ -9,6 +9,7 @@ import 'leaflet.markercluster';
 declare var L;
 import { VisualizationObject } from '../../models/visualization-object.model';
 import { MapConfiguration } from '../../models/map-configuration.model';
+import { GeoFeature } from '../../models/geo-feature.model';
 import * as _ from 'lodash';
 
 import { of } from 'rxjs/observable/of';
@@ -20,10 +21,9 @@ import { map, filter, tap, flatMap } from 'rxjs/operators';
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  public layers$: Observable<Layer[]>;
   public currentMapLayers$: Observable<Layer[]>;
   public isLoaded$: Observable<boolean>;
-  public visualizationObjects$: Observable<VisualizationObject[]>;
+  public isLoading$: Observable<boolean>;
   public visualizationObject$: Observable<VisualizationObject>;
   private mapConfiguration: MapConfiguration;
   private Layers: Layer[] = [];
@@ -52,10 +52,9 @@ export class MapComponent implements OnInit {
   constructor(private store: Store<fromStore.MapState>) {}
 
   ngOnInit() {
-    this.layers$ = this.store.select(fromStore.getAllLayers);
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
-    this.visualizationObjects$ = this.store.select(
-      fromStore.getAllVisualizationObjects
+    this.isLoading$ = this.store.select(
+      fromStore.isVisualizationObjectsLoading
     );
     this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
 
@@ -72,37 +71,17 @@ export class MapComponent implements OnInit {
     this.visObject = {
       ...this.visObject,
       mapConfiguration: visObject['mapConfiguration'],
-      layers: visObject['layers']
+      layers: Layers
     };
 
     this.store.dispatch(
       new fromStore.CreateVisualizationObject(this.visObject)
     );
-    this.store.dispatch(new fromStore.CreateLayers(Layers));
   }
 
   drawMap() {
-    let visualizationObject: any = {};
-
-    this.visualizationObject$
-      .pipe(
-        flatMap(vizObj => {
-          visualizationObject = {
-            ...visualizationObject,
-            mapConfiguration: vizObj.mapConfiguration,
-            layers: vizObj.layers
-          };
-          return this.layers$;
-        }),
-        map(layers => {
-          const currentLayers = layers.filter(
-            layer => visualizationObject.layers.indexOf(layer.id) !== -1
-          );
-          return currentLayers;
-        })
-      )
-      .subscribe(currentLayers => {
-        this.loading = false;
+    this.visualizationObject$.subscribe(visualizationObject => {
+      if (visualizationObject) {
         const mapObject = fromUtils.getInitialMapObject(
           visualizationObject.mapConfiguration
         );
@@ -122,7 +101,8 @@ export class MapComponent implements OnInit {
         mapObject.options.layers = layers[0];
         this.mapOptions = mapObject.options;
         this.map = L.map(container, mapObject.options);
-      });
+      }
+    });
   }
 
   recenterMap(maP, layer) {

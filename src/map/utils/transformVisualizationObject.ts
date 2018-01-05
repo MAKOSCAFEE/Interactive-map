@@ -5,7 +5,6 @@ import { Layer } from '../models/layer.model';
 
 export function transformVisualizationObject(visualizationObject) {
   let visObject = {};
-  console.log(visualizationObject);
   const mapConfiguration: MapConfiguration = _.pick(visualizationObject, [
     'id',
     'name',

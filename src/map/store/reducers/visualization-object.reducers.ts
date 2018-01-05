@@ -6,7 +6,6 @@ export interface VisualizationObjectState {
   entities: { [id: number]: VisualizationObject };
   currentLayer: string;
   currentMap: string;
-  layers: Layer[];
   loading: boolean;
   loaded: boolean;
 }
@@ -15,7 +14,6 @@ export const initialState: VisualizationObjectState = {
   entities: {},
   currentLayer: null,
   currentMap: null,
-  layers: [],
   loaded: false,
   loading: false
 };
@@ -62,19 +60,37 @@ export function reducer(
       };
     }
 
-    case fromVisualizationObject.CREATE_VISUALIZATION_OBJECT_SUCCESS: {
+    case fromVisualizationObject.CREATE_VISUALIZATION_OBJECT_SUCCESS:
+    case fromVisualizationObject.UPDATE_VISUALIZATION_OBJECT_SUCCESS: {
       const visualizationObject = action.payload;
-      const currentLayer = visualizationObject.layers[0];
+      const currentLayer = visualizationObject.layers[0].id;
       const currentMap = visualizationObject.mapConfiguration.id;
       const entities = {
         ...state.entities,
         [visualizationObject.mapConfiguration.id]: visualizationObject
       };
-      console.log('success Reducers current Layer:::', currentLayer);
       return {
         ...state,
         currentLayer,
         currentMap,
+        loaded: true,
+        loading: false,
+        entities
+      };
+    }
+
+    case fromVisualizationObject.ADD_GEOFEATURES: {
+      const { id, geofeatures } = action.payload;
+      const visualizationObject = {
+        ...state.entities[id],
+        geofeatures
+      };
+      const entities = {
+        ...state.entities,
+        [visualizationObject.mapConfiguration.id]: visualizationObject
+      };
+      return {
+        ...state,
         loaded: true,
         loading: false,
         entities

@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.mapService.getMapFromFav().subscribe(data => {
-      console.log('Data:::', data);
       this.visualObject = data;
       this.isLoaded = true;
     });

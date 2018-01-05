@@ -9,7 +9,6 @@ export function getMapLayers(
 ) {
   let mapLayers: any[] = [];
   let mapLayersWithNames: any[] = [];
-  console.log(basemap);
   const baseMap = prepareTileLayer(L, getTileLayer(basemap));
   if (baseMap) {
     mapLayers = [...mapLayers, baseMap];

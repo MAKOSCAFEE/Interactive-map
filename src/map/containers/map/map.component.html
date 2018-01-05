@@ -1,6 +1,6 @@
 <div class="col-lg-12 col-md-12 col-xs-12" [ngClass]="{fullScreen:isFullScreen}" style="padding-left: 5px!important;padding-right: 5px!important; text-align: centre;">
-  <app-map-loader *ngIf="!isLoaded$ | async"></app-map-loader>
-  <div class="map-control-widgets" [ngClass]="{hide: !isLoaded$ | async,paddingFullScreen:isFullScreen}">
+  <app-map-loader *ngIf="isLoading$ | async"></app-map-loader>
+  <div class="map-control-widgets" [ngClass]="{paddingFullScreen:isFullScreen}" *ngIf="isLoaded$ | async">
     <div class="zoom-control">
       <div class="positive-zoom-button">
         <a (click)="zoomIn('in')">

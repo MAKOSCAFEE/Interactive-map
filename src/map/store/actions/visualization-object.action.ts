@@ -8,7 +8,12 @@ export const CREATE_VISUALIZATION_OBJECT_FAIL =
 export const CREATE_VISUALIZATION_OBJECT_SUCCESS =
   '[Map] Create visualization object Success';
 export const UPDATE_VISUALIZATION_OBJECT = '[Map] Update visualization object';
+export const UPDATE_VISUALIZATION_OBJECT_FAIL =
+  '[Map] Update visualization object Fail';
+export const UPDATE_VISUALIZATION_OBJECT_SUCCESS =
+  '[Map] Update visualization object Success';
 export const ADD_LAYER = '[Map] Add Layer to visualization object';
+export const ADD_GEOFEATURES = '[Map] Add Geofeatures to visualization object';
 export const REMOVE_LAYER = '[Map] Remove Layer from visualization object';
 export const HIDE_LAYER = '[Map] Hide Layer';
 export const LOAD_VISUALIZATION_OBJECT = '[Map] Load visualization object';
@@ -34,6 +39,18 @@ export class CreateVisualizationObjectSuccess implements Action {
 
 export class UpdateVisualizationObject implements Action {
   readonly type = UPDATE_VISUALIZATION_OBJECT;
+  constructor(public payload: VisualizationObject) {
+    console.log(payload);
+  }
+}
+
+export class UpdateVisualizationObjectFail implements Action {
+  readonly type = UPDATE_VISUALIZATION_OBJECT_FAIL;
+  constructor(public payload: any) {}
+}
+
+export class UpdateVisualizationObjectSuccess implements Action {
+  readonly type = UPDATE_VISUALIZATION_OBJECT_SUCCESS;
   constructor(public payload: VisualizationObject) {}
 }
 
@@ -44,6 +61,11 @@ export class AddLayerVizObj implements Action {
 
 export class RemoveLayerVizObj implements Action {
   readonly type = REMOVE_LAYER;
+  constructor(public payload: any) {}
+}
+
+export class AddGeoFeaturesVizObj implements Action {
+  readonly type = ADD_GEOFEATURES;
   constructor(public payload: any) {}
 }
 
@@ -71,7 +93,10 @@ export type VisualizationObjectAction =
   | CreateVisualizationObjectSuccess
   | CreateVisualizationObjectFail
   | UpdateVisualizationObject
+  | UpdateVisualizationObjectFail
+  | UpdateVisualizationObjectSuccess
   | AddLayerVizObj
+  | AddGeoFeaturesVizObj
   | RemoveLayerVizObj
   | HideLayerVizObj
   | LoadVisualizationObject
