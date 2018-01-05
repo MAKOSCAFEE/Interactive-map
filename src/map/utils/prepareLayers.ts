@@ -56,6 +56,20 @@ export function getMapLayers(
         const layerObject = {};
         layerObject[layer.name] = centerLayer;
         mapLayersWithNames.push(layerObject);
+      } else if (layer.layer === 'facility') {
+        const centerLayer = prepareGeoJson(
+          L,
+          layer,
+          geofeatures[layer.id],
+          analytics,
+          visualizationLayers
+        );
+        if (centerLayer) {
+          mapLayers = [...mapLayers, centerLayer];
+        }
+        const layerObject = {};
+        layerObject[layer.name] = centerLayer;
+        mapLayersWithNames.push(layerObject);
       }
     }
   });
