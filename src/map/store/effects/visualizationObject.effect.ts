@@ -19,7 +19,7 @@ export class VisualizationObjectEffects {
       switchMap(
         (action: visualizationObjectActions.CreateVisualizationObject) => {
           return this.geofeatureService
-            .getGeoFeatures('ImspTQPwCqd', 'LEVEL-2')
+            .getGeoFeatures('ImspTQPwCqd', 'LEVEL-3')
             .pipe(
               map(geofeature => {
                 const geofeatures = {

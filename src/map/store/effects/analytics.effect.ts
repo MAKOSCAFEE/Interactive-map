@@ -24,8 +24,8 @@ export class AnalyticsEffects {
         ) => {
           return this.analyticsService
             .getMapAnalytics(
-              ['dimension=ou:ImspTQPwCqd;LEVEL-4', 'dimension=dx:Tt5TAvdfdVK'],
-              ['filter=pe:LAST_MONTH;THIS_MONTH']
+              ['dimension=ou:ImspTQPwCqd;LEVEL-3', 'dimension=dx:c8fABiNpT0B'],
+              ['filter=pe:THIS_YEAR']
             )
             .pipe(
               map(analytics => {

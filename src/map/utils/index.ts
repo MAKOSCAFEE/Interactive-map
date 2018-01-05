@@ -7,3 +7,4 @@ export * from './mapLegend';
 export * from './colorInterporation';
 export * from './orgUnitHelper';
 export * from './boundaryLayer';
+export * from './thematicLayer';

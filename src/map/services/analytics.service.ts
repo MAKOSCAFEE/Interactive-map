@@ -11,7 +11,7 @@ export class AnalyticsService {
   getMapAnalytics(dimension: string[], filters: string[]): Observable<any> {
     const url = [].concat.apply([], [dimension, filters]).join('&');
     return this.httpClient
-      .get(`../../../api/analytics.json?${url}&displayProperty=NAME`)
+      .get(`../../../api/25/analytics.json?${url}&displayProperty=NAME`)
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
 }

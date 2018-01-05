@@ -5,6 +5,10 @@ import {
   prepareBoundaryLayerOptions,
   bindBoundaryLayerEvents
 } from './boundaryLayer';
+import {
+  prepareThematicLayerOptions,
+  bindThematicLayerEvents
+} from './thematicLayer';
 import * as _ from 'lodash';
 
 export function prepareGeoJson(
@@ -17,7 +21,8 @@ export function prepareGeoJson(
   let options: any = {};
   const visualizationLayerSettings = {
     ...layer.legendProperties,
-    ...layer.layerOptions
+    ...layer.layerOptions,
+    ...layer.displaySettings
   };
   let LayerEvents = null;
   let mapLegend = prepareMapLegend(visualizationLayerSettings, analytics);
@@ -33,6 +38,17 @@ export function prepareGeoJson(
       analytics
     );
   }
+  if (layer.layer.indexOf('thematic') > -1) {
+    if (analytics) {
+      options = prepareThematicLayerOptions(
+        L,
+        options,
+        visualizationLayerSettings,
+        analytics,
+        mapLegend
+      );
+    }
+  }
   const mapLayer = _getGEOJSONLayer(
     L,
     geofeatures,
@@ -43,6 +59,10 @@ export function prepareGeoJson(
 
   if (layer.layer === 'boundary') {
     LayerEvents = bindBoundaryLayerEvents(L, mapLayer, layers, analytics);
+  }
+
+  if (layer.layer.indexOf('thematic') > -1 && analytics) {
+    // LayerEvents = bindThematicLayerEvents(L, mapLayer, analytics);
   }
 
   if (LayerEvents) {
