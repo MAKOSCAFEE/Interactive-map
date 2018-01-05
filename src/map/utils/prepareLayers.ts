@@ -1,15 +1,19 @@
 import * as fromTileLayers from '../constants/tile-layer.constant';
 import { prepareGeoJson } from './prepareGeoJson';
+import { Layer } from '../models/layer.model';
 
 export function getMapLayers(
   L,
   basemap,
   mapObjectId,
   visualizationLayers?,
+  geofeatures?,
+  analytics?,
   prioritizeFilter?
 ) {
   let mapLayers: any[] = [];
   let mapLayersWithNames: any[] = [];
+  let centeringLayer: any = null;
   const baseMap = prepareTileLayer(L, getTileLayer(basemap));
   if (baseMap) {
     mapLayers = [...mapLayers, baseMap];
@@ -18,10 +22,27 @@ export function getMapLayers(
     mapLayersWithNames = [...mapLayersWithNames, layerObject];
   }
 
-  visualizationLayers.map((layer, layerIndex) => {
+  visualizationLayers.map((layer: Layer, layerIndex) => {
     if (layer.hasOwnProperty('layer')) {
       if (layer.layer === 'boundary') {
-        const centerLayer = prepareGeoJson(L, layer, layer.analytics);
+        const centerLayer = prepareGeoJson(
+          L,
+          layer,
+          geofeatures[layer.id],
+          analytics,
+          visualizationLayers
+        );
+        if (centerLayer) {
+          mapLayers = [...mapLayers, centerLayer];
+        }
+        const layerObject = {};
+        layerObject[layer.name] = centerLayer;
+        mapLayersWithNames.push(layerObject);
+        /**
+         * Also add centering
+         * @type {L.GeoJSON}
+         */
+        centeringLayer = centerLayer;
       }
     }
   });
