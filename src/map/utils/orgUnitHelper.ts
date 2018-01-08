@@ -9,20 +9,20 @@ export function prepareDataByArrayByOrgUnitUid(layers, analytics) {
       thematicLayers.push(analytics);
     }
   });
-  //   if (analytics) {
-  //     thematicLayers.forEach(layerValues => {
-  //       const valueIndex = _.findIndex(layerValues.headers, ['name', 'value']);
-  //       const orgIndex = _.findIndex(layerValues.headers, ['name', 'ou']);
-  //       const dxIndex = _.findIndex(layerValues.headers, ['name', 'dx']);
-  //       layerValues.rows.forEach(row => {
-  //           console.log(row);
-  //         thematicValues.push({
-  //           data: layerValues.metaData.names[row[dxIndex]],
-  //           orgId: row[orgIndex],
-  //           value: row[valueIndex]
-  //         });
-  //       });
-  //     });
-  //   }
+  if (analytics) {
+    thematicLayers.forEach(layerValues => {
+      const valueIndex = _.findIndex(layerValues.headers, ['name', 'value']);
+      const orgIndex = _.findIndex(layerValues.headers, ['name', 'ou']);
+      const dxIndex = _.findIndex(layerValues.headers, ['name', 'dx']);
+      layerValues.rows.forEach(row => {
+        console.log(row);
+        thematicValues.push({
+          data: layerValues.metaData.names[row[dxIndex]],
+          orgId: row[orgIndex],
+          value: row[valueIndex]
+        });
+      });
+    });
+  }
   return thematicValues;
 }

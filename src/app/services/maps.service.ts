@@ -8,10 +8,10 @@ import 'rxjs/add/observable/throw';
 export class MapsService {
   constructor(private http: HttpClient) {}
 
-  getMapFromFav(): Observable<any> {
+  getMapFromFav(favId): Observable<any> {
     return this.http
       .get<any>(
-        `../../../api/maps/GlCLRPPLsWF.json?fields=id,user,displayName~rename(name),
+        `../../../api/maps/${favId}.json?fields=id,user,displayName~rename(name),
         longitude,latitude,zoom,basemap,mapViews%5B*,columns%5Bdimension,filter,
         items%5BdimensionItem~rename(id),dimensionItemType,displayName~rename(name)%5D%5D,
         rows%5Bdimension,filter,items%5BdimensionItem~rename(id),dimensionItemType,

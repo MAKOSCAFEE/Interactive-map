@@ -10,6 +10,7 @@ import * as fromServices from './services';
 // not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storeFreeze } from 'ngrx-store-freeze';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // TODO: Figure out way to remove these and use only cli environment
 const environment = {
@@ -27,6 +28,7 @@ import { AppComponent } from './containers/app.component';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     MapModule,
     StoreModule.forRoot({}, { metaReducers }),
     EffectsModule.forRoot([]),

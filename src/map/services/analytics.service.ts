@@ -14,4 +14,10 @@ export class AnalyticsService {
       .get(`../../../api/analytics.json?${url}&displayProperty=NAME`)
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
+
+  getAnalytics(dimensions: string): Observable<any> {
+    return this.httpClient
+      .get(`../../../api/analytics.json?${dimensions}&displayProperty=NAME`)
+      .pipe(catchError((error: any) => Observable.throw(error.json())));
+  }
 }

@@ -21,8 +21,7 @@ export function getMapLayers(
     layerObject[basemap] = baseMap;
     mapLayersWithNames = [...mapLayersWithNames, layerObject];
   }
-
-  visualizationLayers.map((layer: Layer, layerIndex) => {
+  visualizationLayers.map((layer: Layer, layerIndex: number) => {
     if (layer.hasOwnProperty('layer')) {
       if (layer.layer === 'boundary') {
         const centerLayer = prepareGeoJson(
@@ -43,6 +42,34 @@ export function getMapLayers(
          * @type {L.GeoJSON}
          */
         centeringLayer = centerLayer;
+      } else if (layer.layer.indexOf('thematic') !== -1) {
+        const centerLayer = prepareGeoJson(
+          L,
+          layer,
+          geofeatures[layer.id],
+          analytics,
+          visualizationLayers
+        );
+        if (centerLayer) {
+          mapLayers = [...mapLayers, centerLayer];
+        }
+        const layerObject = {};
+        layerObject[layer.name] = centerLayer;
+        mapLayersWithNames.push(layerObject);
+      } else if (layer.layer === 'facility') {
+        const centerLayer = prepareGeoJson(
+          L,
+          layer,
+          geofeatures[layer.id],
+          analytics,
+          visualizationLayers
+        );
+        if (centerLayer) {
+          mapLayers = [...mapLayers, centerLayer];
+        }
+        const layerObject = {};
+        layerObject[layer.name] = centerLayer;
+        mapLayersWithNames.push(layerObject);
       }
     }
   });

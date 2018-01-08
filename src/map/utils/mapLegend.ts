@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import { getColorScaleFromHigLow } from './colorInterporation';
+import { getDataSortedArray } from './legendSets';
 
 export function prepareMapLegend(visualizationLayerSettings, analytics) {
   const dataArray = [];
@@ -129,25 +130,6 @@ export function prepareLegendSet(
   });
   legend = getLegendCounts(dataArray, legend);
   return legend;
-}
-
-export function getDataSortedArray(visualizationAnalytics) {
-  const dataArray = [];
-  let sortedData = [];
-  if (
-    visualizationAnalytics &&
-    visualizationAnalytics.hasOwnProperty('headers')
-  ) {
-    visualizationAnalytics.rows.forEach(row => {
-      dataArray.push(
-        +row[_.findIndex(visualizationAnalytics.headers, { name: 'value' })]
-      );
-    });
-    sortedData = _(dataArray)
-      .sortBy()
-      .value();
-  }
-  return sortedData;
 }
 
 export function getColorScaleFromLegendSet(legendSet) {

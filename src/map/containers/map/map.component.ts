@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as fromStore from '../../store';
 import { Layer } from '../../models/layer.model';
 import * as fromUtils from '../../utils';
@@ -47,8 +48,21 @@ export class MapComponent implements OnInit {
   public hideTable: boolean = true;
   public showCenterButton: boolean = false;
   public mapOptions: any;
+  public visualizationObject: any;
+  public componentId = 'RBoGyrUJDOu';
+  private _data$ = new BehaviorSubject<any>({});
 
-  @Input() visualizationObject: any;
+  @Input()
+  set data(value) {
+    // set the latest value for _data$ BehaviorSubject
+    this._data$.next(value);
+  }
+
+  get data() {
+    // get the latest value from _data$ BehaviorSubject
+    return this._data$.getValue();
+  }
+
   constructor(private store: Store<fromStore.MapState>) {}
 
   ngOnInit() {
@@ -58,16 +72,17 @@ export class MapComponent implements OnInit {
     );
     this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
 
-    this.transhformVisualizationObject();
+    this._data$.subscribe(data => {
+      this.visualizationObject = data;
+      this.transhformVisualizationObject(data);
+    });
     setTimeout(() => {
       this.drawMap();
     }, 10);
   }
 
-  transhformVisualizationObject() {
-    const { visObject, Layers } = fromUtils.transformVisualizationObject(
-      this.visualizationObject
-    );
+  transhformVisualizationObject(data) {
+    const { visObject, Layers } = fromUtils.transformVisualizationObject(data);
     this.visObject = {
       ...this.visObject,
       mapConfiguration: visObject['mapConfiguration'],
@@ -95,7 +110,7 @@ export class MapComponent implements OnInit {
         );
         const mapHeight = fromUtils.refineHeight(this.itemHeight);
         const container = fromUtils.prepareMapContainer(
-          mapObject.id,
+          this.componentId,
           mapHeight,
           this.mapWidth,
           this.isFullScreen

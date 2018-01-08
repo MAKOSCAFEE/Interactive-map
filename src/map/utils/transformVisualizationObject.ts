@@ -38,7 +38,8 @@ export function transformVisualizationObject(visualizationObject) {
       'colorLow',
       'colorHigh',
       'colorScale',
-      'classes'
+      'classes',
+      'method'
     ]);
     const displaySettings = _.pick(mapview, [
       'labelFontColor',
@@ -72,7 +73,7 @@ export function transformVisualizationObject(visualizationObject) {
     Layers = [...Layers, layerObj];
   });
   visObject = {
-    ...this.visObject,
+    ...visObject,
     mapConfiguration,
     layers
   };
