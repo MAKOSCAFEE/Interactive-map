@@ -22,8 +22,8 @@ export function getInitialMapObject(mapConfiguration: MapConfiguration) {
     operatingLayers: null,
     options: {
       center: [
-        parseFloat(mapConfiguration.latitude),
-        parseFloat(mapConfiguration.longitude)
+        convertLatitudeLongitude(mapConfiguration.latitude),
+        convertLatitudeLongitude(mapConfiguration.longitude)
       ],
       zoom: mapConfiguration.zoom,
       maxZoom: 18,
@@ -55,4 +55,11 @@ export function prepareMapContainer(mapObjectId, height, width, isFullscreen) {
     parentElement.appendChild(div);
   }
   return mapObjectId + '-child-view-port';
+}
+
+function convertLatitudeLongitude(coordinate) {
+  if (Math.abs(parseInt(coordinate, 10)) > 100000) {
+    return parseFloat(coordinate) / 100000;
+  }
+  return parseFloat(coordinate);
 }

@@ -48,19 +48,19 @@ export class MapComponent implements OnInit {
   public hideTable: boolean = true;
   public showCenterButton: boolean = false;
   public mapOptions: any;
-
-  @Input() visualizationObject: any;
-  private _data = new BehaviorSubject<any>({});
+  public visualizationObject: any;
+  public componentId = 'RBoGyrUJDOu';
+  private _data$ = new BehaviorSubject<any>({});
 
   @Input()
   set data(value) {
-    // set the latest value for _data BehaviorSubject
-    this._data.next(value);
+    // set the latest value for _data$ BehaviorSubject
+    this._data$.next(value);
   }
 
   get data() {
-    // get the latest value from _data BehaviorSubject
-    return this._data.getValue();
+    // get the latest value from _data$ BehaviorSubject
+    return this._data$.getValue();
   }
 
   constructor(private store: Store<fromStore.MapState>) {}
@@ -72,7 +72,10 @@ export class MapComponent implements OnInit {
     );
     this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
 
-    this._data.subscribe(data => this.transhformVisualizationObject(data));
+    this._data$.subscribe(data => {
+      this.visualizationObject = data;
+      this.transhformVisualizationObject(data);
+    });
     setTimeout(() => {
       this.drawMap();
     }, 10);
@@ -107,7 +110,7 @@ export class MapComponent implements OnInit {
         );
         const mapHeight = fromUtils.refineHeight(this.itemHeight);
         const container = fromUtils.prepareMapContainer(
-          mapObject.id,
+          this.componentId,
           mapHeight,
           this.mapWidth,
           this.isFullScreen

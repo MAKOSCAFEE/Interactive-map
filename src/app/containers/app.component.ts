@@ -18,9 +18,18 @@ export class AppComponent implements OnInit {
     {
       id: 'jvdDvScWuhv',
       name: 'Inpatient: BMI female under 5 at chiefdom level this year'
+    },
+    {
+      id: 'DE644qFc32L',
+      name: 'Delivery: Maternal death rate at districts 2013'
+    },
+    {
+      id: 'GObHCbOfXtP',
+      name:
+        'Delivery: Maternal death rate / PHU delivery rate ANC 1 last quarter'
     }
   ];
-  public selectedMapId = this.availableMaps[0].id;
+  public selectedMapId = this.availableMaps[2].id;
 
   constructor(
     private favoriteService: fromServices.FavouriteService,
