@@ -17,9 +17,10 @@ export class AppComponent implements OnInit {
     },
     {
       id: 'jvdDvScWuhv',
-      name: 'Delivery: LLITN after delivery OSM Light basemap'
+      name: 'Inpatient: BMI female under 5 at chiefdom level this year'
     }
   ];
+  public selectedMapId = this.availableMaps[0].id;
 
   constructor(
     private favoriteService: fromServices.FavouriteService,
@@ -27,7 +28,18 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.mapService.getMapFromFav('inePJWH75JW').subscribe(data => {
+    this.getMapFav(this.selectedMapId);
+  }
+
+  onChangeMap(newObj) {
+    console.log(newObj);
+    this.selectedMapId = newObj;
+    this.getMapFav(newObj);
+    // ... do other stuff here ...
+  }
+
+  getMapFav(mapId) {
+    this.mapService.getMapFromFav(mapId).subscribe(data => {
       this.visualObject = data;
       this.isLoaded = true;
     });

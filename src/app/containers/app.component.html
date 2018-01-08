@@ -5,16 +5,12 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <div class="form-group">
-          <select class="form-control">
-            <option>Map 1</option>
-            <option>Map 2</option>
-            <option>Map 3</option>
-            <option>Map 4</option>
-            <option>Map 5</option>
+          <select class="form-control" (change)="onChangeMap($event.target.value)">
+            <option [value]="i.id" *ngFor="let i of availableMaps">{{i.name}}</option>
           </select>
         </div>
       </li>
     </ul>
   </div>
 </nav>
-<app-map [visualizationObject]="visualObject" *ngIf="isLoaded"></app-map>
+<app-map [visualizationObject]="visualObject" [data]='visualObject' *ngIf="isLoaded"></app-map>
