@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
-import {
-  map,
-  switchMap,
-  catchError,
-  mergeMap,
-  combineLatest
-} from 'rxjs/operators';
+import { map, switchMap, catchError, combineLatest } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 

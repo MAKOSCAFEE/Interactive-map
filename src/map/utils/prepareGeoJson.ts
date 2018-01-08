@@ -195,7 +195,7 @@ function _getDataForGeoFeature(geoFeatureId: string, analyticObject: any): any {
   analyticObject.rows.forEach(row => {
     if (geoFeatureId === row[geoFeatureIndex]) {
       data.id = row[metadataIndex];
-      data.name = analyticObject.metaData.names[row[metadataIndex]];
+      data.name = analyticObject.metaData.items[row[metadataIndex]].name;
       data.value = row[dataIndex];
     }
   });

@@ -73,7 +73,7 @@ export function transformVisualizationObject(visualizationObject) {
     Layers = [...Layers, layerObj];
   });
   visObject = {
-    ...this.visObject,
+    ...visObject,
     mapConfiguration,
     layers
   };

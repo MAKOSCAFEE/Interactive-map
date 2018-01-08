@@ -10,6 +10,16 @@ export class AppComponent implements OnInit {
   title = 'app';
   public visualObject: any;
   public isLoaded = false;
+  public availableMaps = [
+    {
+      id: 'inePJWH75JW',
+      name: 'Delivery: LLITN after delivery OSM Light basemap'
+    },
+    {
+      id: 'jvdDvScWuhv',
+      name: 'Delivery: LLITN after delivery OSM Light basemap'
+    }
+  ];
 
   constructor(
     private favoriteService: fromServices.FavouriteService,
@@ -17,7 +27,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.mapService.getMapFromFav().subscribe(data => {
+    this.mapService.getMapFromFav('inePJWH75JW').subscribe(data => {
       this.visualObject = data;
       this.isLoaded = true;
     });
