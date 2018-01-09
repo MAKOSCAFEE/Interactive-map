@@ -12,24 +12,37 @@ export class AppComponent implements OnInit {
   public isLoaded = false;
   public availableMaps = [
     {
+      id: 'zEY4M5njBxV',
+      name: 'Boundary-Boundaries: Facilities'
+    },
+    {
+      id: 'bjaqzAFrDOS',
+      name: 'Boundary-Boundaries: Districts and Chiefdoms'
+    },
+    {
       id: 'inePJWH75JW',
-      name: 'Delivery: LLITN after delivery OSM Light basemap'
+      name: 'themantic-Delivery: LLITN after delivery OSM Light basemap'
     },
     {
       id: 'jvdDvScWuhv',
-      name: 'Inpatient: BMI female under 5 at chiefdom level this year'
+      name:
+        'themantic-Inpatient: BMI female under 5 at chiefdom level this year'
     },
     {
       id: 'DE644qFc32L',
-      name: 'Delivery: Maternal death rate at districts 2013'
+      name: 'themantic-Delivery: Maternal death rate at districts 2013'
     },
     {
       id: 'GObHCbOfXtP',
       name:
-        'Delivery: Maternal death rate / PHU delivery rate ANC 1 last quarter'
+        'themantic-Delivery: Maternal death rate / PHU delivery rate ANC 1 last quarter'
+    },
+    {
+      id: 'ZBjCfSaLSqD',
+      name: 'themantic-ANC LLITN coverage'
     }
   ];
-  public selectedMapId = this.availableMaps[2].id;
+  public selectedMapId = this.availableMaps[0].id;
 
   constructor(
     private favoriteService: fromServices.FavouriteService,

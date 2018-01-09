@@ -1,6 +1,8 @@
 import * as fromTileLayers from '../constants/tile-layer.constant';
 import { prepareGeoJson } from './prepareGeoJson';
 import { Layer } from '../models/layer.model';
+import { prepareMarkersLayerGroup, prepareMarkerClusters } from './eventLayer';
+import * as _ from 'lodash';
 
 export function getMapLayers(
   L,
@@ -14,6 +16,7 @@ export function getMapLayers(
   let mapLayers: any[] = [];
   let mapLayersWithNames: any[] = [];
   let centeringLayer: any = null;
+  const mapObjects = [];
   const baseMap = prepareTileLayer(L, getTileLayer(basemap));
   if (baseMap) {
     mapLayers = [...mapLayers, baseMap];
@@ -22,6 +25,11 @@ export function getMapLayers(
     mapLayersWithNames = [...mapLayersWithNames, layerObject];
   }
   visualizationLayers.map((layer: Layer, layerIndex: number) => {
+    const visualizationLayerSettings = {
+      ...layer.legendProperties,
+      ...layer.layerOptions,
+      ...layer.displaySettings
+    };
     if (layer.hasOwnProperty('layer')) {
       if (layer.layer === 'boundary') {
         const centerLayer = prepareGeoJson(
@@ -70,6 +78,44 @@ export function getMapLayers(
         const layerObject = {};
         layerObject[layer.name] = centerLayer;
         mapLayersWithNames.push(layerObject);
+      } else if (layer.layer === 'event') {
+        if (visualizationLayerSettings.eventClustering) {
+          const markerClusters: any = !prioritizeFilter
+            ? _.find(mapObjects, ['id', mapObjectId])
+            : undefined;
+          let centerLayer: any = null;
+          if (markerClusters && !prioritizeFilter) {
+            centerLayer = markerClusters.layer;
+          } else {
+            centerLayer = prepareMarkerClusters(
+              L,
+              visualizationLayerSettings,
+              analytics
+            );
+            mapObjects.push({ id: mapObjectId, layer: centerLayer });
+          }
+          if (centerLayer[0]) {
+            mapLayers[visualizationLayers.length - layerIndex] = centerLayer[0];
+          }
+
+          const layerObject = {};
+          layerObject[layer.name] = centerLayer[0];
+          mapLayersWithNames.push(layerObject);
+          centeringLayer = centerLayer[1];
+        } else {
+          const centerLayer = prepareMarkersLayerGroup(
+            L,
+            visualizationLayerSettings,
+            analytics
+          );
+          if (centerLayer[0]) {
+            mapLayers[visualizationLayers.length - layerIndex] = centerLayer[0];
+          }
+          const layerObject = {};
+          layerObject[layer.name] = centerLayer[0];
+          mapLayersWithNames.push(layerObject);
+          centeringLayer = centerLayer[1];
+        }
       }
     }
   });

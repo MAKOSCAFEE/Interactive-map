@@ -1,6 +1,9 @@
 import { Layer } from '../models/layer.model';
 import { prepareMapLegend } from './mapLegend';
-import { boundaryLayerClasses } from './legendSets';
+import {
+  boundaryLayerClasses,
+  getFacilityLayerLegendClasses
+} from './legendSets';
 import {
   prepareBoundaryLayerOptions,
   bindBoundaryLayerEvents
@@ -9,6 +12,10 @@ import {
   prepareThematicLayerOptions,
   bindThematicLayerEvents
 } from './thematicLayer';
+import {
+  prepareFacilityLayerOptions,
+  bindFacilityLayerEvents
+} from './facilityLayer';
 import * as _ from 'lodash';
 
 export function prepareGeoJson(
@@ -49,6 +56,22 @@ export function prepareGeoJson(
       );
     }
   }
+
+  if (layer.layer === 'facility') {
+    const legendObject = getFacilityLayerLegendClasses(
+      visualizationLayerSettings,
+      false,
+      geofeatures
+    );
+    mapLegend = legendObject[0];
+    const facilityVisualizationSettings = legendObject[1];
+    options = prepareFacilityLayerOptions(
+      L,
+      options,
+      facilityVisualizationSettings,
+      mapLegend
+    );
+  }
   const mapLayer = _getGEOJSONLayer(
     L,
     geofeatures,
@@ -63,6 +86,10 @@ export function prepareGeoJson(
 
   if (layer.layer.indexOf('thematic') > -1 && analytics) {
     LayerEvents = bindThematicLayerEvents(L, mapLayer, analytics);
+  }
+
+  if (layer.layer === 'facility' && analytics) {
+    LayerEvents = bindFacilityLayerEvents(L, mapLayer, analytics);
   }
 
   if (LayerEvents) {

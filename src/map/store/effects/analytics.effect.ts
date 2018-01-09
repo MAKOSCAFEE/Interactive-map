@@ -30,23 +30,31 @@ export class AnalyticsEffects {
               ...layer.dataSelections.columns,
               ...layer.dataSelections.filters
             ];
-            return requestParams
-              .map((param, paramIndex) => {
-                return `dimension=${param.dimension}:${param.items
-                  .map(item => item.id)
-                  .join(';')}`;
-              })
-              .join('&');
+            const noAnalyticsLayers = ['boundary', 'facility', 'external'];
+            const layerName = layer.layer;
+            if (noAnalyticsLayers.indexOf(layerName) === -1) {
+              return requestParams
+                .map((param, paramIndex) => {
+                  return `dimension=${param.dimension}:${param.items
+                    .map(item => item.id)
+                    .join(';')}`;
+                })
+                .join('&');
+            }
           });
-          const sources = layersParams.map(param =>
-            this.analyticsService.getAnalytics(param)
-          );
+          const sources =
+            layersParams.length && layersParams[0]
+              ? layersParams.map(param =>
+                  this.analyticsService.getAnalytics(param)
+                )
+              : Observable.create([]);
 
           return Observable.combineLatest(sources).pipe(
-            map(analytics => {
+            map(data => {
+              const analytics = data.length ? data[0] : [];
               const vizObject = {
                 ...action.payload,
-                analytics: analytics[0]
+                analytics
               };
               return new visualizationObjectActions.UpdateVisualizationObjectSuccess(
                 vizObject
