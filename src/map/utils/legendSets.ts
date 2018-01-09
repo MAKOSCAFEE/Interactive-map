@@ -180,7 +180,6 @@ export function getFacilityLayerLegendClasses(
     classes: [],
     change: []
   };
-  console.log(visualizationLayerSettings);
   const groupSet = visualizationLayerSettings.organisationUnitGroupSet;
   const features = geoFeatures;
   legend.id = visualizationLayerSettings.id;

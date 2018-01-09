@@ -4,7 +4,6 @@ export function prepareMarkerClusters(
   visualizationLayerSettings: any,
   visualizationAnalytics: any
 ): any {
-  console.log(visualizationLayerSettings);
   const markersCoordinates = [];
   const markers = new L.MarkerClusterGroup({
     spiderfyOnMaxZoom: false,
@@ -87,7 +86,6 @@ export function prepareMarkerClusters(
 function _iconCreateFunction(L: any, cluster: any, layerSettings: any) {
   const children = cluster.getAllChildMarkers();
   const iconSize = _calculateClusterSize(cluster.getChildCount());
-  console.log(layerSettings);
   return L.divIcon({
     html: _createClusterIcon(iconSize, cluster, layerSettings),
     className: 'marker-cluster ' + layerSettings.id,

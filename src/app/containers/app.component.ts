@@ -62,7 +62,6 @@ export class AppComponent implements OnInit {
   }
 
   onChangeMap(newObj) {
-    console.log(newObj);
     this.selectedMapId = newObj;
     this.getMapFav(newObj);
     // ... do other stuff here ...

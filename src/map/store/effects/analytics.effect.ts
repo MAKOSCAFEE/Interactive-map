@@ -76,7 +76,6 @@ export class AnalyticsEffects {
           const sources =
             layersParams.length && layersParams[0]
               ? layersParams.map(param => {
-                  console.log(param);
                   if (param.startsWith('/events')) {
                     return this.analyticsService.getEventsAnalytics(param);
                   }

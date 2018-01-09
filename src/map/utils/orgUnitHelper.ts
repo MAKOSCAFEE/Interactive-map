@@ -15,7 +15,6 @@ export function prepareDataByArrayByOrgUnitUid(layers, analytics) {
       const orgIndex = _.findIndex(layerValues.headers, ['name', 'ou']);
       const dxIndex = _.findIndex(layerValues.headers, ['name', 'dx']);
       layerValues.rows.forEach(row => {
-        console.log(row);
         thematicValues.push({
           data: layerValues.metaData.names[row[dxIndex]],
           orgId: row[orgIndex],
