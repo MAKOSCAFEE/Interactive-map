@@ -80,6 +80,10 @@ export function getMapLayers(
         mapLayersWithNames.push(layerObject);
       } else if (layer.layer === 'event') {
         if (analytics) {
+          console.log(
+            'visualizationLayerSettings:::',
+            visualizationLayerSettings
+          );
           if (visualizationLayerSettings.eventClustering) {
             const markerClusters: any = !prioritizeFilter
               ? _.find(mapObjects, ['id', mapObjectId])

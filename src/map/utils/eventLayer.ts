@@ -4,6 +4,7 @@ export function prepareMarkerClusters(
   visualizationLayerSettings: any,
   visualizationAnalytics: any
 ): any {
+  console.log(visualizationLayerSettings);
   const markersCoordinates = [];
   const markers = new L.MarkerClusterGroup({
     spiderfyOnMaxZoom: false,
@@ -51,12 +52,25 @@ export function prepareMarkerClusters(
           const icon = L.divIcon({
             iconSize: null,
             html:
-              '<i class="fa fa-map-marker" style="color:#276696;font-size: 16px"></i>'
+              '<i class="fa fa-map-marker" style="color:#276696;font-size:16px; height:16px; width:16px;"></i>'
           });
+          const geojsonMarkerOptions = {
+            radius: visualizationLayerSettings.radiusLow
+              ? visualizationLayerSettings.radiusLow
+              : 5,
+            weight: 0.9,
+            opacity: visualizationLayerSettings.opacity
+              ? visualizationLayerSettings.opacity
+              : 0.8,
+            fillOpacity: visualizationLayerSettings.opacity
+              ? visualizationLayerSettings.opacity
+              : 0.8,
+            fillColor: visualizationLayerSettings.eventPointColor
+              ? visualizationLayerSettings.eventPointColor
+              : '#3333'
+          };
           markers.addLayer(
-            L.marker([latitude, longitude], {
-              icon: icon
-            })
+            L.circleMarker([latitude, longitude], geojsonMarkerOptions)
               .bindPopup(title)
               .on({
                 mouseover: event => {}
@@ -73,8 +87,7 @@ export function prepareMarkerClusters(
 function _iconCreateFunction(L: any, cluster: any, layerSettings: any) {
   const children = cluster.getAllChildMarkers();
   const iconSize = _calculateClusterSize(cluster.getChildCount());
-
-  layerSettings.eventPointColor = '#' + layerSettings.eventPointColor;
+  console.log(layerSettings);
   return L.divIcon({
     html: _createClusterIcon(iconSize, cluster, layerSettings),
     className: 'marker-cluster ' + layerSettings.id,
@@ -139,8 +152,7 @@ function _writeInKNumberSystem(childCount: any): any {
 }
 
 function _eventColor(color) {
-  const colorArray = color.split('#');
-  return '#' + colorArray[colorArray.length - 1];
+  return '#' + color;
 }
 
 export function prepareMarkersLayerGroup(L, settings, visualizationAnalytics) {

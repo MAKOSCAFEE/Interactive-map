@@ -31,6 +31,7 @@ export function transformVisualizationObject(visualizationObject) {
     const layerOptions = _.pick(mapview, [
       'eventClustering',
       'eventPointRadius',
+      'eventPointColor',
       'radiusHigh',
       'radiusLow'
     ]);

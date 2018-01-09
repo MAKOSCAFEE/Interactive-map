@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
       name: 'themantic-ANC LLITN coverage'
     }
   ];
-  public selectedMapId = 'UjHKZ2lZJ3T';
+  public selectedMapId = this.availableMaps[0].id;
 
   constructor(
     private favoriteService: fromServices.FavouriteService,

@@ -3,4 +3,5 @@ export interface LayerOptions {
   radiusLow?: number;
   radiusHigh?: number;
   eventPointRadius?: number;
+  eventPointColor?: string;
 }
