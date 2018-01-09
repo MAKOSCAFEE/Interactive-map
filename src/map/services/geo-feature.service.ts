@@ -10,8 +10,8 @@ import { GeoFeature } from '../models/geo-feature.model';
 export class GeoFeatureService {
   constructor(private httpClient: HttpClient) {}
 
-  getGeoFeatures(orgUnit, level): Observable<GeoFeature[]> {
-    const url = `../../../api/geoFeatures.json?ou=ou:${orgUnit};${level}&displayProperty=NAME`;
+  getGeoFeatures(param): Observable<GeoFeature[]> {
+    const url = `../../../api/geoFeatures.json?${param}&displayProperty=NAME`;
     return this.httpClient
       .get(url)
       .pipe(catchError((error: any) => Observable.throw(error.json())));

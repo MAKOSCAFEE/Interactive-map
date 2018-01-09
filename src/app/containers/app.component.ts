@@ -8,7 +8,15 @@ import * as fromServices from '../services';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  public visualObject: any;
+  public visualObject: any = {
+    id: 'UjHKZ2lZJ3T',
+    latitude: '8.353502376213736',
+    longitude: '-13.069095611572266',
+    name: 'initialMap',
+    basemap: 'osmLight',
+    zoom: 6,
+    mapViews: []
+  };
   public isLoaded = false;
   public availableMaps = [
     {

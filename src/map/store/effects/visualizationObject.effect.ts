@@ -28,28 +28,17 @@ export class VisualizationObjectEffects {
             const data = requestParams.filter(
               dimension => dimension.dimension === 'ou'
             );
-            let params = {};
-            data.map(item => {
-              let orgUnit = null,
-                level = null;
-              item.items.map(dimension => {
-                dimension.id.indexOf('LEVEL') === -1
-                  ? (orgUnit = dimension.id)
-                  : (level = dimension.id);
-              });
-              params = {
-                ...params,
-                orgUnit,
-                level
-              };
-            });
-            return params;
+            const parameter = data
+              .map((param, paramIndex) => {
+                return `ou=${param.dimension}:${param.items
+                  .map(item => item.id)
+                  .join(';')}`;
+              })
+              .join('&');
+            return parameter;
           });
           const sources = parameters.map(param =>
-            this.geofeatureService.getGeoFeatures(
-              param['orgUnit'],
-              param['level']
-            )
+            this.geofeatureService.getGeoFeatures(param)
           );
           return Observable.combineLatest(sources).pipe(
             map(geofeature => {
