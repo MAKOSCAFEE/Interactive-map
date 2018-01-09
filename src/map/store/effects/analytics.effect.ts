@@ -30,7 +30,12 @@ export class AnalyticsEffects {
               ...layer.dataSelections.columns,
               ...layer.dataSelections.filters
             ];
-            const noAnalyticsLayers = ['boundary', 'facility', 'external'];
+            const noAnalyticsLayers = [
+              'boundary',
+              'facility',
+              'external',
+              'event'
+            ];
             const layerName = layer.layer;
             if (noAnalyticsLayers.indexOf(layerName) === -1) {
               return requestParams
@@ -41,12 +46,42 @@ export class AnalyticsEffects {
                 })
                 .join('&');
             }
+
+            if (layerName === 'event') {
+              const data = requestParams
+                .map((param, paramIndex) => {
+                  const dimension = `dimension=${param.dimension}`;
+                  if (param.items.length) {
+                    return `${dimension}:${param.items
+                      .map(item => item.id)
+                      .join(';')}`;
+                  }
+                  return dimension;
+                })
+                .join('&');
+              let url = `/events/query/${
+                layer.dataSelections.program.id
+              }.json?stage=${layer.dataSelections.programStage.id}&${data}`;
+              if (layer.dataSelections.endDate) {
+                url += `&endDate=${layer.dataSelections.endDate.split('T')[0]}`;
+              }
+              if (layer.dataSelections.startDate) {
+                url += `&startDate=${
+                  layer.dataSelections.startDate.split('T')[0]
+                }`;
+              }
+              return url;
+            }
           });
           const sources =
             layersParams.length && layersParams[0]
-              ? layersParams.map(param =>
-                  this.analyticsService.getAnalytics(param)
-                )
+              ? layersParams.map(param => {
+                  console.log(param);
+                  if (param.startsWith('/events')) {
+                    return this.analyticsService.getEventsAnalytics(param);
+                  }
+                  return this.analyticsService.getAnalytics(param);
+                })
               : Observable.create([]);
 
           return Observable.combineLatest(sources).pipe(

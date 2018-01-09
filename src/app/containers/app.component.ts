@@ -20,6 +20,14 @@ export class AppComponent implements OnInit {
       name: 'Boundary-Boundaries: Districts and Chiefdoms'
     },
     {
+      id: 'kNYqHu3e7o3',
+      name: 'events-Malaria: Cases 2015-2016 Western Area events'
+    },
+    {
+      id: 'UjHKZ2lZJ3T',
+      name: 'events-Malaria: Malaria: Cases 2015-2016 Western Area clustered'
+    },
+    {
       id: 'inePJWH75JW',
       name: 'themantic-Delivery: LLITN after delivery OSM Light basemap'
     },
@@ -42,7 +50,7 @@ export class AppComponent implements OnInit {
       name: 'themantic-ANC LLITN coverage'
     }
   ];
-  public selectedMapId = this.availableMaps[0].id;
+  public selectedMapId = 'UjHKZ2lZJ3T';
 
   constructor(
     private favoriteService: fromServices.FavouriteService,

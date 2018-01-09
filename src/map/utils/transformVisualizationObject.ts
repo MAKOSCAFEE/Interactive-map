@@ -57,11 +57,13 @@ export function transformVisualizationObject(visualizationObject) {
       'translations',
       'interpretations',
       'program',
-      'programName',
+      'programStage',
       'columns',
       'rows',
       'filters',
-      'aggregationType'
+      'aggregationType',
+      'startDate',
+      'endDate'
     ]);
     const layerObj = {
       ...layer,

@@ -79,42 +79,46 @@ export function getMapLayers(
         layerObject[layer.name] = centerLayer;
         mapLayersWithNames.push(layerObject);
       } else if (layer.layer === 'event') {
-        if (visualizationLayerSettings.eventClustering) {
-          const markerClusters: any = !prioritizeFilter
-            ? _.find(mapObjects, ['id', mapObjectId])
-            : undefined;
-          let centerLayer: any = null;
-          if (markerClusters && !prioritizeFilter) {
-            centerLayer = markerClusters.layer;
+        if (analytics) {
+          if (visualizationLayerSettings.eventClustering) {
+            const markerClusters: any = !prioritizeFilter
+              ? _.find(mapObjects, ['id', mapObjectId])
+              : undefined;
+            let centerLayer: any = null;
+            if (markerClusters && !prioritizeFilter) {
+              centerLayer = markerClusters.layer;
+            } else {
+              centerLayer = prepareMarkerClusters(
+                L,
+                visualizationLayerSettings,
+                analytics
+              );
+              mapObjects.push({ id: mapObjectId, layer: centerLayer });
+            }
+            if (centerLayer[0]) {
+              mapLayers[visualizationLayers.length - layerIndex] =
+                centerLayer[0];
+            }
+
+            const layerObject = {};
+            layerObject[layer.name] = centerLayer[0];
+            mapLayersWithNames.push(layerObject);
+            centeringLayer = centerLayer[1];
           } else {
-            centerLayer = prepareMarkerClusters(
+            const centerLayer = prepareMarkersLayerGroup(
               L,
               visualizationLayerSettings,
               analytics
             );
-            mapObjects.push({ id: mapObjectId, layer: centerLayer });
+            if (centerLayer[0]) {
+              mapLayers[visualizationLayers.length - layerIndex] =
+                centerLayer[0];
+            }
+            const layerObject = {};
+            layerObject[layer.name] = centerLayer[0];
+            mapLayersWithNames.push(layerObject);
+            centeringLayer = centerLayer[1];
           }
-          if (centerLayer[0]) {
-            mapLayers[visualizationLayers.length - layerIndex] = centerLayer[0];
-          }
-
-          const layerObject = {};
-          layerObject[layer.name] = centerLayer[0];
-          mapLayersWithNames.push(layerObject);
-          centeringLayer = centerLayer[1];
-        } else {
-          const centerLayer = prepareMarkersLayerGroup(
-            L,
-            visualizationLayerSettings,
-            analytics
-          );
-          if (centerLayer[0]) {
-            mapLayers[visualizationLayers.length - layerIndex] = centerLayer[0];
-          }
-          const layerObject = {};
-          layerObject[layer.name] = centerLayer[0];
-          mapLayersWithNames.push(layerObject);
-          centeringLayer = centerLayer[1];
         }
       }
     }
