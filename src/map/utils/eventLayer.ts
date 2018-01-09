@@ -153,7 +153,11 @@ function _eventColor(color) {
   return '#' + color;
 }
 
-export function prepareMarkersLayerGroup(L, settings, visualizationAnalytics) {
+export function prepareMarkersLayerGroup(
+  L,
+  visualizationLayerSettings,
+  visualizationAnalytics
+) {
   const markersCoordinates = [];
   const markersArray = [];
   if (visualizationAnalytics.hasOwnProperty('headers')) {
@@ -191,10 +195,23 @@ export function prepareMarkersLayerGroup(L, settings, visualizationAnalytics) {
             html:
               '<i class="fa fa-map-marker" style="color:#276696;-webkit-text-stroke: 1px white;font-size: 16px"></i>'
           });
+          const geojsonMarkerOptions = {
+            radius: visualizationLayerSettings.radiusLow
+              ? visualizationLayerSettings.radiusLow
+              : 5,
+            weight: 0.9,
+            opacity: visualizationLayerSettings.opacity
+              ? visualizationLayerSettings.opacity
+              : 0.8,
+            fillOpacity: visualizationLayerSettings.opacity
+              ? visualizationLayerSettings.opacity
+              : 0.8,
+            fillColor: visualizationLayerSettings.eventPointColor
+              ? visualizationLayerSettings.eventPointColor
+              : '#3333'
+          };
           markersArray.push(
-            L.marker([latitude, longitude], {
-              icon: icon
-            })
+            L.circleMarker([latitude, longitude], geojsonMarkerOptions)
               .bindPopup(title)
               .on({
                 mouseover: event => {}
