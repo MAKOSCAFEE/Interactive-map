@@ -1,4 +1,4 @@
-import {Dimension} from './dimension.model';
+import { Dimension } from './dimension.model';
 
 export interface DataSelections {
   config?: any;
@@ -8,13 +8,17 @@ export interface DataSelections {
   interpretations?: any[];
   attributeValues?: any[];
   program?: {
-    id: string
+    id: string;
+    name: string;
   };
-  programName?: {
-    id: string
+  programStage?: {
+    id: string;
+    name: string;
   };
   columns: Dimension[];
   filters: Dimension[];
   rows: Dimension[];
+  endDate?: string;
+  startDate?: string;
   aggregationType: string;
 }

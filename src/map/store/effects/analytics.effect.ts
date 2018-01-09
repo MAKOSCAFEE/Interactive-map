@@ -30,23 +30,65 @@ export class AnalyticsEffects {
               ...layer.dataSelections.columns,
               ...layer.dataSelections.filters
             ];
-            return requestParams
-              .map((param, paramIndex) => {
-                return `dimension=${param.dimension}:${param.items
-                  .map(item => item.id)
-                  .join(';')}`;
-              })
-              .join('&');
+            const noAnalyticsLayers = [
+              'boundary',
+              'facility',
+              'external',
+              'event'
+            ];
+            const layerName = layer.layer;
+            if (noAnalyticsLayers.indexOf(layerName) === -1) {
+              return requestParams
+                .map((param, paramIndex) => {
+                  return `dimension=${param.dimension}:${param.items
+                    .map(item => item.id)
+                    .join(';')}`;
+                })
+                .join('&');
+            }
+
+            if (layerName === 'event') {
+              const data = requestParams
+                .map((param, paramIndex) => {
+                  const dimension = `dimension=${param.dimension}`;
+                  if (param.items.length) {
+                    return `${dimension}:${param.items
+                      .map(item => item.id)
+                      .join(';')}`;
+                  }
+                  return dimension;
+                })
+                .join('&');
+              let url = `/events/query/${
+                layer.dataSelections.program.id
+              }.json?stage=${layer.dataSelections.programStage.id}&${data}`;
+              if (layer.dataSelections.endDate) {
+                url += `&endDate=${layer.dataSelections.endDate.split('T')[0]}`;
+              }
+              if (layer.dataSelections.startDate) {
+                url += `&startDate=${
+                  layer.dataSelections.startDate.split('T')[0]
+                }`;
+              }
+              return url;
+            }
           });
-          const sources = layersParams.map(param =>
-            this.analyticsService.getAnalytics(param)
-          );
+          const sources =
+            layersParams.length && layersParams[0]
+              ? layersParams.map(param => {
+                  if (param.startsWith('/events')) {
+                    return this.analyticsService.getEventsAnalytics(param);
+                  }
+                  return this.analyticsService.getAnalytics(param);
+                })
+              : Observable.create([]);
 
           return Observable.combineLatest(sources).pipe(
-            map(analytics => {
+            map(data => {
+              const analytics = data.length ? data[0] : [];
               const vizObject = {
                 ...action.payload,
-                analytics: analytics[0]
+                analytics
               };
               return new visualizationObjectActions.UpdateVisualizationObjectSuccess(
                 vizObject

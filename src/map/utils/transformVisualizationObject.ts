@@ -31,6 +31,7 @@ export function transformVisualizationObject(visualizationObject) {
     const layerOptions = _.pick(mapview, [
       'eventClustering',
       'eventPointRadius',
+      'eventPointColor',
       'radiusHigh',
       'radiusLow'
     ]);
@@ -57,11 +58,13 @@ export function transformVisualizationObject(visualizationObject) {
       'translations',
       'interpretations',
       'program',
-      'programName',
+      'programStage',
       'columns',
       'rows',
       'filters',
-      'aggregationType'
+      'aggregationType',
+      'startDate',
+      'endDate'
     ]);
     const layerObj = {
       ...layer,

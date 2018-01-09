@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { LegendSet } from '../models/Legend-set.model';
 export function boundaryLayerClasses(mapVisualizationSettings, geoFeature) {
   const features = geoFeature;
   const Levels = getBoundaryLevels(geoFeature);
@@ -155,4 +156,74 @@ export function getFeatureRadius(legend, dataValue) {
     }
   });
   return theRadius;
+}
+
+export function getFacilityLayerLegendClasses(
+  visualizationLayerSettings,
+  isLegendView,
+  geoFeatures
+) {
+  const legend: LegendSet = {
+    id: '',
+    name: '',
+    description: '',
+    hidden: false,
+    opened: false,
+    pinned: false,
+    isEvent: false,
+    isClustered: false,
+    isThematic: false,
+    isBoundary: false,
+    isFacility: true,
+    useIcons: false,
+    opacity: 0,
+    classes: [],
+    change: []
+  };
+  const groupSet = visualizationLayerSettings.organisationUnitGroupSet;
+  const features = geoFeatures;
+  legend.id = visualizationLayerSettings.id;
+  legend.name = groupSet.name;
+  legend.opacity = visualizationLayerSettings.opacity
+    ? visualizationLayerSettings.opacity * 100
+    : 80;
+  const totalFeatures: number = features.length;
+
+  groupSet.organisationUnitGroups.forEach(group => {
+    const classLegend = {
+      name: group.name,
+      label: '',
+      id: group.id,
+      description: '',
+      relativeFrequency: '',
+      min: 0,
+      max: 0,
+      level: 0,
+      color: '',
+      collapse: '',
+      icon: group.symbol,
+      radius: 0,
+      count: group.organisationUnits.length,
+      boundary: false
+    };
+
+    classLegend.relativeFrequency =
+      totalFeatures !== 0
+        ? (classLegend.count / totalFeatures).toFixed(0) + '%'
+        : '';
+    legend.classes.push(classLegend);
+    if (!isLegendView) {
+      features.forEach(feature => {
+        const featureIndex = _.findIndex(group.organisationUnits, [
+          'id',
+          feature.id
+        ]);
+        if (featureIndex > -1) {
+          feature.dimensions.icon = group.symbol;
+        }
+      });
+    }
+  });
+  visualizationLayerSettings.geoFeature = features;
+  return [legend.classes, visualizationLayerSettings];
 }

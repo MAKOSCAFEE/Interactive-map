@@ -39,9 +39,7 @@ export class CreateVisualizationObjectSuccess implements Action {
 
 export class UpdateVisualizationObject implements Action {
   readonly type = UPDATE_VISUALIZATION_OBJECT;
-  constructor(public payload: VisualizationObject) {
-    console.log(payload);
-  }
+  constructor(public payload: VisualizationObject) {}
 }
 
 export class UpdateVisualizationObjectFail implements Action {

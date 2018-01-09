@@ -23,9 +23,10 @@ export const metaReducers: MetaReducer<any>[] = !environment.production
   : [];
 
 import { AppComponent } from './containers/app.component';
+import { OrderByPipe } from './shared/order-by.pipe';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, OrderByPipe],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
