@@ -24,6 +24,7 @@ export class AnalyticsEffects {
         (
           action: visualizationObjectActions.CreateVisualizationObjectSuccess
         ) => {
+          const layerIds = [];
           const layersParams = action.payload.layers.map(layer => {
             const requestParams = [
               ...layer.dataSelections.rows,
@@ -36,8 +37,9 @@ export class AnalyticsEffects {
               'external',
               'event'
             ];
-            const layerName = layer.layer;
+            const layerName = layer.type;
             if (noAnalyticsLayers.indexOf(layerName) === -1) {
+              layerIds.push(layer.id);
               return requestParams
                 .map((param, paramIndex) => {
                   return `dimension=${param.dimension}:${param.items
@@ -48,6 +50,7 @@ export class AnalyticsEffects {
             }
 
             if (layerName === 'event') {
+              layerIds.push(layer.id);
               const data = requestParams
                 .map((param, paramIndex) => {
                   const dimension = `dimension=${param.dimension}`;
@@ -84,8 +87,14 @@ export class AnalyticsEffects {
               : Observable.create([]);
 
           return Observable.combineLatest(sources).pipe(
-            map(data => {
-              const analytics = data.length ? data[0] : [];
+            map((data, index) => {
+              let analytics = {};
+              if (data.length) {
+                analytics = {
+                  ...action.payload.analytics,
+                  [layerIds[index]]: data[index]
+                };
+              }
               const vizObject = {
                 ...action.payload,
                 analytics

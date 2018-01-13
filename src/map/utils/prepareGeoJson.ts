@@ -34,7 +34,7 @@ export function prepareGeoJson(
   let LayerEvents = null;
   let mapLegend = prepareMapLegend(visualizationLayerSettings, analytics);
 
-  if (layer.layer === 'boundary') {
+  if (layer.type === 'boundary') {
     mapLegend = boundaryLayerClasses(visualizationLayerSettings, geofeatures);
     options = prepareBoundaryLayerOptions(
       L,
@@ -45,7 +45,7 @@ export function prepareGeoJson(
       analytics
     );
   }
-  if (layer.layer.indexOf('thematic') > -1) {
+  if (layer.type.indexOf('thematic') > -1) {
     if (analytics) {
       options = prepareThematicLayerOptions(
         L,
@@ -57,10 +57,11 @@ export function prepareGeoJson(
     }
   }
 
-  if (layer.layer === 'facility') {
+  if (layer.type === 'facility') {
     const legendObject = getFacilityLayerLegendClasses(
       visualizationLayerSettings,
       false,
+
       geofeatures
     );
     mapLegend = legendObject[0];
@@ -80,15 +81,15 @@ export function prepareGeoJson(
     mapLegend
   );
 
-  if (layer.layer === 'boundary') {
+  if (layer.type === 'boundary') {
     LayerEvents = bindBoundaryLayerEvents(L, mapLayer, layers, analytics);
   }
 
-  if (layer.layer.indexOf('thematic') > -1 && analytics) {
+  if (layer.type.indexOf('thematic') > -1 && analytics) {
     LayerEvents = bindThematicLayerEvents(L, mapLayer, analytics);
   }
 
-  if (layer.layer === 'facility' && analytics) {
+  if (layer.type === 'facility' && analytics) {
     LayerEvents = bindFacilityLayerEvents(L, mapLayer, analytics);
   }
 

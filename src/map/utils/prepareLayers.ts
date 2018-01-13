@@ -31,7 +31,7 @@ export function getMapLayers(
       ...layer.displaySettings
     };
     if (layer.hasOwnProperty('layer')) {
-      if (layer.layer === 'boundary') {
+      if (layer.type === 'boundary') {
         const centerLayer = prepareGeoJson(
           L,
           layer,
@@ -50,7 +50,7 @@ export function getMapLayers(
          * @type {L.GeoJSON}
          */
         centeringLayer = centerLayer;
-      } else if (layer.layer.indexOf('thematic') !== -1) {
+      } else if (layer.type.indexOf('thematic') !== -1) {
         const centerLayer = prepareGeoJson(
           L,
           layer,
@@ -64,7 +64,7 @@ export function getMapLayers(
         const layerObject = {};
         layerObject[layer.name] = centerLayer;
         mapLayersWithNames.push(layerObject);
-      } else if (layer.layer === 'facility') {
+      } else if (layer.type === 'facility') {
         const centerLayer = prepareGeoJson(
           L,
           layer,
@@ -78,7 +78,7 @@ export function getMapLayers(
         const layerObject = {};
         layerObject[layer.name] = centerLayer;
         mapLayersWithNames.push(layerObject);
-      } else if (layer.layer === 'event') {
+      } else if (layer.type === 'event') {
         if (analytics) {
           if (visualizationLayerSettings.eventClustering) {
             const markerClusters: any = !prioritizeFilter

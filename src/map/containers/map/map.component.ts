@@ -5,13 +5,12 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as fromStore from '../../store';
 import { Layer } from '../../models/layer.model';
 import * as fromUtils from '../../utils';
-import 'leaflet';
-import 'leaflet.markercluster';
-declare var L;
 import { VisualizationObject } from '../../models/visualization-object.model';
 import { MapConfiguration } from '../../models/map-configuration.model';
 import { GeoFeature } from '../../models/geo-feature.model';
 import * as _ from 'lodash';
+import * as fromLib from '../../lib';
+import { getTileLayer } from '../../constants/tile-layer.constant';
 
 import { of } from 'rxjs/observable/of';
 import { map, filter, tap, flatMap } from 'rxjs/operators';
@@ -96,18 +95,14 @@ export class MapComponent implements OnInit {
 
   drawMap() {
     this.visualizationObject$.subscribe(visualizationObject => {
+      let optionLayers = [];
       if (visualizationObject) {
-        const mapObject = fromUtils.getInitialMapObject(
-          visualizationObject.mapConfiguration
-        );
-        const layers = fromUtils.getMapLayers(
-          L,
-          visualizationObject.mapConfiguration.basemap,
-          mapObject.id,
-          visualizationObject.layers,
-          visualizationObject.geofeatures,
-          visualizationObject.analytics
-        );
+        const {
+          mapConfiguration,
+          layers,
+          geofeatures,
+          analytics
+        } = visualizationObject;
         const mapHeight = fromUtils.refineHeight(this.itemHeight);
         const container = fromUtils.prepareMapContainer(
           this.componentId,
@@ -115,57 +110,49 @@ export class MapComponent implements OnInit {
           this.mapWidth,
           this.isFullScreen
         );
-        mapObject.options.layers = layers[0];
-        this.mapOptions = mapObject.options;
-        this.map = L.map(container, mapObject.options);
+        const tileLayer = getTileLayer(mapConfiguration.basemap);
+        optionLayers = [...optionLayers, tileLayer];
+        layers.map(layer => {
+          let newLayer = {};
+          if (geofeatures) {
+            const features = geofeatures[layer.id];
+            newLayer = {
+              ...newLayer,
+              ...layer,
+              visible: true,
+              features
+            };
+          }
+          if (analytics) {
+            const data = analytics[layer.id];
+            newLayer = {
+              ...newLayer,
+              data
+            };
+          }
+          optionLayers = [...optionLayers, newLayer];
+        });
+
+        const optionsD2 = {
+          layers: optionLayers,
+          minZoom: 0,
+          maxZoom: 20,
+          center: [
+            this._convertLatitudeLongitude(mapConfiguration.latitude),
+            this._convertLatitudeLongitude(mapConfiguration.longitude)
+          ],
+          zoom: mapConfiguration.zoom
+        };
+        this.map = fromLib.map(container, optionsD2);
+        console.log(this.map);
       }
     });
   }
 
-  recenterMap(maP, layer) {
-    if (layer) {
-      if (layer instanceof L.LayerGroup) {
-        if (layer.getLayers().length === 2) {
-          layer = layer.getLayers()[0];
-        }
-      }
-
-      const bounds = Array.isArray(layer)
-        ? new L.LatLngBounds(layer)
-        : layer.getBounds();
-      if (this._checkIfValidCoordinate(bounds)) {
-        try {
-          maP.fitBounds(bounds);
-        } catch (e) {}
-      } else {
-        this.hasError = true;
-        this.errorMessage = 'Invalid organisation unit boundaries found!';
-      }
-    } else {
-      return;
+  private _convertLatitudeLongitude(coordinate) {
+    if (Math.abs(parseInt(coordinate, 10)) > 100000) {
+      return parseFloat(coordinate) / 100000;
     }
-  }
-  private _checkIfValidCoordinate(bounds) {
-    const boundLength = Object.getOwnPropertyNames(bounds).length;
-    if (boundLength > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * Update map Zoom Level
-   * */
-  zoomIn(zoomType) {
-    zoomType === 'in'
-      ? this.map.zoomIn()
-      : zoomType === 'out'
-        ? this.map.zoomOut()
-        : this.map.setZoom(this.mapOptions.zoom);
-  }
-
-  getCurrentMapLayers(layers: string[]) {
-    console.log();
+    return parseFloat(coordinate);
   }
 }

@@ -5,10 +5,12 @@ import { LegendProperties } from './legend-properties.model';
 
 export interface Layer {
   id: string;
-  layer: string;
+  type: string;
   hidden: boolean;
   opacity: number;
   name: string;
+  overlay: boolean;
+  visible: boolean;
   displayName: string;
   displaySettings: DisplaySettings;
   legendProperties: LegendProperties;

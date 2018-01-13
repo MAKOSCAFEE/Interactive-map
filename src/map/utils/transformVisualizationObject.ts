@@ -19,14 +19,17 @@ export function transformVisualizationObject(visualizationObject) {
   let Layers: Layer[] = [];
 
   visualizationObject.mapViews.forEach(mapview => {
-    const layer = _.pick(mapview, [
-      'id',
-      'name',
-      'displayName',
-      'opacity',
-      'hidden',
-      'layer'
-    ]);
+    const layer = {
+      id: mapview.id,
+      name: mapview.id,
+      overlay: true,
+      visible: false,
+      displayName: mapview.displayName,
+      opacity: mapview.opacity,
+      hidden: mapview.hidden,
+      type: mapview.layer
+    };
+
     layers.push(mapview.id);
     const layerOptions = _.pick(mapview, [
       'eventClustering',
