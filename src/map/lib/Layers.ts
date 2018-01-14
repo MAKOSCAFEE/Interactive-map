@@ -1,4 +1,5 @@
 import { toGeoJson } from './GeoJson';
+import L from 'leaflet';
 // List of fuctions to create diferent Layers
 import { boundary } from './Boundary';
 import { tileLayer } from './TileLayer';
@@ -34,7 +35,12 @@ export const Layers = (layers, geofeatures, analytics) => {
   return optionLayers;
 };
 
-export const createLayer = (map, optionsLayer, index) => {};
+export const createLayer = (map, optionsLayer, index) => {
+  const { displaySettings, id, geoJsonLayer } = optionsLayer;
+  createPane(map, displaySettings.labels, id, index);
+  const newLayer = map.addLayer(geoJsonLayer);
+  map.fitBounds(newLayer.getBounds());
+};
 
 export const createPane = (map, labels, id, index) => {
   const zIndex = 600 - index * 10;

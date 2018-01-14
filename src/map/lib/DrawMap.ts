@@ -12,7 +12,7 @@ import {
 
 import { getTileLayer } from '../constants/tile-layer.constant';
 import { MapConfiguration } from '../models/map-configuration.model';
-import { LayerType, Layers } from './Layers';
+import { LayerType, Layers, createLayer } from './Layers';
 
 export const DrawMap = (map: Map, visualizationObject: any) => {
   const {
@@ -28,7 +28,10 @@ export const DrawMap = (map: Map, visualizationObject: any) => {
   initializeMap(map, mapConfiguration, baseMapLayer);
 
   // Work with Layers separately;
-  Layers(layers, geofeatures, analytics);
+  const overLayLayers = Layers(layers, geofeatures, analytics);
+  overLayLayers.map((layer, index) => {
+    createLayer(map, layer, index);
+  });
 };
 
 export const initializeMap = (
