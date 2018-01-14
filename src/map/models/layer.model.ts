@@ -12,6 +12,8 @@ export interface Layer {
   overlay: boolean;
   visible: boolean;
   displayName: string;
+  analyticsData?: any;
+  pane?: string;
   displaySettings: DisplaySettings;
   legendProperties: LegendProperties;
   layerOptions: LayerOptions;

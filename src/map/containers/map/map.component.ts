@@ -10,7 +10,7 @@ import { MapConfiguration } from '../../models/map-configuration.model';
 import { GeoFeature } from '../../models/geo-feature.model';
 import * as _ from 'lodash';
 import * as fromLib from '../../lib';
-import { getTileLayer } from '../../constants/tile-layer.constant';
+import { Map } from 'leaflet';
 
 import { of } from 'rxjs/observable/of';
 import { map, filter, tap, flatMap } from 'rxjs/operators';
@@ -95,14 +95,7 @@ export class MapComponent implements OnInit {
 
   drawMap() {
     this.visualizationObject$.subscribe(visualizationObject => {
-      let optionLayers = [];
       if (visualizationObject) {
-        const {
-          mapConfiguration,
-          layers,
-          geofeatures,
-          analytics
-        } = visualizationObject;
         const mapHeight = fromUtils.refineHeight(this.itemHeight);
         const container = fromUtils.prepareMapContainer(
           this.componentId,
@@ -110,49 +103,12 @@ export class MapComponent implements OnInit {
           this.mapWidth,
           this.isFullScreen
         );
-        const tileLayer = getTileLayer(mapConfiguration.basemap);
-        optionLayers = [...optionLayers, tileLayer];
-        layers.map(layer => {
-          let newLayer = {};
-          if (geofeatures) {
-            const features = geofeatures[layer.id];
-            newLayer = {
-              ...newLayer,
-              ...layer,
-              visible: true,
-              features
-            };
-          }
-          if (analytics) {
-            const data = analytics[layer.id];
-            newLayer = {
-              ...newLayer,
-              data
-            };
-          }
-          optionLayers = [...optionLayers, newLayer];
-        });
-
-        const optionsD2 = {
-          layers: optionLayers,
-          minZoom: 0,
-          maxZoom: 20,
-          center: [
-            this._convertLatitudeLongitude(mapConfiguration.latitude),
-            this._convertLatitudeLongitude(mapConfiguration.longitude)
-          ],
-          zoom: mapConfiguration.zoom
+        const otherOptions = {
+          zoomControl: false
         };
-        this.map = fromLib.map(container, optionsD2);
-        console.log(this.map);
+        this.map = new Map(container, otherOptions);
+        fromLib.DrawMap(this.map, visualizationObject);
       }
     });
-  }
-
-  private _convertLatitudeLongitude(coordinate) {
-    if (Math.abs(parseInt(coordinate, 10)) > 100000) {
-      return parseFloat(coordinate) / 100000;
-    }
-    return parseFloat(coordinate);
   }
 }

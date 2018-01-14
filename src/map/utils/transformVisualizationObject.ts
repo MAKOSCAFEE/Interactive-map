@@ -27,7 +27,7 @@ export function transformVisualizationObject(visualizationObject) {
       displayName: mapview.displayName,
       opacity: mapview.opacity,
       hidden: mapview.hidden,
-      type: mapview.layer
+      type: mapview.layer.replace(/\d$/, '') // Replace number in thematic layers
     };
 
     layers.push(mapview.id);

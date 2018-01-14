@@ -1,76 +1,41 @@
 // Boundary layer
-
 import L from 'leaflet';
-import { GeoJson } from './GeoJson';
+import uniqBy from 'lodash/fp/uniqBy';
+import { GeoJson } from 'leaflet';
 
-const Boundary = GeoJson.extend({
-  options: {
-    style: {
-      opacity: 1,
-      fillOpacity: 0,
-      fill: false,
-      radius: 5
-    },
-    highlightStyle: {
-      weight: 3
-    }
-  },
-
-  initialize(options) {
-    if (!options.pointToLayer) {
-      options.pointToLayer = this.pointToLayer.bind(this);
-    }
-    GeoJson.prototype.initialize.call(this, options);
-  },
-
-  addLayer(layer) {
-    console.log(layer);
-    const prop = layer.feature.properties;
-
-    if (prop.style) {
-      layer.setStyle(prop.style);
-    }
-
-    GeoJson.prototype.addLayer.call(this, layer);
-  },
-
-  // Set opacity for all features
-  setOpacity(opacity) {
-    this.setStyle({
-      opacity
-    });
-  },
-
-  // Use circle markers for point features
-  pointToLayer(geojson, latlng) {
-    this.options.style.pane = this.options.pane;
-    return new L.CircleMarker(latlng, this.options.style);
-  },
-
-  // Higlight feature based on id
-  highlight(id) {
-    const layer = this.findById(id);
-
-    this.removeHighlight();
-
-    if (layer) {
-      this._highlight = layer.setStyle({
-        fillOpacity: 0.5
-      });
-      return layer;
-    }
-  },
-
-  // Remove highlight from feature
-  removeHighlight() {
-    if (this._highlight) {
-      this._highlight.setStyle({
-        fillOpacity: 0
-      });
-    }
-  }
-});
+const colors = ['black', 'blue', 'red', 'green', 'yellow'];
+const weights = [2, 1, 0.75, 0.5, 0.5];
 
 export function boundary(options) {
-  return new Boundary(options);
+  const { features, layerOptions } = options;
+  const radiusLow = layerOptions.radiusLow;
+  if (!features.length) {
+    return;
+  }
+  const levels = uniqBy(f => f.properties.level, features)
+    .map(f => f.properties.level)
+    .sort();
+  const levelStyle = levels.reduce(
+    (obj, level, index) => ({
+      ...obj,
+      [level]: {
+        color: colors[index],
+        weight: levels.length === 1 ? 1 : weights[index]
+      }
+    }),
+    {}
+  );
+
+  features.forEach(feature => {
+    feature.properties.style = levelStyle[feature.properties.level];
+    feature.properties.labelStyle = {
+      paddingTop:
+        feature.geometry.type === 'Point' ? 5 + (radiusLow || 5) + 'px' : '0'
+    };
+  });
+
+  return {
+    ...options,
+    features
+  };
 }
