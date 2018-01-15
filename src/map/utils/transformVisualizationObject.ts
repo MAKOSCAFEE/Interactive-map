@@ -23,7 +23,7 @@ export function transformVisualizationObject(visualizationObject) {
       id: mapview.id,
       name: mapview.id,
       overlay: true,
-      visible: false,
+      visible: true,
       displayName: mapview.displayName,
       opacity: mapview.opacity,
       hidden: mapview.hidden,
