@@ -1,5 +1,6 @@
 // Boundary layer
 import L from 'leaflet';
+import { toGeoJson } from './GeoJson';
 import uniqBy from 'lodash/fp/uniqBy';
 import { GeoJson } from 'leaflet';
 import { Feature, GeometryObject } from 'geojson';
@@ -8,8 +9,10 @@ const colors = ['black', 'blue', 'red', 'green', 'yellow'];
 const weights = [2, 1, 0.75, 0.5, 0.5];
 
 export function boundary(options) {
-  const { features, layerOptions, displaySettings, opacity, id } = options;
+  const { geofeature, layerOptions, displaySettings, opacity, id } = options;
   const radiusLow = layerOptions.radiusLow;
+  const features = toGeoJson(geofeature);
+
   if (!features.length) {
     return;
   }
@@ -97,8 +100,11 @@ export const boundaryEvents = () => {
     }
 
     content += '</div>';
+    // Close any popup if there is one
     evt.layer.closePopup();
+    // Bind new popup to the layer
     evt.layer.bindPopup(content);
+    // Open the binded popup
     evt.layer.openPopup();
   };
 
@@ -109,7 +115,7 @@ export const boundaryEvents = () => {
   const mouseover = evt => {
     const style = evt.layer.feature.properties.style;
     const weight = 3;
-    evt.layer.feature.properties.style = { ...style, weight };
+    evt.layer.setStyle({ ...style, weight });
     evt.layer.closeTooltip();
     evt.layer
       .bindTooltip(evt.layer.feature.properties.name, {
@@ -122,21 +128,10 @@ export const boundaryEvents = () => {
       .openTooltip();
   };
 
-  const mouseout = event => {
-    const hoveredFeature: any = event.layer.feature;
-    const layer = event.layer;
-    layer.setStyle((feature: Feature<GeometryObject>) => {
-      const properties: any = feature.properties;
-      const featureStyle: any = {
-        stroke: true,
-        weight: 1
-      };
-      const hov: any = hoveredFeature.properties;
-      if (hov.id === properties.id) {
-        featureStyle.weight = 1;
-      }
-      return featureStyle;
-    });
+  const mouseout = evt => {
+    const style = evt.layer.feature.properties.style;
+    const weight = 1;
+    evt.layer.setStyle({ ...style, weight });
   };
 
   return {

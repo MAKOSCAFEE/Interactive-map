@@ -1,26 +1,27 @@
-import { toGeoJson } from './GeoJson';
 import L from 'leaflet';
 // List of fuctions to create diferent Layers
-import { boundary } from './Boundary';
+import { boundary } from './BoundaryLayer';
 import { tileLayer } from './TileLayer';
+import { event } from './EventLayer';
 import { Layer } from '../models/layer.model';
 
 export const LayerType = {
   boundary,
-  tileLayer
+  tileLayer,
+  event
 };
 
 export const Layers = (layers, geofeatures, analytics) => {
   const optionLayers = layers.map(layer => {
     let newLayer: Layer;
     if (geofeatures) {
-      const features = toGeoJson(geofeatures[layer.id]);
+      const geofeature = geofeatures[layer.id];
       const pane = layer.id;
       newLayer = {
         ...newLayer,
         ...layer,
         pane,
-        features
+        geofeature
       };
     }
     if (analytics) {

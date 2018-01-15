@@ -8,7 +8,6 @@ import * as fromUtils from '../../utils';
 import { VisualizationObject } from '../../models/visualization-object.model';
 import { MapConfiguration } from '../../models/map-configuration.model';
 import { GeoFeature } from '../../models/geo-feature.model';
-import * as _ from 'lodash';
 import * as fromLib from '../../lib';
 import { Map } from 'leaflet';
 
@@ -104,7 +103,8 @@ export class MapComponent implements OnInit {
           this.isFullScreen
         );
         const otherOptions = {
-          zoomControl: false
+          zoomControl: false,
+          scrollWheelZoom: false
         };
         this.map = new Map(container, otherOptions);
         fromLib.DrawMap(this.map, visualizationObject);

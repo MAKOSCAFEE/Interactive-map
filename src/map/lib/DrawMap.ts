@@ -58,7 +58,7 @@ export const initializeMap = (
     imperial: false
   });
   // Add baseMap Layer;
-  map.addLayer(baseMapLayer);
+  const baseMap = map.addLayer(baseMapLayer);
 };
 
 // This is to add Map controls like scale and zoom
