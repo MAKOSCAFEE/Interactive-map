@@ -4,8 +4,9 @@
 
 ### branch feature/restructure-map-initialization
 
-* [ ] Create Lib to handle map initialization.
-* [ ] Create boundary Layer
+* [x] Create Lib to handle map initialization.
+* [x] Create boundary Layer Loader
+* [x] Create boundary Layer Event function and bind them
 * [ ] Create markers
 * [ ] Create circles
 * [ ] Create encoperate basemap and overlays

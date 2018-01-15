@@ -1,6 +1,7 @@
 import compact from 'lodash/fp/compact';
 import sortBy from 'lodash/fp/sortBy';
 import isString from 'lodash/fp/isString';
+import L from 'leaflet';
 
 export const isValidCoordinate = coord =>
   Array.isArray(coord) &&
@@ -65,3 +66,31 @@ export const toGeoJson = organisationUnits =>
       ({ geometry }) =>
         Array.isArray(geometry.coordinates) && geometry.coordinates.length
     );
+
+export const geoJsonOptions = (id, radiusLow, opacity, color?) => {
+  const style = feature => {
+    const pop = feature.properties;
+    if (pop.style) {
+      return pop.style;
+    }
+  };
+
+  const onEachFeature = (feature, layer) => {};
+
+  const pointToLayer = (feature, latlng) => {
+    const geojsonMarkerOptions = {
+      radius: radiusLow ? radiusLow : 5,
+      opacity: opacity ? opacity : 0.8,
+      fillOpacity: opacity ? opacity : 0.8,
+      fillColor: color ? color : '#333'
+    };
+    return new L.CircleMarker(latlng, geojsonMarkerOptions);
+  };
+
+  return {
+    pane: id,
+    style,
+    onEachFeature,
+    pointToLayer
+  };
+};

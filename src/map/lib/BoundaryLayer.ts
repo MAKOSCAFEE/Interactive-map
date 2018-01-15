@@ -1,6 +1,6 @@
 // Boundary layer
 import L from 'leaflet';
-import { toGeoJson } from './GeoJson';
+import { toGeoJson, geoJsonOptions } from './GeoJson';
 import uniqBy from 'lodash/fp/uniqBy';
 import { GeoJson } from 'leaflet';
 import { Feature, GeometryObject } from 'geojson';
@@ -45,7 +45,7 @@ export function boundary(options) {
     };
   });
 
-  const geoJSonOptions = boundaryOptions(id, radiusLow, opacity);
+  const geoJSonOptions = geoJsonOptions(id, radiusLow, opacity);
   const geoJsonLayer = L.geoJSON(features, geoJSonOptions);
   geoJsonLayer.on({
     click: boundaryEvents().onClick,
@@ -58,33 +58,6 @@ export function boundary(options) {
     geoJsonLayer
   };
 }
-
-export const boundaryOptions = (id, radiusLow, opacity) => {
-  const style = feature => {
-    const pop = feature.properties;
-    if (pop.style) {
-      return pop.style;
-    }
-  };
-
-  const onEachFeature = (feature, layer) => {};
-
-  const pointToLayer = (feature, latlng) => {
-    const geojsonMarkerOptions = {
-      radius: radiusLow ? radiusLow : 5,
-      opacity: opacity ? opacity : 0.8,
-      fillOpacity: opacity ? opacity : 0.8
-    };
-    return new L.CircleMarker(latlng, geojsonMarkerOptions);
-  };
-
-  return {
-    pane: id,
-    style,
-    onEachFeature,
-    pointToLayer
-  };
-};
 
 export const boundaryEvents = () => {
   const onClick = evt => {
