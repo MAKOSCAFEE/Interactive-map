@@ -81,7 +81,6 @@ export class AnalyticsEffects {
                 ...action.payload.analytics,
                 ...analyticObj
               };
-              console.log(analytics);
             }
             const vizObject = {
               ...action.payload,
