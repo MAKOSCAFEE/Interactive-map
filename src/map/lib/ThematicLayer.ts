@@ -37,6 +37,7 @@ export const thematic = options => {
     const orderedValues = getOrderedValues(analyticsData);
     const minValue = orderedValues[0];
     const maxValue = orderedValues[orderedValues.length - 1];
+    const totalValue = orderedValues.reduce((prev, curr) => prev + curr);
     const dataItem = getDataItemsFromColumns(columns)[0];
     const name = options.name || dataItem.name;
     const legend = createLegendFromConfig(orderedValues, legendProperties);
@@ -50,11 +51,18 @@ export const thematic = options => {
       item.count === undefined ? (item.count = 1) : item.count++;
 
       properties.value = value;
+      properties.label = name;
       properties.color = item && item.color;
+      properties.percentage = (value / totalValue * 100).toFixed(2);
       properties.radius =
         (value - minValue) / (maxValue - minValue) * (radiusHigh - radiusLow) + radiusLow;
     });
     geoJsonLayer = L.geoJSON(valueFeatures, otherOptions);
+    geoJsonLayer.on({
+      click: thematicLayerEvents(columns, legend).onClick,
+      mouseover: thematicLayerEvents(columns, legend).mouseover,
+      mouseout: thematicLayerEvents(columns, legend).mouseout
+    });
   }
 
   return {
@@ -148,5 +156,55 @@ export const thematicLayerOptions = (id, opacity) => {
     style,
     onEachFeature,
     pointToLayer
+  };
+};
+
+export const thematicLayerEvents = (columns, legend) => {
+  const onClick = evt => {
+    const { name, value, percentage } = evt.layer.feature.properties;
+    const indicator = columns[0].items[0].name;
+    const period = legend.period;
+    const content = `<div class="leaflet-popup-orgunit">${name}<br>
+                    ${indicator}<br>
+                    ${period}: ${value}</div>`;
+    // Close any popup if there is one
+    evt.layer.closePopup();
+    // Bind new popup to the layer
+    evt.layer.bindPopup(content);
+    // Open the binded popup
+    evt.layer.openPopup();
+  };
+
+  const onRightClick = evt => {
+    L.DomEvent.stopPropagation(evt); // Don't propagate to map right-click
+  };
+
+  const mouseover = evt => {
+    const { name, value, percentage, style } = evt.layer.feature.properties;
+    const weight = 3;
+    evt.layer.setStyle({ ...style, weight });
+    evt.layer.closeTooltip();
+    evt.layer
+      .bindTooltip(`${name}(${percentage}%)`, {
+        direction: 'auto',
+        permanent: false,
+        sticky: true,
+        interactive: true,
+        opacity: 1
+      })
+      .openTooltip();
+  };
+
+  const mouseout = evt => {
+    const style = evt.layer.feature.properties.style;
+    const weight = 1;
+    evt.layer.setStyle({ ...style, weight });
+  };
+
+  return {
+    onClick,
+    onRightClick,
+    mouseover,
+    mouseout
   };
 };

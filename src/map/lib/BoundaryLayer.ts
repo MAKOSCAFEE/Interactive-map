@@ -40,8 +40,7 @@ export function boundary(options) {
       fontStyle: displaySettings.labelFontStyle,
       fontColor: displaySettings.labelFontColor,
       fontWeight: displaySettings.labelFontWeight,
-      paddingTop:
-        feature.geometry.type === 'Point' ? 5 + (radiusLow || 5) + 'px' : '0'
+      paddingTop: feature.geometry.type === 'Point' ? 5 + (radiusLow || 5) + 'px' : '0'
     };
   });
 
