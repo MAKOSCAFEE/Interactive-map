@@ -67,11 +67,9 @@ export const boundaryEvents = () => {
     if (attr.level) {
       content += `<br/>Level: ${attr.level}`;
     }
-
     if (attr.parentName) {
       content += `<br/>Parent unit: ${attr.parentName}`;
     }
-
     content += '</div>';
     // Close any popup if there is one
     evt.layer.closePopup();

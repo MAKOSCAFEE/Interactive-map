@@ -28,12 +28,7 @@ export const event = options => {
   } = options;
 
   const { startDate, endDate } = dataSelections;
-  const {
-    eventPointColor,
-    eventPointRadius,
-    radiusLow,
-    eventClustering
-  } = layerOptions;
+  const { eventPointColor, eventPointRadius, radiusLow, eventClustering } = layerOptions;
   const { labelFontSize, labelFontStyle } = displaySettings;
 
   const orgUnits = getOrgUnitsFromRows(dataSelections.rows);
@@ -41,9 +36,7 @@ export const event = options => {
   const dataFilters = getFiltersFromColumns(dataSelections.columns);
 
   let legend = {
-    period: period
-      ? getPeriodNameFromId(period.id)
-      : `${startDate} - ${endDate}`,
+    period: period ? getPeriodNameFromId(period.id) : `${startDate} - ${endDate}`,
     filters: dataFilters && getFiltersAsText(dataFilters),
     items: null
   };
@@ -86,12 +79,7 @@ export const event = options => {
           );
         }
       };
-      const geoJSonOptions = geoJsonOptions(
-        id,
-        eventPointRadius,
-        opacity,
-        eventPointColor
-      );
+      const geoJSonOptions = geoJsonOptions(id, eventPointRadius, opacity, eventPointColor);
 
       geoJsonLayer = L.geoJSON(data, geoJSonOptions);
       // All Clustering is done here;
@@ -114,12 +102,7 @@ export const event = options => {
   };
 };
 
-const createEventFeature = (
-  headers,
-  names,
-  layerEvent,
-  eventCoordinateField?
-) => {
+const createEventFeature = (headers, names, layerEvent, eventCoordinateField?) => {
   const properties = layerEvent.reduce(
     (props, value, i) => ({
       ...props,
@@ -207,14 +190,7 @@ const eventLayerEvents = () => {
   };
 };
 
-const _iconCreateFunction = (
-  cluster,
-  eventPointColor,
-  opacity,
-  labelFontStyle,
-  labelFontSize
-) => {
-  console.log(cluster);
+const _iconCreateFunction = (cluster, eventPointColor, opacity, labelFontStyle, labelFontSize) => {
   const count = cluster.getChildCount();
   const iconSize = _calculateClusterSize(count);
   const htmlContent = _createClusterIcon(
@@ -235,9 +211,7 @@ const _iconCreateFunction = (
 const _calculateClusterSize = count => {
   return count < 10
     ? [16, 16]
-    : count >= 10 && count <= 40
-      ? [20, 20]
-      : count > 40 && count < 100 ? [30, 30] : [40, 40];
+    : count >= 10 && count <= 40 ? [20, 20] : count > 40 && count < 100 ? [30, 30] : [40, 40];
 };
 
 function _calculateMarginTop(iconSize: any) {
@@ -246,9 +220,7 @@ function _calculateMarginTop(iconSize: any) {
 }
 
 function _writeInKNumberSystem(childCount: any): any {
-  return childCount >= 1000
-    ? (childCount = (childCount / 1000).toFixed(1) + 'k')
-    : childCount;
+  return childCount >= 1000 ? (childCount = (childCount / 1000).toFixed(1) + 'k') : childCount;
 }
 
 function _createClusterIcon(

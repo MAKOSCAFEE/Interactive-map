@@ -3,12 +3,14 @@ import L from 'leaflet';
 import { boundary } from './BoundaryLayer';
 import { tileLayer } from './TileLayer';
 import { event } from './EventLayer';
+import { thematic } from './ThematicLayer';
 import { Layer } from '../models/layer.model';
 
 export const LayerType = {
   boundary,
   tileLayer,
-  event
+  event,
+  thematic
 };
 
 export const Layers = (layers, geofeatures, analytics) => {
