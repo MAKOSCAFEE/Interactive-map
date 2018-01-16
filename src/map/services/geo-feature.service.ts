@@ -11,7 +11,7 @@ export class GeoFeatureService {
   constructor(private httpClient: HttpClient) {}
 
   getGeoFeatures(param): Observable<GeoFeature[]> {
-    const url = `../../../api/geoFeatures.json?${param}&displayProperty=NAME`;
+    const url = `../../../api/geoFeatures.json?${param}`;
     return this.httpClient
       .get(url)
       .pipe(catchError((error: any) => Observable.throw(error.json())));

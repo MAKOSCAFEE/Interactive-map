@@ -1,5 +1,4 @@
 // Utils for thematic mapping
-
 import curryRight from 'lodash/fp/curryRight';
 
 export const classify = (features, options) => {
@@ -72,21 +71,6 @@ export const getClassBins = (values, method, numClasses) => {
   return bins;
 };
 
-/*
-export const getEqualIntervals = (minValue, maxValue, numClasses) => {
-    const bins = [];
-    const binSize = (maxValue - minValue) / numClasses;
-
-    for (let i = 0; i < numClasses; i++) {
-        bins.push(minValue + (i * binSize));
-    }
-
-    bins.push(maxValue);
-
-    return bins;
-};
-*/
-
 export const getEqualIntervals = (minValue, maxValue, numClasses) => {
   const bins = [];
   const binSize = (maxValue - minValue) / numClasses;
@@ -103,27 +87,6 @@ export const getEqualIntervals = (minValue, maxValue, numClasses) => {
   return bins;
 };
 
-/*
-export const getQuantiles = (values, numClasses) => {
-    const minValue = values[0];
-    const maxValue = values[values.length - 1];
-    const bins = [];
-    const binCount = Math.round(values.length / numClasses);
-    let binLastValPos = (binCount === 0) ? 0 : binCount;
-
-    if (values.length > 0) {
-        bins[0] = minValue;
-        for (let i = 1; i < numClasses; i++) {
-            bins[i] = values[binLastValPos];
-            binLastValPos += binCount;
-        }
-        bins.push(maxValue);
-    }
-
-    return bins;
-};
-*/
-
 // TODO: Refactor
 export const getQuantiles = (values, numClasses) => {
   const minValue = values[0];
@@ -138,7 +101,6 @@ export const getQuantiles = (values, numClasses) => {
       bins[i] = values[binLastValPos];
       binLastValPos += binCount;
     }
-    // bins.push(maxValue);
   }
 
   return bins.map((value, index) => ({

@@ -15,9 +15,10 @@ export const LayerType = {
   facility
 };
 
-export const Layers = (layers, geofeatures, analytics) => {
+export const Layers = (layers, geofeatures, analytics, organizationGroupSet) => {
   const optionLayers = layers.map(layer => {
     let newLayer: Layer;
+
     if (geofeatures) {
       const geofeature = geofeatures[layer.id];
       const pane = layer.id;
@@ -33,6 +34,13 @@ export const Layers = (layers, geofeatures, analytics) => {
       newLayer = {
         ...newLayer,
         analyticsData
+      };
+    }
+    if (organizationGroupSet) {
+      const orgUnitGroupSet = organizationGroupSet[layer.id];
+      newLayer = {
+        ...newLayer,
+        orgUnitGroupSet
       };
     }
     return LayerType[newLayer.type](newLayer);

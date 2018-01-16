@@ -15,7 +15,7 @@ import { MapConfiguration } from '../models/map-configuration.model';
 import { LayerType, Layers, createLayer } from './Layers';
 
 export const DrawMap = (map: Map, visualizationObject: any) => {
-  const { mapConfiguration, layers, geofeatures, analytics } = visualizationObject;
+  const { mapConfiguration, layers, geofeatures, analytics, orgUnitGroupSet } = visualizationObject;
   const mapTileLayer = getTileLayer(mapConfiguration.basemap);
   const baseMapLayer = LayerType[mapTileLayer.type](mapTileLayer);
 
@@ -23,7 +23,7 @@ export const DrawMap = (map: Map, visualizationObject: any) => {
   initializeMap(map, mapConfiguration, baseMapLayer);
 
   // Work with Layers separately;
-  const overLayLayers = Layers(layers, geofeatures, analytics);
+  const overLayLayers = Layers(layers, geofeatures, analytics, orgUnitGroupSet);
   overLayLayers.map((layer, index) => {
     createLayer(map, layer, index);
   });

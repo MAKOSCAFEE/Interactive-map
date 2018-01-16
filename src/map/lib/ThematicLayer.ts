@@ -137,9 +137,7 @@ export const thematicLayerOptions = (id, opacity) => {
       stroke: true
     };
   };
-  const onEachFeature = (feature, layer) => {
-    console.log(layer);
-  };
+  const onEachFeature = (feature, layer) => {};
 
   const pane = id;
 

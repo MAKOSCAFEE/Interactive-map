@@ -13,6 +13,7 @@ export interface Layer {
   visible: boolean;
   displayName: string;
   analyticsData?: any;
+  orgUnitGroupSet?: any;
   pane?: string;
   displaySettings: DisplaySettings;
   legendProperties: LegendProperties;

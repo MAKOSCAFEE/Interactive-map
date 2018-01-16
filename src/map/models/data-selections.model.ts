@@ -21,4 +21,7 @@ export interface DataSelections {
   endDate?: string;
   startDate?: string;
   aggregationType: string;
+  organisationUnitGroupSet?: {
+    id: string;
+  };
 }

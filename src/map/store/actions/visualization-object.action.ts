@@ -3,24 +3,21 @@ import { Action } from '@ngrx/store';
 import { VisualizationObject } from '../../models/visualization-object.model';
 
 export const CREATE_VISUALIZATION_OBJECT = '[Map] Create visualization object';
-export const CREATE_VISUALIZATION_OBJECT_FAIL =
-  '[Map] Create visualization object Fail';
-export const CREATE_VISUALIZATION_OBJECT_SUCCESS =
-  '[Map] Create visualization object Success';
+export const ADD_ANALYTICS = '[Map] Add analytics object';
+export const ADD_ORGANIZATIONUNITGROUPSET = '[Map] Add Organization Group set object';
+export const ADD_LEGENDSET = '[Map] Add Legendset object';
+export const CREATE_VISUALIZATION_OBJECT_FAIL = '[Map] Create visualization object Fail';
+export const CREATE_VISUALIZATION_OBJECT_SUCCESS = '[Map] Create visualization object Success';
 export const UPDATE_VISUALIZATION_OBJECT = '[Map] Update visualization object';
-export const UPDATE_VISUALIZATION_OBJECT_FAIL =
-  '[Map] Update visualization object Fail';
-export const UPDATE_VISUALIZATION_OBJECT_SUCCESS =
-  '[Map] Update visualization object Success';
+export const UPDATE_VISUALIZATION_OBJECT_FAIL = '[Map] Update visualization object Fail';
+export const UPDATE_VISUALIZATION_OBJECT_SUCCESS = '[Map] Update visualization object Success';
 export const ADD_LAYER = '[Map] Add Layer to visualization object';
 export const ADD_GEOFEATURES = '[Map] Add Geofeatures to visualization object';
 export const REMOVE_LAYER = '[Map] Remove Layer from visualization object';
 export const HIDE_LAYER = '[Map] Hide Layer';
 export const LOAD_VISUALIZATION_OBJECT = '[Map] Load visualization object';
-export const LOAD_VISUALIZATION_OBJECT_SUCCESS =
-  '[Map] Load visualization object success';
-export const LOAD_VISUALIZATION_OBJECT_FAIL =
-  '[Map] Load visualization object Fail';
+export const LOAD_VISUALIZATION_OBJECT_SUCCESS = '[Map] Load visualization object success';
+export const LOAD_VISUALIZATION_OBJECT_FAIL = '[Map] Load visualization object Fail';
 
 export class CreateVisualizationObject implements Action {
   readonly type = CREATE_VISUALIZATION_OBJECT;
@@ -54,6 +51,21 @@ export class UpdateVisualizationObjectSuccess implements Action {
 
 export class AddLayerVizObj implements Action {
   readonly type = ADD_LAYER;
+  constructor(public payload: any) {}
+}
+
+export class AddAnalyticsVizObj implements Action {
+  readonly type = ADD_ANALYTICS;
+  constructor(public payload: any) {}
+}
+
+export class AddOrgUnitGroupSetVizObj implements Action {
+  readonly type = ADD_ORGANIZATIONUNITGROUPSET;
+  constructor(public payload: any) {}
+}
+
+export class AddLegendSetVizObj implements Action {
+  readonly type = ADD_LEGENDSET;
   constructor(public payload: any) {}
 }
 
@@ -99,4 +111,7 @@ export type VisualizationObjectAction =
   | HideLayerVizObj
   | LoadVisualizationObject
   | LoadVisualizationObjectFail
-  | LoadVisualizationObjectSuccess;
+  | LoadVisualizationObjectSuccess
+  | AddAnalyticsVizObj
+  | AddOrgUnitGroupSetVizObj
+  | AddLegendSetVizObj;

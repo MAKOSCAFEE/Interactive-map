@@ -66,6 +66,7 @@ export function transformVisualizationObject(visualizationObject) {
       'rows',
       'filters',
       'aggregationType',
+      'organisationUnitGroupSet',
       'startDate',
       'endDate'
     ]);

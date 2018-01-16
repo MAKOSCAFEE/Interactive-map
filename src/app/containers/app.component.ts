@@ -41,8 +41,7 @@ export class AppComponent implements OnInit {
     },
     {
       id: 'jvdDvScWuhv',
-      name:
-        'themantic-Inpatient: BMI female under 5 at chiefdom level this year'
+      name: 'themantic-Inpatient: BMI female under 5 at chiefdom level this year'
     },
     {
       id: 'DE644qFc32L',
@@ -50,15 +49,18 @@ export class AppComponent implements OnInit {
     },
     {
       id: 'GObHCbOfXtP',
-      name:
-        'themantic-Delivery: Maternal death rate / PHU delivery rate ANC 1 last quarter'
+      name: 'themantic-Delivery: Maternal death rate / PHU delivery rate ANC 1 last quarter'
     },
     {
       id: 'ZBjCfSaLSqD',
       name: 'themantic-ANC LLITN coverage'
+    },
+    {
+      id: 'GmIDubfPzCU',
+      name: 'Facility: Health Facilities by Type with Boundaries'
     }
   ];
-  public selectedMapId = this.availableMaps[0].id;
+  public selectedMapId = 'GmIDubfPzCU';
 
   constructor(
     private favoriteService: fromServices.FavouriteService,

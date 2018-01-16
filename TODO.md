@@ -16,3 +16,4 @@
 * [ ] Posibly use [angular-feather](https://github.com/michaelbazos/angular-feather) for icons they look dope.
 * [ ] Add facility Layer
 * [ ] Add External Layer to the map
+* [ ] Refactor Visualization effects so they can be independent and autonomous as possible
