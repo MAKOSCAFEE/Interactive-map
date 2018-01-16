@@ -4,4 +4,4 @@ import { toGeoJson } from './GeoJson';
 import { GeoJson } from 'leaflet';
 import { Feature, GeometryObject } from 'geojson';
 
-export const facility = layerOptions => {};
+export const facility = options => {};

@@ -4,13 +4,15 @@ import { boundary } from './BoundaryLayer';
 import { tileLayer } from './TileLayer';
 import { event } from './EventLayer';
 import { thematic } from './ThematicLayer';
+import { facility } from './FacilityLayer';
 import { Layer } from '../models/layer.model';
 
 export const LayerType = {
   boundary,
   tileLayer,
   event,
-  thematic
+  thematic,
+  facility
 };
 
 export const Layers = (layers, geofeatures, analytics) => {
@@ -59,7 +61,7 @@ export const onLayerAdd = (map, index, optionsLayer) => {};
 
 export const setLayerVisibility = (isVisible, map, layer) => {
   if (isVisible && map.hasLayer(layer) === false) {
-    const newLayer = map.addLayer(layer);
+    map.addLayer(layer);
     map.fitBounds(layer.getBounds());
   } else if (!isVisible && map.hasLayer(layer) === true) {
     map.removeLayer(layer);
