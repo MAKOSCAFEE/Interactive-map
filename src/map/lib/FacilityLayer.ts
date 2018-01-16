@@ -113,7 +113,7 @@ export const facilityGeoJsonOptions = (id, displaySettings, areaRadius, opacity)
       };
     }
   };
-
+  const pane = id;
   const pointToLayer = (feature, latlng) => {
     const iconProperty = 'icon';
     const markerOptions = L.extend({}, { riseOnHover: true });
@@ -123,22 +123,27 @@ export const facilityGeoJsonOptions = (id, displaySettings, areaRadius, opacity)
       ...feature.properties.icon
     });
 
+    // NOTE: include pane to every Marker to make it them in different pane.
     const marker = new L.marker(latlng, {
       ...markerOptions,
       icon,
       iconProperty,
       title,
-      labelStyle
+      labelStyle,
+      pane
     });
 
     if (areaRadius) {
       const geojsonMarkerOptions = {
         radius: 6,
         weight: 0.5,
-        strokeColor: '#fff'
+        strokeColor: '#fff',
+        pane
       };
       const circle = new L.CircleMarker(latlng, geojsonMarkerOptions);
-      return new L.featureGroup([circle, marker]);
+      const featureGroup = new L.featureGroup([circle, marker], { pane });
+      featureGroup.on(featureGroupEvents);
+      return featureGroup;
     }
 
     return marker;
@@ -151,9 +156,47 @@ export const facilityGeoJsonOptions = (id, displaySettings, areaRadius, opacity)
   };
 
   return {
-    pane: id,
+    pane,
     onEachFeature,
     pointToLayer,
     setOpacity
   };
+};
+
+const featureGroupEvents = {
+  mouseover: evt => {
+    evt.layer.closeTooltip();
+    const name = evt.target.feature.properties.name;
+    evt.layer
+      .bindTooltip(name, {
+        direction: 'auto',
+        permanent: false,
+        sticky: true,
+        interactive: true,
+        opacity: 1
+      })
+      .openTooltip();
+  },
+  click: evt => {
+    const attr = evt.target.feature.properties;
+    let content = `<div class="leaflet-popup-orgunit">${attr.name}`;
+
+    if (isPlainObject(attr.dimensions)) {
+      content += `<br/>Groups: ${Object.keys(attr.dimensions)
+        .map(id => attr.dimensions[id])
+        .join(', ')}`;
+    }
+
+    if (attr.pn) {
+      content += `<br/>Parent unit: ${attr.pn}`;
+    }
+
+    content += '</div>';
+
+    evt.layer.closePopup();
+    // Bind new popup to the layer
+    evt.layer.bindPopup(content);
+    // Open the binded popup
+    evt.layer.openPopup();
+  }
 };
