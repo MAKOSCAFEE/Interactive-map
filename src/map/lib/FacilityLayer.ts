@@ -16,6 +16,7 @@ export const facility = options => {
     layerOptions,
     displaySettings,
     opacity,
+    areaRadius,
     dataSelections,
     legendProperties,
     analyticsData,
@@ -40,7 +41,7 @@ export const facility = options => {
       return toFacilityGeoJson(data, groupSet[id]);
     });
 
-    const otherOptions = facilityGeoJsonOptions(options.id, displaySettings);
+    const otherOptions = facilityGeoJsonOptions(options.id, displaySettings, areaRadius, opacity);
 
     geoJsonLayer = L.geoJSON(features, otherOptions);
   }
@@ -92,7 +93,7 @@ const parseGroupSet = organisationUnitGroups =>
     };
   }, {});
 
-export const facilityGeoJsonOptions = (id, displaySettings) => {
+export const facilityGeoJsonOptions = (id, displaySettings, areaRadius, opacity) => {
   const {
     labelFontStyle,
     labelFontSize,
@@ -114,15 +115,45 @@ export const facilityGeoJsonOptions = (id, displaySettings) => {
   };
 
   const pointToLayer = (feature, latlng) => {
-    const _icon = L.icon({
+    const iconProperty = 'icon';
+    const markerOptions = L.extend({}, { riseOnHover: true });
+    const { labelStyle } = feature.properties;
+    const title = L.Util.template('{name}', feature.properties);
+    const icon = L.icon({
       ...feature.properties.icon
     });
-    return new L.marker(latlng, { icon: _icon });
+
+    const marker = new L.marker(latlng, {
+      ...markerOptions,
+      icon,
+      iconProperty,
+      title,
+      labelStyle
+    });
+
+    if (areaRadius) {
+      const geojsonMarkerOptions = {
+        radius: 6,
+        weight: 0.5,
+        strokeColor: '#fff'
+      };
+      const circle = new L.CircleMarker(latlng, geojsonMarkerOptions);
+      return new L.featureGroup([circle, marker]);
+    }
+
+    return marker;
+  };
+
+  const setOpacity = op => {
+    this.eachLayer(layer => {
+      layer.setOpacity(op);
+    });
   };
 
   return {
     pane: id,
     onEachFeature,
-    pointToLayer
+    pointToLayer,
+    setOpacity
   };
 };

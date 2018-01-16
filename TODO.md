@@ -7,13 +7,14 @@
 * [x] Create Lib to handle map initialization.
 * [x] Create boundary Layer Loader
 * [x] Create boundary Layer Event function and bind them
-* [ ] Create markers if is point type(onEachFeature())
+* [x] Create markers if is point type(onEachFeature())
 * [x] Create circles for clustering
 * [x] Store all analytics as layer.id(key): data.
 * [x] Figure out how to fitbounds and overlays using pane.
 * [x] Rewrite thematic layers and bind it events
-* [ ] Create encoperate basemap and overlays
+* [ ] Create encoperate basemap and overlays(This ended up not to be a best solution, use pane to separate layers)
 * [ ] Posibly use [angular-feather](https://github.com/michaelbazos/angular-feather) for icons they look dope.
-* [ ] Add facility Layer
+* [x] Add facility Layer
 * [ ] Add External Layer to the map
+* [ ] Add Labels when there is one.
 * [ ] Refactor Visualization effects so they can be independent and autonomous as possible

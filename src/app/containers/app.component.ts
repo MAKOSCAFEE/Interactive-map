@@ -58,9 +58,13 @@ export class AppComponent implements OnInit {
     {
       id: 'GmIDubfPzCU',
       name: 'Facility: Health Facilities by Type with Boundaries'
+    },
+    {
+      id: 'g5Zjei47geR',
+      name: 'Facility: Facilities by type with radius 5k Kono'
     }
   ];
-  public selectedMapId = 'GmIDubfPzCU';
+  public selectedMapId = this.availableMaps[0].id;
 
   constructor(
     private favoriteService: fromServices.FavouriteService,

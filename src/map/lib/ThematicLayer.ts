@@ -143,6 +143,7 @@ export const thematicLayerOptions = (id, opacity) => {
 
   const pointToLayer = (feature, latlng) => {
     const geojsonMarkerOptions = {
+      pane,
       radius: feature.properties.radius || 6,
       fillColor: feature.properties.color || '#fff',
       color: feature.properties.color || '#333',
