@@ -60,7 +60,7 @@ export const onLayerAdd = (map, index, optionsLayer) => {};
 export const setLayerVisibility = (isVisible, map, layer) => {
   if (isVisible && map.hasLayer(layer) === false) {
     const newLayer = map.addLayer(layer);
-    map.fitBounds(newLayer.getBounds());
+    map.fitBounds(layer.getBounds());
   } else if (!isVisible && map.hasLayer(layer) === true) {
     map.removeLayer(layer);
   }

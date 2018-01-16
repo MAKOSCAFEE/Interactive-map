@@ -15,12 +15,7 @@ import { MapConfiguration } from '../models/map-configuration.model';
 import { LayerType, Layers, createLayer } from './Layers';
 
 export const DrawMap = (map: Map, visualizationObject: any) => {
-  const {
-    mapConfiguration,
-    layers,
-    geofeatures,
-    analytics
-  } = visualizationObject;
+  const { mapConfiguration, layers, geofeatures, analytics } = visualizationObject;
   const mapTileLayer = getTileLayer(mapConfiguration.basemap);
   const baseMapLayer = LayerType[mapTileLayer.type](mapTileLayer);
 
@@ -34,11 +29,7 @@ export const DrawMap = (map: Map, visualizationObject: any) => {
   });
 };
 
-export const initializeMap = (
-  map: Map,
-  mapConfiguration: MapConfiguration,
-  baseMapLayer
-) => {
+export const initializeMap = (map: Map, mapConfiguration: MapConfiguration, baseMapLayer) => {
   const center = [
     _convertLatitudeLongitude(mapConfiguration.latitude),
     _convertLatitudeLongitude(mapConfiguration.longitude)

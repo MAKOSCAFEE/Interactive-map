@@ -139,6 +139,8 @@ export const thematicLayerOptions = (id, opacity) => {
   };
   const onEachFeature = (feature, layer) => {};
 
+  const pane = id;
+
   const pointToLayer = (feature, latlng) => {
     const geojsonMarkerOptions = {
       radius: feature.properties.radius || 6,
@@ -152,7 +154,7 @@ export const thematicLayerOptions = (id, opacity) => {
   };
 
   return {
-    pane: id,
+    pane,
     style,
     onEachFeature,
     pointToLayer
