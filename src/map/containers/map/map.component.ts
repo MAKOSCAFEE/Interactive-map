@@ -65,15 +65,15 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
-    this.isLoading$ = this.store.select(
-      fromStore.isVisualizationObjectsLoading
-    );
+    this.isLoading$ = this.store.select(fromStore.isVisualizationObjectsLoading);
     this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
 
     this._data$.subscribe(data => {
       this.visualizationObject = data;
       this.transhformVisualizationObject(data);
     });
+    this.store.dispatch(new fromStore.AddContectPath());
+
     setTimeout(() => {
       this.drawMap();
     }, 10);
@@ -87,9 +87,7 @@ export class MapComponent implements OnInit {
       layers: Layers
     };
 
-    this.store.dispatch(
-      new fromStore.CreateVisualizationObject(this.visObject)
-    );
+    this.store.dispatch(new fromStore.CreateVisualizationObject(this.visObject));
   }
 
   drawMap() {

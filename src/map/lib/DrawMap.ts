@@ -63,7 +63,7 @@ export const mapAddControl = (map: Map, mapControl) => {
   map.addControl(newControl);
 };
 
-// This is the hack which wont matter since we are using Bounds to fit the map afterwards
+// This is the hack which wont matter since we are using Bounds to fit the map afterwards.
 export const _convertLatitudeLongitude = coordinate => {
   if (Math.abs(parseInt(coordinate, 10)) > 100000) {
     return (parseFloat(coordinate) / 100000).toFixed(6);

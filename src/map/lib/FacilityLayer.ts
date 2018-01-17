@@ -29,6 +29,7 @@ export const facility = options => {
   let features = toGeoJson(geofeature);
   const geoOptions = geoJsonOptions(options.id, radiusLow, opacity);
   let geoJsonLayer = L.geoJSON(features, geoOptions);
+  const contexPath = localStorage.getItem('contextPath');
 
   if (orgUnitGroupSet) {
     const groupSetId = organisationUnitGroupSet.id;
@@ -38,7 +39,7 @@ export const facility = options => {
 
     features = facilities.map(data => {
       const id = data.dimensions[groupSetId];
-      return toFacilityGeoJson(data, groupSet[id]);
+      return toFacilityGeoJson(data, groupSet[id], contexPath);
     });
 
     const otherOptions = facilityGeoJsonOptions(options.id, displaySettings, areaRadius, opacity);
@@ -62,7 +63,7 @@ const parseFacilities = (facilities, groupSetId) =>
       isValidCoordinate(JSON.parse(data.co))
   );
 
-const toFacilityGeoJson = (data, group) => ({
+const toFacilityGeoJson = (data, group, contexPath) => ({
   type: 'Feature',
   id: data.id,
   properties: {
@@ -70,7 +71,7 @@ const toFacilityGeoJson = (data, group) => ({
     name: data.na,
     label: `${data.na} (${group.name})`,
     icon: {
-      iconUrl: `/images/orgunitgroup/${group.symbol}`,
+      iconUrl: `${contexPath}/images/orgunitgroup/${group.symbol}`,
       iconSize: [16, 16]
     }
   },
