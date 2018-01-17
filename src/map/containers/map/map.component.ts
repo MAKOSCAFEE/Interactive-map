@@ -86,8 +86,9 @@ export class MapComponent implements OnInit {
       mapConfiguration: visObject['mapConfiguration'],
       layers: Layers
     };
-
-    this.store.dispatch(new fromStore.CreateVisualizationObject(this.visObject));
+    if (Layers.length) {
+      this.store.dispatch(new fromStore.CreateVisualizationObject(this.visObject));
+    }
   }
 
   drawMap() {

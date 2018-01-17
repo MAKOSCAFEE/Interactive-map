@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 
 import * as visualizationObjectActions from '../actions/visualization-object.action';
+import * as legendSetActions from '../actions/legend-set.action';
 import * as fromServices from '../../services';
 import * as fromStore from '../../store';
 import { tap } from 'rxjs/operators/tap';
@@ -25,6 +26,9 @@ export class VisualizationObjectEffects {
       switchMap((action: visualizationObjectActions.CreateVisualizationObject) => {
         const parameters = action.payload.layers.map(layer => {
           const isFacility = layer.type === 'facility';
+          if (layer.type === 'external') {
+            return;
+          }
           const requestParams = [...layer.dataSelections.rows, ...layer.dataSelections.columns];
           const data = requestParams.filter(dimension => dimension.dimension === 'ou');
           const parameter = data
@@ -36,7 +40,13 @@ export class VisualizationObjectEffects {
             ? `${parameter}&displayProperty=SHORTNAME&includeGroupSets=true`
             : `${parameter}&displayProperty=NAME`;
         });
-        const sources = parameters.map(param => this.geofeatureService.getGeoFeatures(param));
+        const sources = [];
+        parameters.map(param => {
+          if (param) {
+            sources.push(this.geofeatureService.getGeoFeatures(param));
+          }
+        });
+        const newSource = sources[0] ? sources : Observable.create([]);
         return Observable.combineLatest(sources).pipe(
           map(geofeature => {
             let entity = {};
@@ -67,7 +77,7 @@ export class VisualizationObjectEffects {
   dispatchCreateAnalytics$ = this.actions$
     .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT_SUCCESS)
     .pipe(
-      map((action: visualizationObjectActions.CreateVisualizationObject) => {
+      map((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
         const layers = action.payload.layers;
         const needsAnalytics = layers.filter(
           layer => layer && (layer.type === 'event' || layer.type === 'thematic')
@@ -83,7 +93,7 @@ export class VisualizationObjectEffects {
   dispatchAddOrgUnitGroupSet$ = this.actions$
     .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT_SUCCESS)
     .pipe(
-      tap((action: visualizationObjectActions.CreateVisualizationObject) => {
+      tap((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
         const layers = action.payload.layers;
         const needsOrgUnitGroupSet = layers.filter(
           layer => layer && layer.dataSelections.organisationUnitGroupSet
@@ -92,6 +102,19 @@ export class VisualizationObjectEffects {
           this.store.dispatch(
             new visualizationObjectActions.AddOrgUnitGroupSetVizObj(action.payload)
           );
+        }
+      })
+    );
+
+  @Effect({ dispatch: false })
+  dispatchAddLegendSetSet$ = this.actions$
+    .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT_SUCCESS)
+    .pipe(
+      tap((action: visualizationObjectActions.CreateVisualizationObjectSuccess) => {
+        const layers = action.payload.layers;
+        const needsLegendSets = layers.filter(layer => layer && layer.dataSelections.legendSet);
+        if (needsLegendSets.length) {
+          this.store.dispatch(new legendSetActions.AddLegendSet(action.payload));
         }
       })
     );

@@ -14,6 +14,7 @@ export interface Layer {
   displayName: string;
   analyticsData?: any;
   orgUnitGroupSet?: any;
+  legendSet?: any;
   pane?: string;
   areaRadius?: string;
   displaySettings: DisplaySettings;

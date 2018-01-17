@@ -62,9 +62,14 @@ export class AppComponent implements OnInit {
     {
       id: 'g5Zjei47geR',
       name: 'Facility: Facilities by type with radius 5k Kono'
+    },
+    {
+      id: 'qTfO4YkQ9xW',
+      name: 'ANC: ANC 1 coverage Sierra Leone dark basemap'
     }
   ];
-  public selectedMapId = this.availableMaps[0].id;
+
+  public selectedMapId = this.availableMaps[this.availableMaps.length - 1].id;
 
   constructor(
     private favoriteService: fromServices.FavouriteService,

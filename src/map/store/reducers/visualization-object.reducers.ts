@@ -32,10 +32,7 @@ export function reducer(
     case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT_SUCCESS: {
       const vizObjs = action.payload;
       const entities = vizObjs.reduce(
-        (
-          entitie: { [id: string]: VisualizationObject },
-          vizObj: VisualizationObject
-        ) => {
+        (entitie: { [id: string]: VisualizationObject }, vizObj: VisualizationObject) => {
           return {
             ...entitie,
             [vizObj.mapConfiguration.id]: vizObj
@@ -96,21 +93,50 @@ export function reducer(
         entities
       };
     }
+
+    case fromVisualizationObject.ADD_LEGEND_SET_VIZ: {
+      const { mapConfiguration, legendSets } = action.payload;
+      const visualizationObject = {
+        ...state.entities[mapConfiguration.id],
+        legendSets
+      };
+      const entities = {
+        ...state.entities,
+        [visualizationObject.mapConfiguration.id]: visualizationObject
+      };
+      return {
+        ...state,
+        loaded: true,
+        loading: false,
+        entities
+      };
+    }
+
+    case fromVisualizationObject.ADD_ANALYTICS_VIZ: {
+      const { mapConfiguration, analytics } = action.payload;
+      const visualizationObject = {
+        ...state.entities[mapConfiguration.id],
+        analytics
+      };
+      const entities = {
+        ...state.entities,
+        [visualizationObject.mapConfiguration.id]: visualizationObject
+      };
+      return {
+        ...state,
+        loaded: true,
+        loading: false,
+        entities
+      };
+    }
   }
   return state;
 }
 
-export const getVisualizationObjectsEntities = (
-  state: VisualizationObjectState
-) => state.entities;
-export const getVisualizationObjectsLoading = (
-  state: VisualizationObjectState
-) => state.loading;
-export const getCurentlayerLoading = (state: VisualizationObjectState) =>
-  state.currentLayer;
-export const getVisualizationObjectsLoaded = (
-  state: VisualizationObjectState
-) => state.loaded;
+export const getVisualizationObjectsEntities = (state: VisualizationObjectState) => state.entities;
+export const getVisualizationObjectsLoading = (state: VisualizationObjectState) => state.loading;
+export const getCurentlayerLoading = (state: VisualizationObjectState) => state.currentLayer;
+export const getVisualizationObjectsLoaded = (state: VisualizationObjectState) => state.loaded;
 export const getCurrentMap = (state: VisualizationObjectState) => {
   return state.currentMap;
 };

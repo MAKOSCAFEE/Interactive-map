@@ -5,6 +5,7 @@ import { tileLayer } from './TileLayer';
 import { event } from './EventLayer';
 import { thematic } from './ThematicLayer';
 import { facility } from './FacilityLayer';
+import { external } from './ExternalLayer';
 import { Layer } from '../models/layer.model';
 
 export const LayerType = {
@@ -12,10 +13,11 @@ export const LayerType = {
   tileLayer,
   event,
   thematic,
-  facility
+  facility,
+  external
 };
 
-export const Layers = (layers, geofeatures, analytics, organizationGroupSet) => {
+export const Layers = (layers, geofeatures, analytics, organizationGroupSet, legendSets) => {
   const optionLayers = layers.map(layer => {
     let newLayer: Layer;
 
@@ -41,6 +43,13 @@ export const Layers = (layers, geofeatures, analytics, organizationGroupSet) => 
       newLayer = {
         ...newLayer,
         orgUnitGroupSet
+      };
+    }
+    if (legendSets) {
+      const legendSet = legendSets[layer.id];
+      newLayer = {
+        ...newLayer,
+        legendSet
       };
     }
     return LayerType[newLayer.type](newLayer);
@@ -70,7 +79,7 @@ export const onLayerAdd = (map, index, optionsLayer) => {};
 export const setLayerVisibility = (isVisible, map, layer) => {
   if (isVisible && map.hasLayer(layer) === false) {
     map.addLayer(layer);
-    map.fitBounds(layer.getBounds());
+    // map.fitBounds(layer.getBounds());
   } else if (!isVisible && map.hasLayer(layer) === true) {
     map.removeLayer(layer);
   }

@@ -6,3 +6,4 @@ export * from './legend-properties.action';
 export * from './visualization-object.action';
 export * from './geo-features.action';
 export * from './system-info.action';
+export * from './legend-set.action';

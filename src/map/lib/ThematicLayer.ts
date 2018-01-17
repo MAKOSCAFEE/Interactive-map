@@ -23,6 +23,7 @@ export const thematic = options => {
     opacity,
     dataSelections,
     legendProperties,
+    legendSet,
     analyticsData
   } = options;
   const { rows, columns, filters } = dataSelections;
@@ -32,6 +33,7 @@ export const thematic = options => {
   let geoJsonLayer = L.geoJSON(features, otherOptions);
 
   if (analyticsData) {
+    console.log(legendSet);
     const valueById = getValueById(analyticsData);
     const valueFeatures = features.filter(({ id }) => valueById[id] !== undefined);
     const orderedValues = getOrderedValues(analyticsData);
@@ -40,7 +42,9 @@ export const thematic = options => {
     const totalValue = orderedValues.reduce((prev, curr) => prev + curr);
     const dataItem = getDataItemsFromColumns(columns)[0];
     const name = options.name || dataItem.name;
-    const legend = createLegendFromConfig(orderedValues, legendProperties);
+    const legend = legendSet
+      ? createLegendFromLegendSet(legendSet)
+      : createLegendFromConfig(orderedValues, legendProperties);
     const getLegendItem = curry(getLegendItemForValue)(legend.items);
     legend['period'] = analyticsData.metaData.dimensions.pe[0];
 
@@ -90,6 +94,15 @@ const getOrderedValues = data => {
   const valueIndex = findIndex(['name', 'value'], headers);
 
   return rows.map(row => parseFloat(row[valueIndex])).sort((a, b) => a - b);
+};
+
+const createLegendFromLegendSet = legendSet => {
+  const { name, legends } = legendSet;
+  const pickSome = pick(['name', 'startValue', 'endValue', 'color']);
+  return {
+    title: name,
+    items: sortBy('startValue', legends).map(pickSome)
+  };
 };
 
 const createLegendFromConfig = (data, config) => {

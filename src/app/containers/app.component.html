@@ -6,7 +6,7 @@
       <li class="nav-item">
         <div class="form-group">
           <select class="form-control" (change)="onChangeMap($event.target.value)">
-            <option [value]="i.id" *ngFor="let i of availableMaps">{{i.name}}</option>
+            <option [value]="i.id" *ngFor="let i of availableMaps" selected="{{i.id==selectedMapId}}">{{i.name}}</option>
           </select>
         </div>
       </li>

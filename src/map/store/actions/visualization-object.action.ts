@@ -4,8 +4,9 @@ import { VisualizationObject } from '../../models/visualization-object.model';
 
 export const CREATE_VISUALIZATION_OBJECT = '[Map] Create visualization object';
 export const ADD_ANALYTICS = '[Map] Add analytics object';
+export const ADD_LEGEND_SET_VIZ = '[Map] Add Legend to Visualization object';
+export const ADD_ANALYTICS_VIZ = '[Map] Add Analytics to Visualization object';
 export const ADD_ORGANIZATIONUNITGROUPSET = '[Map] Add Organization Group set object';
-export const ADD_LEGENDSET = '[Map] Add Legendset object';
 export const CREATE_VISUALIZATION_OBJECT_FAIL = '[Map] Create visualization object Fail';
 export const CREATE_VISUALIZATION_OBJECT_SUCCESS = '[Map] Create visualization object Success';
 export const UPDATE_VISUALIZATION_OBJECT = '[Map] Update visualization object';
@@ -54,6 +55,16 @@ export class AddLayerVizObj implements Action {
   constructor(public payload: any) {}
 }
 
+export class AddLegendVizObj implements Action {
+  readonly type = ADD_LEGEND_SET_VIZ;
+  constructor(public payload: VisualizationObject) {}
+}
+
+export class UpdateVizAnalytics implements Action {
+  readonly type = ADD_ANALYTICS_VIZ;
+  constructor(public payload: VisualizationObject) {}
+}
+
 export class AddAnalyticsVizObj implements Action {
   readonly type = ADD_ANALYTICS;
   constructor(public payload: any) {}
@@ -61,11 +72,6 @@ export class AddAnalyticsVizObj implements Action {
 
 export class AddOrgUnitGroupSetVizObj implements Action {
   readonly type = ADD_ORGANIZATIONUNITGROUPSET;
-  constructor(public payload: any) {}
-}
-
-export class AddLegendSetVizObj implements Action {
-  readonly type = ADD_LEGENDSET;
   constructor(public payload: any) {}
 }
 
@@ -114,4 +120,5 @@ export type VisualizationObjectAction =
   | LoadVisualizationObjectSuccess
   | AddAnalyticsVizObj
   | AddOrgUnitGroupSetVizObj
-  | AddLegendSetVizObj;
+  | AddLegendVizObj
+  | UpdateVizAnalytics;

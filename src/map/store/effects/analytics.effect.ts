@@ -57,17 +57,20 @@ export class AnalyticsEffects {
           return url;
         }
       });
-      const sources =
-        layersParams.length && layersParams[0]
-          ? layersParams.map(param => {
-              if (param.startsWith('/events')) {
-                return this.analyticsService.getEventsAnalytics(param);
-              }
-              return this.analyticsService.getAnalytics(param);
-            })
-          : Observable.create([]);
+      const sources = [];
+      layersParams.map(param => {
+        if (param) {
+          if (param.startsWith('/events')) {
+            sources.push(this.analyticsService.getEventsAnalytics(param));
+          } else {
+            sources.push(this.analyticsService.getAnalytics(param));
+          }
+        }
+      });
 
-      return Observable.combineLatest(sources).pipe(
+      const newSources = sources.length ? sources : Observable.create([]);
+
+      return Observable.combineLatest(newSources).pipe(
         map((data, index) => {
           let analytics = {};
           if (data.length) {
@@ -84,7 +87,7 @@ export class AnalyticsEffects {
             ...action.payload,
             analytics
           };
-          return new visualizationObjectActions.UpdateVisualizationObjectSuccess(vizObject);
+          return new visualizationObjectActions.UpdateVizAnalytics(vizObject);
         }),
         catchError(error => of(new visualizationObjectActions.UpdateVisualizationObjectFail(error)))
       );

@@ -63,6 +63,7 @@ export function transformVisualizationObject(visualizationObject) {
       'interpretations',
       'program',
       'programStage',
+      'legendSet',
       'columns',
       'rows',
       'filters',

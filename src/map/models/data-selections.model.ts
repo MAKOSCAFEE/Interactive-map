@@ -15,6 +15,7 @@ export interface DataSelections {
     id: string;
     name: string;
   };
+  legendSet?: any;
   columns: Dimension[];
   filters: Dimension[];
   rows: Dimension[];

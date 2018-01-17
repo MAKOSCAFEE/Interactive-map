@@ -15,4 +15,57 @@ export class GeofeatureEffects {
     private actions$: Actions,
     private geofeatureService: fromServices.GeoFeatureService
   ) {}
+
+  @Effect()
+  createVisualizationObjet$ = this.actions$
+    .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT)
+    .pipe(
+      switchMap((action: visualizationObjectActions.CreateVisualizationObject) => {
+        const parameters = action.payload.layers.map(layer => {
+          const isFacility = layer.type === 'facility';
+          if (layer.type === 'external') {
+            return;
+          }
+          const requestParams = [...layer.dataSelections.rows, ...layer.dataSelections.columns];
+          const data = requestParams.filter(dimension => dimension.dimension === 'ou');
+          const parameter = data
+            .map((param, paramIndex) => {
+              return `ou=${param.dimension}:${param.items.map(item => item.id).join(';')}`;
+            })
+            .join('&');
+          return isFacility
+            ? `${parameter}&displayProperty=SHORTNAME&includeGroupSets=true`
+            : `${parameter}&displayProperty=NAME`;
+        });
+        const sources = parameters.map(param => {
+          if (param) {
+            this.geofeatureService.getGeoFeatures(param);
+          }
+        });
+        const newSource = sources[0] ? sources : Observable.create([]);
+        return Observable.combineLatest(sources).pipe(
+          map(geofeature => {
+            let entity = {};
+            action.payload.layers.forEach((layer, index) => {
+              entity = {
+                ...entity,
+                [layer.id]: geofeature[index]
+              };
+            });
+            const geofeatures = {
+              ...action.payload.geofeatures,
+              ...entity
+            };
+            const vizObject = {
+              ...action.payload,
+              geofeatures
+            };
+            return new visualizationObjectActions.CreateVisualizationObjectSuccess(vizObject);
+          }),
+          catchError(error =>
+            of(new visualizationObjectActions.CreateVisualizationObjectFail(error))
+          )
+        );
+      })
+    );
 }
