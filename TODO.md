@@ -15,6 +15,6 @@
 * [ ] Create encoperate basemap and overlays(This ended up not to be a best solution, use pane to separate layers)
 * [ ] Posibly use [angular-feather](https://github.com/michaelbazos/angular-feather) for icons they look dope.
 * [x] Add facility Layer
-* [ ] Add External Layer to the map
+* [x] Add External Layer to the map
 * [ ] Add Labels when there is one.
-* [ ] Refactor Visualization effects so they can be independent and autonomous as possible
+* [x] Refactor Visualization effects so they can be independent and autonomous as possible
