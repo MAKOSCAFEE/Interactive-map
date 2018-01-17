@@ -29,10 +29,11 @@ export const thematic = options => {
   const { rows, columns, filters } = dataSelections;
   const { radiusLow, radiusHigh } = layerOptions;
   const features = toGeoJson(geofeature);
+  const readyToRender = dataSelections.legendSet ? legendSet : true;
   const otherOptions = thematicLayerOptions(options.id, opacity);
   let geoJsonLayer = L.geoJSON(features, otherOptions);
 
-  if (analyticsData) {
+  if (analyticsData && readyToRender) {
     console.log(legendSet);
     const valueById = getValueById(analyticsData);
     const valueFeatures = features.filter(({ id }) => valueById[id] !== undefined);

@@ -1,7 +1,11 @@
 import { Action } from '@ngrx/store';
 
 import { VisualizationObject } from '../../models/visualization-object.model';
-
+import { GeoFeature } from '../../models/geo-feature.model';
+// load GeoFeatues
+export const LOAD_VIZ_OBJ_GEOFEATURE = '[Map] Load Visualization Object';
+export const LOAD_VIZ_OBJ_GEOFEATURE_FAIL = '[Map] Load Visualization Object Geofeature Fail';
+export const LOAD_VIZ_OBJ_GEOFEATURE_SUCCESS = '[Map] Load Visualization Object Geofeature Success';
 export const CREATE_VISUALIZATION_OBJECT = '[Map] Create visualization object';
 export const ADD_ANALYTICS = '[Map] Add analytics object';
 export const ADD_LEGEND_SET_VIZ = '[Map] Add Legend to Visualization object';
@@ -13,7 +17,7 @@ export const UPDATE_VISUALIZATION_OBJECT = '[Map] Update visualization object';
 export const UPDATE_VISUALIZATION_OBJECT_FAIL = '[Map] Update visualization object Fail';
 export const UPDATE_VISUALIZATION_OBJECT_SUCCESS = '[Map] Update visualization object Success';
 export const ADD_LAYER = '[Map] Add Layer to visualization object';
-export const ADD_GEOFEATURES = '[Map] Add Geofeatures to visualization object';
+export const ADD_GEOFEATURES_VIZ = '[Map] Add Geofeatures to visualization object';
 export const REMOVE_LAYER = '[Map] Remove Layer from visualization object';
 export const HIDE_LAYER = '[Map] Hide Layer';
 export const LOAD_VISUALIZATION_OBJECT = '[Map] Load visualization object';
@@ -28,6 +32,21 @@ export class CreateVisualizationObject implements Action {
 export class CreateVisualizationObjectFail implements Action {
   readonly type = CREATE_VISUALIZATION_OBJECT_FAIL;
   constructor(public payload: any) {}
+}
+
+export class LoadVizObjectGeoFeature implements Action {
+  readonly type = LOAD_VIZ_OBJ_GEOFEATURE;
+  constructor(public payload: any) {}
+}
+
+export class LoadVizObjectGeoFeatureFail implements Action {
+  readonly type = LOAD_VIZ_OBJ_GEOFEATURE_FAIL;
+  constructor(public payload: any) {}
+}
+
+export class LoadVizObjectGeoFeatureSuccess implements Action {
+  readonly type = LOAD_VIZ_OBJ_GEOFEATURE_SUCCESS;
+  constructor(public payload: GeoFeature[]) {}
 }
 
 export class CreateVisualizationObjectSuccess implements Action {
@@ -81,8 +100,8 @@ export class RemoveLayerVizObj implements Action {
 }
 
 export class AddGeoFeaturesVizObj implements Action {
-  readonly type = ADD_GEOFEATURES;
-  constructor(public payload: any) {}
+  readonly type = ADD_GEOFEATURES_VIZ;
+  constructor(public payload: VisualizationObject) {}
 }
 
 export class HideLayerVizObj implements Action {
@@ -121,4 +140,7 @@ export type VisualizationObjectAction =
   | AddAnalyticsVizObj
   | AddOrgUnitGroupSetVizObj
   | AddLegendVizObj
-  | UpdateVizAnalytics;
+  | UpdateVizAnalytics
+  | LoadVizObjectGeoFeature
+  | LoadVizObjectGeoFeatureFail
+  | LoadVizObjectGeoFeatureSuccess;

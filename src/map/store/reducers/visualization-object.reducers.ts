@@ -23,7 +23,8 @@ export function reducer(
   action: fromVisualizationObject.VisualizationObjectAction
 ): VisualizationObjectState {
   switch (action.type) {
-    case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT: {
+    case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT:
+    case fromVisualizationObject.LOAD_VIZ_OBJ_GEOFEATURE: {
       return {
         ...state,
         loading: true
@@ -49,7 +50,9 @@ export function reducer(
         entities
       };
     }
-    case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT_FAIL: {
+
+    case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT_FAIL:
+    case fromVisualizationObject.LOAD_VIZ_OBJ_GEOFEATURE_FAIL: {
       return {
         ...state,
         loaded: false,
@@ -76,10 +79,10 @@ export function reducer(
       };
     }
 
-    case fromVisualizationObject.ADD_GEOFEATURES: {
-      const { id, geofeatures } = action.payload;
+    case fromVisualizationObject.ADD_GEOFEATURES_VIZ: {
+      const { mapConfiguration, geofeatures } = action.payload;
       const visualizationObject = {
-        ...state.entities[id],
+        ...state.entities[mapConfiguration.id],
         geofeatures
       };
       const entities = {

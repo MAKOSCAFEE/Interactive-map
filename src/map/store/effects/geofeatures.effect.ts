@@ -18,9 +18,9 @@ export class GeofeatureEffects {
 
   @Effect()
   createVisualizationObjet$ = this.actions$
-    .ofType(visualizationObjectActions.CREATE_VISUALIZATION_OBJECT)
+    .ofType(visualizationObjectActions.LOAD_VIZ_OBJ_GEOFEATURE)
     .pipe(
-      switchMap((action: visualizationObjectActions.CreateVisualizationObject) => {
+      switchMap((action: visualizationObjectActions.LoadVizObjectGeoFeature) => {
         const parameters = action.payload.layers.map(layer => {
           const isFacility = layer.type === 'facility';
           if (layer.type === 'external') {
