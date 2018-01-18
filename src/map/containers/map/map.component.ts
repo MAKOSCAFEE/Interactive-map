@@ -110,4 +110,19 @@ export class MapComponent implements OnInit {
       }
     });
   }
+
+  zoomIn(event) {
+    console.log(event);
+    this.map.zoomIn();
+  }
+
+  zoomOut(event) {
+    this.map.zoomOut();
+  }
+
+  recenterMap(event) {}
+
+  toggleLegendContainerView() {
+    console.log('toggle LegendContainerView');
+  }
 }

@@ -52,10 +52,10 @@ export const initializeMap = (map: Map, mapConfiguration: MapConfiguration, base
 
   map.setView(center, zoom);
   // add zoom control;
-  mapAddControl(map, {
-    type: 'zoom',
-    position: 'topright'
-  });
+  // mapAddControl(map, {
+  //   type: 'zoom',
+  //   position: 'topright'
+  // });
 
   // Add scale control
   mapAddControl(map, {

@@ -34,7 +34,6 @@ export const thematic = options => {
   let geoJsonLayer = L.geoJSON(features, otherOptions);
   let legend = null;
   if (analyticsData && readyToRender) {
-    console.log(legendSet);
     const valueById = getValueById(analyticsData);
     const valueFeatures = features.filter(({ id }) => valueById[id] !== undefined);
     const orderedValues = getOrderedValues(analyticsData);

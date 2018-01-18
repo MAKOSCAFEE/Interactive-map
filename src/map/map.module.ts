@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IconLayers, IconMap, IconPlus, IconMinus, IconHome } from 'angular-feather';
 
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -14,6 +15,11 @@ import * as fromServices from './services';
 
 @NgModule({
   imports: [
+    IconLayers,
+    IconMap,
+    IconPlus,
+    IconMinus,
+    IconHome,
     CommonModule,
     StoreModule.forFeature('map', reducers),
     EffectsModule.forFeature(effects)
