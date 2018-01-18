@@ -13,7 +13,7 @@ import {
 import { getTileLayer } from '../constants/tile-layer.constant';
 import { MapConfiguration } from '../models/map-configuration.model';
 import { VisualizationObject } from '../models/visualization-object.model';
-import { LayerType, Layers, createLayer } from './Layers';
+import { LayerType, Layers, createLayer, layerFitBound } from './Layers';
 
 export const DrawMap = (map: Map, visualizationObject: VisualizationObject) => {
   const {
@@ -32,9 +32,15 @@ export const DrawMap = (map: Map, visualizationObject: VisualizationObject) => {
 
   // Work with Layers separately;
   const overLayLayers = Layers(layers, geofeatures, analytics, orgUnitGroupSet, legendSets);
+  const layersBounds = [];
   overLayLayers.map((layer, index) => {
+    const { bounds } = layer;
+    if (bounds) {
+      layersBounds.push(bounds);
+    }
     createLayer(map, layer, index);
   });
+  layerFitBound(map, layersBounds);
 };
 
 export const initializeMap = (map: Map, mapConfiguration: MapConfiguration, baseMapLayer) => {

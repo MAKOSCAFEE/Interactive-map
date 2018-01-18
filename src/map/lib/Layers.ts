@@ -84,3 +84,7 @@ export const setLayerVisibility = (isVisible, map, layer) => {
     map.removeLayer(layer);
   }
 };
+
+export const layerFitBound = (map, bounds) => {
+  map.fitBounds(bounds);
+};

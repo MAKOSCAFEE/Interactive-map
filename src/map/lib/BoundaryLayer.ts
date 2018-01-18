@@ -46,6 +46,7 @@ export function boundary(options) {
 
   const geoJSonOptions = geoJsonOptions(id, radiusLow, opacity);
   const geoJsonLayer = L.geoJSON(features, geoJSonOptions);
+  const bounds = geoJsonLayer.getBounds();
   geoJsonLayer.on({
     click: boundaryEvents().onClick,
     mouseover: boundaryEvents().mouseover,
@@ -53,6 +54,7 @@ export function boundary(options) {
   });
   return {
     ...options,
+    bounds,
     features,
     geoJsonLayer
   };

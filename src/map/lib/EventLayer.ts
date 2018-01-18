@@ -95,9 +95,11 @@ export const event = options => {
       });
     }
   }
+  const bounds = geoJsonLayer.getBounds();
   return {
     ...options,
     features,
+    bounds,
     geoJsonLayer
   };
 };

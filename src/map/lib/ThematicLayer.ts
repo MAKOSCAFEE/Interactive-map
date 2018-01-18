@@ -32,7 +32,7 @@ export const thematic = options => {
   const readyToRender = dataSelections.legendSet ? legendSet : true;
   const otherOptions = thematicLayerOptions(options.id, opacity);
   let geoJsonLayer = L.geoJSON(features, otherOptions);
-
+  let legend = null;
   if (analyticsData && readyToRender) {
     console.log(legendSet);
     const valueById = getValueById(analyticsData);
@@ -43,7 +43,7 @@ export const thematic = options => {
     const totalValue = orderedValues.reduce((prev, curr) => prev + curr);
     const dataItem = getDataItemsFromColumns(columns)[0];
     const name = options.name || dataItem.name;
-    const legend = legendSet
+    legend = legendSet
       ? createLegendFromLegendSet(legendSet)
       : createLegendFromConfig(orderedValues, legendProperties);
     const getLegendItem = curry(getLegendItemForValue)(legend.items);
@@ -69,9 +69,12 @@ export const thematic = options => {
       mouseout: thematicLayerEvents(columns, legend).mouseout
     });
   }
+  const bounds = geoJsonLayer.getBounds();
 
   return {
     ...options,
+    bounds,
+    legend,
     features,
     geoJsonLayer
   };

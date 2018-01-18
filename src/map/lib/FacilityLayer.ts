@@ -46,9 +46,10 @@ export const facility = options => {
 
     geoJsonLayer = L.geoJSON(features, otherOptions);
   }
-
+  const bounds = geoJsonLayer.getBounds();
   return {
     ...options,
+    bounds,
     features,
     geoJsonLayer
   };
