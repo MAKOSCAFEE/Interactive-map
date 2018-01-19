@@ -1,5 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { TILE_LAYERS } from '../../constants/tile-layer.constant';
+import * as fromStore from '../../store';
+import { LegendSet } from '../../models/legend-set.model';
 
 @Component({
   selector: 'app-visualization-legend',
@@ -12,6 +18,7 @@ export class VisualizationLegendComponent implements OnInit {
   public showButtonIncons: boolean = false;
   public activeLayer: number;
   public visualizationLegends: any = [];
+  public legendSetObjects$: Observable<LegendSet[]>;
   openTileLegend: boolean = false;
   sticky: boolean = false;
   isRemovable: boolean = false;
@@ -22,10 +29,13 @@ export class VisualizationLegendComponent implements OnInit {
   layerSelectionForm: boolean = false;
   showTransparent: boolean = false;
   displayNone: boolean = false;
-  private baseHref = '../../../';
-  constructor() {}
 
-  ngOnInit() {}
+  constructor(private store: Store<fromStore.MapState>) {}
+
+  ngOnInit() {
+    this.legendSetObjects$ = this.store.select(fromStore.getAllLegendSetObjects);
+    this.legendSetObjects$.subscribe(lg => console.log('legendSet', lg));
+  }
 
   showButtonIcons() {
     this.showButtonIncons = true;

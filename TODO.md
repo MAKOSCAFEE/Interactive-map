@@ -13,8 +13,10 @@
 * [x] Figure out how to fitbounds and overlays using pane.
 * [x] Rewrite thematic layers and bind it events
 * [ ] Create encoperate basemap and overlays(This ended up not to be a best solution, use pane to separate layers)
-* [ ] Posibly use [angular-feather](https://github.com/michaelbazos/angular-feather) for icons they look dope.
+* [ ] Posibly use [angular-feather](https://github.com/michaelbazos/angular-feather) for icons they look dope.(changed My mind)
 * [x] Add facility Layer
 * [x] Add External Layer to the map
 * [ ] Add Labels when there is one.
+* [ ] Add Legend Container
+* [ ] Create Legends for each layes and add them to redux state
 * [x] Refactor Visualization effects so they can be independent and autonomous as possible
