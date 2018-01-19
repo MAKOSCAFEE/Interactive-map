@@ -7,7 +7,7 @@ export const LOAD_VIZ_OBJ_GEOFEATURE = '[Map] Load Visualization Object';
 export const LOAD_VIZ_OBJ_GEOFEATURE_FAIL = '[Map] Load Visualization Object Geofeature Fail';
 export const LOAD_VIZ_OBJ_GEOFEATURE_SUCCESS = '[Map] Load Visualization Object Geofeature Success';
 export const CREATE_VISUALIZATION_OBJECT = '[Map] Create visualization object';
-export const ADD_ANALYTICS = '[Map] Add analytics object';
+export const LOAD_ANALYTICS = '[Map] Load analytics object';
 export const ADD_LEGEND_SET_VIZ = '[Map] Add Legend to Visualization object';
 export const ADD_ANALYTICS_VIZ = '[Map] Add Analytics to Visualization object';
 export const ADD_ORGANIZATIONUNITGROUPSET = '[Map] Add Organization Group set object';
@@ -84,8 +84,8 @@ export class UpdateVizAnalytics implements Action {
   constructor(public payload: VisualizationObject) {}
 }
 
-export class AddAnalyticsVizObj implements Action {
-  readonly type = ADD_ANALYTICS;
+export class LoadAnalyticsVizObj implements Action {
+  readonly type = LOAD_ANALYTICS;
   constructor(public payload: any) {}
 }
 
@@ -137,7 +137,7 @@ export type VisualizationObjectAction =
   | LoadVisualizationObject
   | LoadVisualizationObjectFail
   | LoadVisualizationObjectSuccess
-  | AddAnalyticsVizObj
+  | LoadAnalyticsVizObj
   | AddOrgUnitGroupSetVizObj
   | AddLegendVizObj
   | UpdateVizAnalytics

@@ -8,6 +8,8 @@ import * as fromServices from '../services';
 })
 export class AppComponent implements OnInit {
   title = 'app';
+  selectedOption;
+  searchOptions = [];
   public visualObject: any = {
     id: 'UjHKZ2lZJ3T',
     latitude: '8.353502376213736',
@@ -90,6 +92,13 @@ export class AppComponent implements OnInit {
     this.mapService.getMapFromFav(mapId).subscribe(data => {
       this.visualObject = data;
       this.isLoaded = true;
+    });
+  }
+
+  searchChange(searchText) {
+    const query = encodeURI(searchText);
+    this.mapService.searchFavourite().subscribe(data => {
+      console.log(data);
     });
   }
 }

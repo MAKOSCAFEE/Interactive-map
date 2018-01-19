@@ -29,4 +29,12 @@ export class MapsService {
       )
       .pipe(catchError((error: any) => Observable.throw(error.json())));
   }
+
+  searchFavourite(name = ''): Observable<any[]> {
+    return this.http
+      .get<any[]>(
+        `../../../api/maps.json?fields=id,displayName~rename(name),access&filter=displayName:ilike:${name}&_dc=1514366772136&pageSize=8&page=1&start=0&limit=8`
+      )
+      .pipe(catchError((error: any) => Observable.throw(error.json())));
+  }
 }

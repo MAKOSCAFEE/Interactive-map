@@ -84,7 +84,7 @@ export class VisualizationObjectEffects {
         );
 
         if (needsAnalytics.length) {
-          this.store.dispatch(new visualizationObjectActions.AddAnalyticsVizObj(action.payload));
+          this.store.dispatch(new visualizationObjectActions.LoadAnalyticsVizObj(action.payload));
         }
       })
     );

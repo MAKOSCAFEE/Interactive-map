@@ -18,7 +18,7 @@ export class VisualizationLegendComponent implements OnInit {
   public showButtonIncons: boolean = false;
   public activeLayer: number;
   public visualizationLegends: any = [];
-  public legendSetObjects$: Observable<LegendSet[]>;
+  public legendSetEntities$: Observable<{ [id: string]: LegendSet }>;
   openTileLegend: boolean = false;
   sticky: boolean = false;
   isRemovable: boolean = false;
@@ -33,8 +33,8 @@ export class VisualizationLegendComponent implements OnInit {
   constructor(private store: Store<fromStore.MapState>) {}
 
   ngOnInit() {
-    this.legendSetObjects$ = this.store.select(fromStore.getAllLegendSetObjects);
-    this.legendSetObjects$.subscribe(lg => console.log('legendSet', lg));
+    this.legendSetEntities$ = this.store.select(fromStore.getAllLegendSetObjectsEntities);
+    this.legendSetEntities$.subscribe(lg => console.log('legendSet', lg));
   }
 
   showButtonIcons() {

@@ -14,8 +14,8 @@ export class AnalyticsEffects {
   constructor(private actions$: Actions, private analyticsService: fromServices.AnalyticsService) {}
 
   @Effect()
-  addAnalytics$ = this.actions$.ofType(visualizationObjectActions.ADD_ANALYTICS).pipe(
-    switchMap((action: visualizationObjectActions.AddAnalyticsVizObj) => {
+  addAnalytics$ = this.actions$.ofType(visualizationObjectActions.LOAD_ANALYTICS).pipe(
+    switchMap((action: visualizationObjectActions.LoadAnalyticsVizObj) => {
       const layerIds = [];
       const layersParams = action.payload.layers.map(layer => {
         const requestParams = [

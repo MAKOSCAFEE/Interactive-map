@@ -24,9 +24,11 @@ export function reducer(
 ): VisualizationObjectState {
   switch (action.type) {
     case fromVisualizationObject.LOAD_VISUALIZATION_OBJECT:
-    case fromVisualizationObject.LOAD_VIZ_OBJ_GEOFEATURE: {
+    case fromVisualizationObject.LOAD_VIZ_OBJ_GEOFEATURE:
+    case fromVisualizationObject.LOAD_ANALYTICS: {
       return {
         ...state,
+        loaded: false,
         loading: true
       };
     }

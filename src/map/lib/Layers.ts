@@ -7,6 +7,7 @@ import { thematic } from './ThematicLayer';
 import { facility } from './FacilityLayer';
 import { external } from './ExternalLayer';
 import { Layer } from '../models/layer.model';
+import { VisualizationObject } from '../models/visualization-object.model';
 
 export const LayerType = {
   boundary,
@@ -57,34 +58,24 @@ export const Layers = (layers, geofeatures, analytics, organizationGroupSet, leg
   return optionLayers;
 };
 
-export const createLayer = (map, optionsLayer, index) => {
-  const { displaySettings, id, geoJsonLayer, visible } = optionsLayer;
-  createPane(map, displaySettings.labels, id, index);
-  setLayerVisibility(visible, map, geoJsonLayer);
+export const GetOverLayLayers = (visualizationObject: VisualizationObject) => {
+  const {
+    mapConfiguration,
+    layers,
+    geofeatures,
+    analytics,
+    orgUnitGroupSet,
+    legendSets
+  } = visualizationObject;
+
+  // Work with Layers separately;
+  return Layers(layers, geofeatures, analytics, orgUnitGroupSet, legendSets);
 };
 
-export const createPane = (map, labels, id, index) => {
-  const zIndex = 600 - index * 10;
-  const pane = map.createPane(id);
-  pane.style.zIndex = zIndex;
-
-  if (labels) {
-    const labelPane = map.createPane(`${id}-labels`);
-    labelPane.style.zIndex = zIndex + 1;
+// This is the hack which wont matter since we are using Bounds to fit the map afterwards.
+export const _convertLatitudeLongitude = coordinate => {
+  if (Math.abs(parseInt(coordinate, 10)) > 100000) {
+    return (parseFloat(coordinate) / 100000).toFixed(6);
   }
-};
-
-export const onLayerAdd = (map, index, optionsLayer) => {};
-
-export const setLayerVisibility = (isVisible, map, layer) => {
-  if (isVisible && map.hasLayer(layer) === false) {
-    map.addLayer(layer);
-    // map.fitBounds(layer.getBounds());
-  } else if (!isVisible && map.hasLayer(layer) === true) {
-    map.removeLayer(layer);
-  }
-};
-
-export const layerFitBound = (map, bounds) => {
-  map.fitBounds(bounds);
+  return parseFloat(coordinate).toFixed(6);
 };

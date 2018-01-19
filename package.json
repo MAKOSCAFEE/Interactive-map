@@ -43,6 +43,7 @@
     "leaflet.layergroup.collision": "^0.3.1",
     "leaflet.markercluster": "^1.2.0",
     "lodash": "^4.17.4",
+    "ng-zorro-antd": "^0.6.11",
     "ngrx-store-freeze": "^0.2.0",
     "polylabel": "^1.0.2",
     "popper.js": "^1.12.9",
