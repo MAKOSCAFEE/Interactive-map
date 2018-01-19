@@ -48,6 +48,7 @@ export class MapComponent implements OnInit {
   public mapOptions: any;
   public visualizationObject: any;
   public componentId = 'RBoGyrUJDOu';
+  public mapHeight: string;
   private _data$ = new BehaviorSubject<any>({});
 
   @Input()
@@ -94,10 +95,10 @@ export class MapComponent implements OnInit {
   drawMap() {
     this.visualizationObject$.subscribe(visualizationObject => {
       if (visualizationObject) {
-        const mapHeight = fromUtils.refineHeight(this.itemHeight);
+        this.mapHeight = fromUtils.refineHeight(this.itemHeight);
         const container = fromUtils.prepareMapContainer(
           this.componentId,
-          mapHeight,
+          this.mapHeight,
           this.mapWidth,
           this.isFullScreen
         );
@@ -123,6 +124,19 @@ export class MapComponent implements OnInit {
   recenterMap(event) {}
 
   toggleLegendContainerView() {
-    console.log('toggle LegendContainerView');
+    if (this.legendIsOpen || !this.legendIsOpen) {
+      this.legendIsOpen = true;
+    }
+  }
+
+  closeMapLegend(flag) {
+    if (flag === 'leave' && !this.pinned) {
+      this.legendIsOpen = false;
+    }
+
+    if (!flag) {
+      this.pinned = false;
+      this.legendIsOpen = false;
+    }
   }
 }

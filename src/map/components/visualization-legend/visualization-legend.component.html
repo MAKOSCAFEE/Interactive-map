@@ -1,3 +1,41 @@
-<p>
-  visualization-legend works!
-</p>
+<div class="map-legend__container" (mouseover)="showButtonIcons()" (mouseout)="hideButtonIcons()">
+  <div class="map-legend-list">
+    <div class="map-legend-item">
+      <div class="map-legend-header" (click)="setActiveItem(-1, $event)">
+        <div class="map-legend-title-block">
+          <img src="assets/icons/map.png" alt="">
+          <span class="map-legend-title">Base Maps</span>
+        </div>
+      </div>
+      <div class="map-legend-body" *ngIf="activeLayer === -1" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - ' + (visualizationLegends.length + 4)*50 + 'px)'}">
+        <div class="tile-layers-list">
+          <div *ngFor="let tileLayer of LegendsTileLayer" class="tile-layer-item">
+            <a class="map-tile-layer-icon" (click)="changeTileLayer(tileLayer)">
+
+              <img [src]="tileLayer.image" [ngClass]="{'rowActive':tileLayer.active}" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="map-legend-footer">
+    <div class="map-legend-left-footer">
+      <a title="Show map data table">
+        <img src="assets/icons/table.png" alt="">
+      </a>
+    </div>
+    <div class="map-legend-right-footer">
+      <a title="Upload GeoJson file">
+        <img src="assets/icons/upload.png" alt="">
+      </a>
+      <a title="Stick Legend">
+        <img *ngIf="!sticky" src="assets/icons/pin-empty.png" alt="">
+        <img *ngIf="sticky" src="assets/icons/pin-filled.png" alt="">
+      </a>
+      <a title="Close Legend">
+        <img src="assets/icons/close.png" alt="">
+      </a>
+    </div>
+  </div>
+</div>
