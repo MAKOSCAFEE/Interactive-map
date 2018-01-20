@@ -24,7 +24,7 @@
       </button>
       <div class="visualization-legend__container" *ngIf="legendIsOpen" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
         (mouseleave)="closeMapLegend('leave')">
-        <app-visualization-legend></app-visualization-legend>
+        <app-visualization-legend [mapVsualizationObject]="visObject"></app-visualization-legend>
       </div>
     </div>
   </div>

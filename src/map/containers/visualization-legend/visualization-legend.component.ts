@@ -18,7 +18,7 @@ export class VisualizationLegendComponent implements OnInit {
   public showButtonIncons: boolean = false;
   public activeLayer: number;
   public visualizationLegends: any = [];
-  public legendSetEntities$: Observable<{ [id: string]: LegendSet }>;
+  public legendSetEntities: { [id: string]: LegendSet };
   openTileLegend: boolean = false;
   sticky: boolean = false;
   isRemovable: boolean = false;
@@ -33,8 +33,25 @@ export class VisualizationLegendComponent implements OnInit {
   constructor(private store: Store<fromStore.MapState>) {}
 
   ngOnInit() {
-    this.legendSetEntities$ = this.store.select(fromStore.getAllLegendSetObjectsEntities);
-    this.legendSetEntities$.subscribe(lg => console.log('legendSet', lg));
+    this.store.select(fromStore.getAllLegendSetObjectsEntities).subscribe(lg => {
+      this.legendSetEntities = lg;
+    });
+    console.log(this.visualizationLegends);
+    const layers = this.mapVsualizationObject.layers;
+    if (layers.length) {
+      this.visualizationLegends = layers.reduce((vizLg = [], currentLayer, index) => {
+        const { displayName, type, id, name } = currentLayer;
+        if (this.legendSetEntities[id]) {
+          const legendObject = {
+            ...this.legendSetEntities[id],
+            displayName,
+            name,
+            type
+          };
+          return [...vizLg, legendObject];
+        }
+      }, []);
+    }
   }
 
   showButtonIcons() {
@@ -46,6 +63,7 @@ export class VisualizationLegendComponent implements OnInit {
   }
 
   setActiveItem(index, e) {
+    console.log(index);
     e.stopPropagation();
     if (index === -1) {
       this.LegendsTileLayer = Object.keys(TILE_LAYERS).map(layerKey => TILE_LAYERS[layerKey]);
@@ -55,6 +73,15 @@ export class VisualizationLegendComponent implements OnInit {
       this.activeLayer = -2;
     } else {
       this.activeLayer = index;
+    }
+  }
+
+  stickLegendContainer(e) {
+    e.stopPropagation();
+    if (!this.sticky) {
+      this.sticky = true;
+    } else {
+      this.sticky = false;
     }
   }
 }

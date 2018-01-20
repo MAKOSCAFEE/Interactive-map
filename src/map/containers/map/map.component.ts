@@ -138,9 +138,12 @@ export class MapComponent implements OnInit, AfterViewInit {
         this.initializeMapBaseLayer(visualizationObject.mapConfiguration);
         const layersBounds = [];
         overlayLayers.map((layer, index) => {
-          const { bounds } = layer;
+          const { bounds, legendSet } = layer;
           if (bounds) {
             layersBounds.push(bounds);
+          }
+          if (legendSet && legendSet.legend) {
+            this.store.dispatch(new fromStore.AddLegendSetSuccess(legendSet));
           }
           this.createLayer(layer, index);
         });
@@ -190,6 +193,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   layerFitBound(bounds: LatLngBoundsExpression) {
+    this.map.invalidateSize();
     this.map.fitBounds(bounds);
   }
 

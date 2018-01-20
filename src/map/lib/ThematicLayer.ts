@@ -70,10 +70,14 @@ export const thematic = options => {
     });
   }
   const bounds = geoJsonLayer.getBounds();
+  const _legendSet = {
+    layer: options.id,
+    legend
+  };
   const optionsToReturn = {
     ...options,
     features,
-    legend,
+    legendSet: _legendSet,
     geoJsonLayer
   };
   if (bounds.isValid()) {

@@ -1,4 +1,41 @@
 <div class="map-legend__container" (mouseover)="showButtonIcons()" (mouseout)="hideButtonIcons()">
+  <div class="map-legend-list" *ngIf="visualizationLegends.length">
+    <div class="map-legend-item" *ngFor="let legend of visualizationLegends; let i = index;">
+      <div class="map-legend-header" (click)="setActiveItem(i, $event)">
+        <div class="map-legend-title-block">
+          <img src="assets/icons/map.png" alt="">
+          <span class="map-legend-title">{{legend.displayName}}</span>
+        </div>
+        <div class="map-legend-title-options">
+          <a (click)="toggleLayerView(legend,'normal',$event)">
+            <img *ngIf="!legend.hidden" src="assets/icons/eye.png" alt="">
+            <img *ngIf="legend.hidden" src="assets/icons/eye-cross.png" alt="">
+          </a>
+        </div>
+      </div>
+      <div class="map-legend-body" *ngIf="activeLayer === i" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - ' + (visualizationLegends.length + 4)*50 + 'px)'}">
+        <div class="tile-layers-list" *ngIf="legend.type === 'thematic'">
+          <div *ngFor="let item of legend.legend.items" class="map-legend-table">
+            <div [ngStyle]="{backgroundColor:item.color,width:'60px'}"></div>
+            <ul class="map-legend-table-list">
+              <li class="font-weight-bold">{{item.name}}</li>
+              <li>{{item.startValue}} - {{item.endValue}} (0)</li>
+            </ul>
+          </div>
+          <div class="tile-layers-list" *ngIf="legend.type === 'facility'">
+            <div *ngFor="let item of legend.legend.items" class="map-legend-table">
+              <div>
+                <img [src]="item.image">
+              </div>
+              <ul class="map-legend-table-list">
+                <li class="font-weight-bold">{{item.name}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="map-legend-list">
     <div class="map-legend-item">
       <div class="map-legend-header" (click)="setActiveItem(-1, $event)">
@@ -29,7 +66,7 @@
       <a title="Upload GeoJson file">
         <img src="assets/icons/upload.png" alt="">
       </a>
-      <a title="Stick Legend">
+      <a title="Stick Legend" (click)="stickLegendContainer($event)">
         <img *ngIf="!sticky" src="assets/icons/pin-empty.png" alt="">
         <img *ngIf="sticky" src="assets/icons/pin-filled.png" alt="">
       </a>

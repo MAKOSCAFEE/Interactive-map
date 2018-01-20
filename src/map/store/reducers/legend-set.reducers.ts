@@ -21,18 +21,11 @@ export function reducer(
   switch (action.type) {
     case fromLegendSets.ADD_LEGEND_SET_SUCCESS:
     case fromLegendSets.UPDATE_LEGEND_SET_SUCCESS: {
-      const legendSets = action.payload;
-      const entities = legendSets.reduce(
-        (entitie: { [id: string]: LegendSet }, legendSet: LegendSet) => {
-          return {
-            ...entitie,
-            [legendSet.layer]: legendSet
-          };
-        },
-        {
-          ...state.entities
-        }
-      );
+      const _legendSet = action.payload;
+      const entities = {
+        ...state.entities,
+        [_legendSet.layer]: _legendSet
+      };
       return {
         ...state,
         loading: false,

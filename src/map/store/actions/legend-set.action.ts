@@ -18,13 +18,13 @@ export class AddLegendSet implements Action {
 export class AddLegendSetFail implements Action {
   readonly type = ADD_LEGEND_SET_FAIL;
   // TODO: add Legend Set data casting;
-  constructor(public payload: LegendSet) {}
+  constructor(public payload: any) {}
 }
 
 export class AddLegendSetSuccess implements Action {
   readonly type = ADD_LEGEND_SET_SUCCESS;
   // TODO: add Legend Set data casting;
-  constructor(public payload: any) {}
+  constructor(public payload: LegendSet) {}
 }
 
 export class UpdateLegendSet implements Action {
@@ -36,13 +36,13 @@ export class UpdateLegendSet implements Action {
 export class UpdateLegendSetFail implements Action {
   readonly type = ADD_LEGEND_SET_FAIL;
   // TODO: add Legend Set data casting;
-  constructor(public payload: LegendSet) {}
+  constructor(public payload: any) {}
 }
 
 export class UpdateLegendSetSuccess implements Action {
   readonly type = ADD_LEGEND_SET_SUCCESS;
   // TODO: add Legend Set data casting;
-  constructor(public payload: any) {}
+  constructor(public payload: LegendSet) {}
 }
 
 export type LegendSetAction =
