@@ -10,7 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  public selectedOption;
+  public selectedOption: any;
   public showFavList: boolean = false;
   public favorites: any = [];
   public searchOptions = [];
@@ -74,6 +74,7 @@ export class AppComponent implements OnInit {
 
   setSelectedFav(fav, event) {
     event.stopPropagation();
+    this.selectedOption = fav;
     this.getMapFav(fav.id);
     this.showFavList = !this.showFavList;
   }

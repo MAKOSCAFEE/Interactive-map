@@ -70,14 +70,19 @@ export const thematic = options => {
     });
   }
   const bounds = geoJsonLayer.getBounds();
-
-  return {
+  const optionsToReturn = {
     ...options,
-    bounds,
-    legend,
     features,
+    legend,
     geoJsonLayer
   };
+  if (bounds.isValid()) {
+    return {
+      ...optionsToReturn,
+      bounds
+    };
+  }
+  return optionsToReturn;
 };
 
 // Returns an object mapping org. units and values

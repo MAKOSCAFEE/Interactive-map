@@ -47,12 +47,18 @@ export const facility = options => {
     geoJsonLayer = L.geoJSON(features, otherOptions);
   }
   const bounds = geoJsonLayer.getBounds();
-  return {
+  const optionsToReturn = {
     ...options,
-    bounds,
     features,
     geoJsonLayer
   };
+  if (bounds.isValid()) {
+    return {
+      ...optionsToReturn,
+      bounds
+    };
+  }
+  return optionsToReturn;
 };
 
 const parseFacilities = (facilities, groupSetId) =>

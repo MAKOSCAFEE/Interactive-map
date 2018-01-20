@@ -95,13 +95,20 @@ export const event = options => {
       });
     }
   }
+
   const bounds = geoJsonLayer.getBounds();
-  return {
+  const optionsToReturn = {
     ...options,
     features,
-    bounds,
     geoJsonLayer
   };
+  if (bounds.isValid()) {
+    return {
+      ...optionsToReturn,
+      bounds
+    };
+  }
+  return optionsToReturn;
 };
 
 const createEventFeature = (headers, names, layerEvent, eventCoordinateField?) => {

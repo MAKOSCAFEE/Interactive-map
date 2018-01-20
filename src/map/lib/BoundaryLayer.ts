@@ -46,18 +46,24 @@ export function boundary(options) {
 
   const geoJSonOptions = geoJsonOptions(id, radiusLow, opacity);
   const geoJsonLayer = L.geoJSON(features, geoJSonOptions);
-  const bounds = geoJsonLayer.getBounds();
   geoJsonLayer.on({
     click: boundaryEvents().onClick,
     mouseover: boundaryEvents().mouseover,
     mouseout: boundaryEvents().mouseout
   });
-  return {
+  const bounds = geoJsonLayer.getBounds();
+  const optionsToReturn = {
     ...options,
-    bounds,
     features,
     geoJsonLayer
   };
+  if (bounds.isValid()) {
+    return {
+      ...optionsToReturn,
+      bounds
+    };
+  }
+  return optionsToReturn;
 }
 
 export const boundaryEvents = () => {

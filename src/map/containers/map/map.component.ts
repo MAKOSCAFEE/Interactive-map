@@ -80,6 +80,11 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.initializeMapContainer();
     this.initializeMapBaseLayer(this.visObject.mapConfiguration);
     this.drawMap();
+    // Add scale control
+    this.mapAddControl({
+      type: 'scale',
+      imperial: false
+    });
   }
 
   transhformVisualizationObject(data) {
@@ -139,7 +144,10 @@ export class MapComponent implements OnInit, AfterViewInit {
           }
           this.createLayer(layer, index);
         });
-        this.layerFitBound(layersBounds);
+
+        if (layersBounds.length) {
+          this.layerFitBound(layersBounds);
+        }
       }
     });
   }
@@ -193,7 +201,9 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map.zoomOut();
   }
 
-  recenterMap(event) {}
+  recenterMap(event) {
+    this.map.eachLayer(layer => console.log(layer.getBounds()));
+  }
 
   toggleLegendContainerView() {
     if (this.legendIsOpen || !this.legendIsOpen) {
