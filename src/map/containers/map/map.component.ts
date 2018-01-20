@@ -41,7 +41,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   private cardHeight: string = '490px';
   private itemHeight: string = '90vh';
   public subtitle: string = '';
-  public pinned: boolean = false;
+  public pinned: boolean = true;
   public operatingLayers: Array<any> = [];
   public isFullScreen: boolean = false;
   public hideTable: boolean = true;
