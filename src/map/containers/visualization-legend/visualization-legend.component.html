@@ -4,7 +4,8 @@
       <div class="map-legend-header" (click)="setActiveItem(i, $event)">
         <div class="map-legend-title-block">
           <img src="assets/icons/map.png" alt="">
-          <span class="map-legend-title">{{legend.displayName}}</span>
+          <span class="map-legend-title" *ngIf="legend.type !== 'facility'">{{legend.displayName}}</span>
+          <span class="map-legend-title" *ngIf="legend.type === 'facility'">{{legend.legend.title}}</span>
         </div>
         <div class="map-legend-title-options">
           <a (click)="toggleLayerView(legend,'normal',$event)">

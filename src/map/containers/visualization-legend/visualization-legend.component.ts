@@ -39,11 +39,9 @@ export class VisualizationLegendComponent implements OnInit {
     console.log(this.visualizationLegends);
     const layers = this.mapVsualizationObject.layers;
     if (layers.length) {
-      console.log('layers:::', layers);
       this.visualizationLegends = layers.reduce((vizLg = [], currentLayer, index) => {
         const { displayName, type, id, name } = currentLayer;
         if (this.legendSetEntities[id]) {
-          console.log('legendSetEntity:::', this.legendSetEntities[id]);
           const legendObject = {
             ...this.legendSetEntities[id],
             displayName,
@@ -53,7 +51,6 @@ export class VisualizationLegendComponent implements OnInit {
           return [...vizLg, legendObject];
         }
       }, []);
-      console.log('visulaizaiLegends:::', this.visualizationLegends);
     }
   }
 
