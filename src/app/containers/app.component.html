@@ -3,12 +3,31 @@
   <a class="navbar-brand" href="#">Navbar</a>
   <div class="">
     <ul class="navbar-nav">
-      <li class="nav-item">
-        <div class="form-group">
-          <select class="form-control" (change)="onChangeMap($event.target.value)">
-            <option [value]="i.id" *ngFor="let i of availableMaps" selected="{{i.id==selectedMapId}}">{{i.name}}</option>
-          </select>
-        </div>
+      <li class="nav-item fav-selection">
+        <form novalidate [formGroup]="favForm">
+          <div class="data-filter-group-selection">
+            <button class="btn btn-outline-secondary btn-sm data-filter-group-btn" (click)="toggleFavSelection($event)">
+              <span>{{ selectedOption?.name || 'Select Favourite'}}</span>
+              <span>
+                <img src="assets/icons/arrow-down.png" alt="">
+              </span>
+            </button>
+            <div class="data-filter-group-panel" *ngIf="showFavList">
+              <div class="panel-body data-filter-group-panel-body">
+                <input type="search" class="form-control form-control-sm" placeholder="Search" formControlName="querystring">
+                <ul class="data-filter-group-list" *ngIf="isLoaded">
+                  <li *ngFor="let item of favorites">
+                    <a (click)="setSelectedFav(item, $event)">{{ item.name }}</a>
+                  </li>
+                  <li *ngIf="!favorites.length">No Favorite found</li>
+                </ul>
+                <ul class="data-filter-group-list" *ngIf="!isLoaded">
+                  <li>Loading...</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </form>
       </li>
     </ul>
   </div>

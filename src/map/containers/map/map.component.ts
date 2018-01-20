@@ -128,7 +128,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   drawMap() {
     this.visualizationObject$.subscribe(visualizationObject => {
       if (visualizationObject) {
-        console.log(visualizationObject);
         const overlayLayers = fromLib.GetOverLayLayers(visualizationObject);
         this.map.eachLayer(layer => this.map.removeLayer(layer));
         this.initializeMapBaseLayer(visualizationObject.mapConfiguration);

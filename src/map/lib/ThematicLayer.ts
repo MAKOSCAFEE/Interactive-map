@@ -5,6 +5,7 @@ import findIndex from 'lodash/fp/findIndex';
 import sortBy from 'lodash/fp/sortBy';
 import pick from 'lodash/fp/pick';
 import curry from 'lodash/fp/curry';
+import countBy from 'lodash/countBy';
 import {
   getOrgUnitsFromRows,
   getPeriodFromFilters,
@@ -33,13 +34,13 @@ export const thematic = options => {
   const otherOptions = thematicLayerOptions(options.id, opacity);
   let geoJsonLayer = L.geoJSON(features, otherOptions);
   let legend = null;
-  if (analyticsData && readyToRender) {
+  if (analyticsData && readyToRender && analyticsData.rows.length) {
     const valueById = getValueById(analyticsData);
     const valueFeatures = features.filter(({ id }) => valueById[id] !== undefined);
     const orderedValues = getOrderedValues(analyticsData);
     const minValue = orderedValues[0];
     const maxValue = orderedValues[orderedValues.length - 1];
-    const totalValue = orderedValues.reduce((prev, curr) => prev + curr);
+    const valueFrequencyPair = countBy(orderedValues);
     const dataItem = getDataItemsFromColumns(columns)[0];
     const name = options.name || dataItem.name;
     legend = legendSet
@@ -57,7 +58,7 @@ export const thematic = options => {
       properties.value = value;
       properties.label = name;
       properties.color = item && item.color;
-      properties.percentage = (value / totalValue * 100).toFixed(2);
+      properties.percentage = (valueFrequencyPair[value] / orderedValues.length * 100).toFixed(1);
       properties.radius =
         (value - minValue) / (maxValue - minValue) * (radiusHigh - radiusLow) + radiusLow;
     });
@@ -204,7 +205,7 @@ export const thematicLayerEvents = (columns, legend) => {
     evt.layer.setStyle({ ...style, weight });
     evt.layer.closeTooltip();
     evt.layer
-      .bindTooltip(`${name}(${percentage}%)`, {
+      .bindTooltip(`${name}(${value})(${percentage}%)`, {
         direction: 'auto',
         permanent: false,
         sticky: true,

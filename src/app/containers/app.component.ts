@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as fromServices from '../services';
+import { Observable } from 'rxjs/Observable';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +10,11 @@ import * as fromServices from '../services';
 })
 export class AppComponent implements OnInit {
   title = 'app';
-  selectedOption;
-  searchOptions = [];
+  public selectedOption;
+  public showFavList: boolean = false;
+  public favorites: any = [];
+  public searchOptions = [];
+  public favForm: FormGroup;
   public visualObject: any = {
     id: 'UjHKZ2lZJ3T',
     latitude: '8.353502376213736',
@@ -20,72 +25,39 @@ export class AppComponent implements OnInit {
     mapViews: []
   };
   public isLoaded = false;
-  public availableMaps = [
-    {
-      id: 'zEY4M5njBxV',
-      name: 'Boundary-Boundaries: Facilities'
-    },
-    {
-      id: 'bjaqzAFrDOS',
-      name: 'Boundary-Boundaries: Districts and Chiefdoms'
-    },
-    {
-      id: 'kNYqHu3e7o3',
-      name: 'events-Malaria: Cases 2015-2016 Western Area events'
-    },
-    {
-      id: 'UjHKZ2lZJ3T',
-      name: 'events-Malaria: Malaria: Cases 2015-2016 Western Area clustered'
-    },
-    {
-      id: 'inePJWH75JW',
-      name: 'themantic-Delivery: LLITN after delivery OSM Light basemap'
-    },
-    {
-      id: 'jvdDvScWuhv',
-      name: 'themantic-Inpatient: BMI female under 5 at chiefdom level this year'
-    },
-    {
-      id: 'DE644qFc32L',
-      name: 'themantic-Delivery: Maternal death rate at districts 2013'
-    },
-    {
-      id: 'GObHCbOfXtP',
-      name: 'themantic-Delivery: Maternal death rate / PHU delivery rate ANC 1 last quarter'
-    },
-    {
-      id: 'ZBjCfSaLSqD',
-      name: 'themantic-ANC LLITN coverage'
-    },
-    {
-      id: 'GmIDubfPzCU',
-      name: 'Facility: Health Facilities by Type with Boundaries'
-    },
-    {
-      id: 'g5Zjei47geR',
-      name: 'Facility: Facilities by type with radius 5k Kono'
-    },
-    {
-      id: 'qTfO4YkQ9xW',
-      name: 'ANC: ANC 1 coverage Sierra Leone dark basemap'
-    }
-  ];
-
-  public selectedMapId = this.availableMaps[this.availableMaps.length - 1].id;
 
   constructor(
     private favoriteService: fromServices.FavouriteService,
-    private mapService: fromServices.MapsService
+    private mapService: fromServices.MapsService,
+    public fb: FormBuilder
   ) {}
 
   ngOnInit() {
-    this.getMapFav(this.selectedMapId);
+    this.favForm = this.fb.group({
+      querystring: ['']
+    });
+    this.getAllFav();
+    this.onChangeMap();
   }
 
-  onChangeMap(newObj) {
-    this.selectedMapId = newObj;
-    this.getMapFav(newObj);
+  onChangeMap(): void {
     // ... do other stuff here ...
+    this.favForm.valueChanges.subscribe(val => {
+      if (val.querystring) {
+        this.isLoaded = false;
+        this.mapService.searchFavourite(val.querystring).subscribe(data => {
+          this.favorites = data['maps'];
+          this.isLoaded = true;
+        });
+      }
+    });
+  }
+
+  getAllFav() {
+    this.favoriteService.getFavourite().subscribe(data => {
+      this.isLoaded = true;
+      this.favorites = data['maps'];
+    });
   }
 
   getMapFav(mapId) {
@@ -95,10 +67,14 @@ export class AppComponent implements OnInit {
     });
   }
 
-  searchChange(searchText) {
-    const query = encodeURI(searchText);
-    this.mapService.searchFavourite().subscribe(data => {
-      console.log(data);
-    });
+  toggleFavSelection(event) {
+    event.stopPropagation();
+    this.showFavList = !this.showFavList;
+  }
+
+  setSelectedFav(fav, event) {
+    event.stopPropagation();
+    this.getMapFav(fav.id);
+    this.showFavList = !this.showFavList;
   }
 }
