@@ -36,16 +36,16 @@ export class VisualizationLegendComponent implements OnInit {
     this.store.select(fromStore.getAllLegendSetObjectsEntities).subscribe(lg => {
       this.legendSetEntities = lg;
     });
-    console.log(this.visualizationLegends);
     const layers = this.mapVsualizationObject.layers;
     if (layers.length) {
       this.visualizationLegends = layers.reduce((vizLg = [], currentLayer, index) => {
-        const { displayName, type, id, name } = currentLayer;
+        const { type, id, name } = currentLayer;
+        const displayName = this.legendSetEntities[id].legend.title;
         if (this.legendSetEntities[id]) {
           const legendObject = {
             ...this.legendSetEntities[id],
             displayName,
-            name,
+            name: currentLayer.displayName,
             type
           };
           return [...vizLg, legendObject];

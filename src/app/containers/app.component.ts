@@ -17,11 +17,11 @@ export class AppComponent implements OnInit {
   public favForm: FormGroup;
   public visualObject: any = {
     id: 'UjHKZ2lZJ3T',
-    latitude: '8.353502376213736',
-    longitude: '-13.069095611572266',
+    latitude: '6.489301',
+    longitude: '21.885109',
     name: 'initialMap',
     basemap: 'osmLight',
-    zoom: 6,
+    zoom: 4,
     mapViews: []
   };
   public isLoaded = false;

@@ -39,7 +39,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   public legendMarginRight = '25px';
   public legendMarginLeft = '200px';
   private cardHeight: string = '490px';
-  private itemHeight: string = '90vh';
+  private itemHeight: string = '91.5vh';
   public subtitle: string = '';
   public pinned: boolean = false;
   public operatingLayers: Array<any> = [];
@@ -193,7 +193,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   layerFitBound(bounds: LatLngBoundsExpression) {
-    this.map.invalidateSize();
     this.map.fitBounds(bounds);
   }
 

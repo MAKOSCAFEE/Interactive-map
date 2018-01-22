@@ -545,3 +545,12 @@ table.legend-button-table tr td {
   font-size: 12px !important;
   color: black;
 }
+
+.period-legend {
+  color: rgba(0, 0, 0, 0.54);
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
