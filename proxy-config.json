@@ -1,14 +1,14 @@
 {
   "/api": {
-    "target": "https://play.dhis2.org/demo/",
+    "target": "https://play.hisptz.org/27/",
     "secure": "false",
-    "auth":"system:System123",
+    "auth": "system:System123",
     "changeOrigin": true
   },
   "/": {
-    "target": "https://play.dhis2.org/demo/",
+    "target": "https://play.hisptz.org/27/",
     "secure": "false",
-    "auth":"system:System123",
+    "auth": "system:System123",
     "changeOrigin": true
   }
 }

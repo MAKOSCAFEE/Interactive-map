@@ -1,23 +1,32 @@
-<div class="col-lg-12 col-md-12 col-xs-12" [ngClass]="{fullScreen:isFullScreen}" style="padding-left: 5px!important;padding-right: 5px!important; text-align: centre;">
+<div class="map-container">
   <app-map-loader *ngIf="isLoading$ | async"></app-map-loader>
-  <div class="map-control-widgets" [ngClass]="{paddingFullScreen:isFullScreen}" *ngIf="isLoaded$ | async">
-    <div class="zoom-control">
-      <div class="positive-zoom-button">
-        <a (click)="zoomIn('in')">
-          <i class="fa fa-plus"></i>
-        </a>
-      </div>
-      <div class="original-zoom" [ngClass]="{hide:!showCenterButton}">
-        <a (click)="recenterMap(map,centeringLayer)">
-          <i class="fa fa-home"></i>
-        </a>
-      </div>
-      <div class="negative-zoom-button">
-        <a (click)="zoomIn('out')">
-          <i class="fa fa-minus"></i>
-        </a>
+  <div class="map-block__left">
+    <ul class="map-controls__list">
+      <li>
+        <button class="map-controls__btn" title="Zoom in" (click)="zoomIn($event)">
+          <img src="assets/icons/plus.png">
+        </button>
+      </li>
+      <li>
+        <button class="map-controls__btn" title="Home" (click)="recenterMap($event)">
+          <img src="assets/icons/home.png">
+        </button>
+      </li>
+      <li>
+        <button class="map-controls__btn" title="Zoom out" (click)="zoomOut($event)">
+          <img src="assets/icons/minus.png">
+        </button>
+      </li>
+    </ul>
+    <div class="map-layers__block">
+      <button class="map-layers__btn" (mouseenter)="toggleLegendContainerView()">
+        <img src="assets/icons/layers.png">
+      </button>
+      <div class="visualization-legend__container" *ngIf="legendIsOpen" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
+        (mouseleave)="closeMapLegend('leave')">
+        <app-visualization-legend [mapVsualizationObject]="visObject"></app-visualization-legend>
       </div>
     </div>
   </div>
-  <div id="map-view-port-{{componentId}}" style="width:100%;margin-top: -10px" [hidden]="isLoading$ | async"></div>
 </div>
+<div id="map-view-port-{{componentId}}" style="width:100%;margin-top: -10px" [hidden]="isLoading$ | async"></div>

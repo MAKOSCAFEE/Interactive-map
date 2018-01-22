@@ -18,9 +18,7 @@ const environment = {
   production: false
 };
 
-export const metaReducers: MetaReducer<any>[] = !environment.production
-  ? [storeFreeze]
-  : [];
+export const metaReducers: MetaReducer<any>[] = !environment.production ? [storeFreeze] : [];
 
 import { AppComponent } from './containers/app.component';
 import { OrderByPipe } from './shared/order-by.pipe';

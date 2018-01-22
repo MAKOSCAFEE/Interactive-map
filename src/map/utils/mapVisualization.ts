@@ -14,27 +14,6 @@ export function refineHeight(mapHeight) {
   return height;
 }
 
-export function getInitialMapObject(mapConfiguration: MapConfiguration) {
-  return {
-    id: mapConfiguration.id,
-    mapLegend: null,
-    centeringLayer: null,
-    operatingLayers: null,
-    options: {
-      center: [
-        convertLatitudeLongitude(mapConfiguration.latitude),
-        convertLatitudeLongitude(mapConfiguration.longitude)
-      ],
-      zoom: mapConfiguration.zoom,
-      maxZoom: 18,
-      minZoom: 2,
-      zoomControl: true,
-      scrollWheelZoom: false,
-      layers: []
-    }
-  };
-}
-
 export function prepareMapContainer(mapObjectId, height, width, isFullscreen) {
   const parentElement = document.getElementById('map-view-port-' + mapObjectId);
   const mapContainer = document.getElementById(
@@ -55,11 +34,4 @@ export function prepareMapContainer(mapObjectId, height, width, isFullscreen) {
     parentElement.appendChild(div);
   }
   return mapObjectId + '-child-view-port';
-}
-
-function convertLatitudeLongitude(coordinate) {
-  if (Math.abs(parseInt(coordinate, 10)) > 100000) {
-    return parseFloat(coordinate) / 100000;
-  }
-  return parseFloat(coordinate);
 }

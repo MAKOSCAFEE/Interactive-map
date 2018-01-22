@@ -7,4 +7,6 @@ export interface VisualizationObject {
   layers?: Layer[];
   geofeatures?: { [id: number]: GeoFeature[] };
   analytics?: any;
+  orgUnitGroupSet?: any;
+  legendSets?: any;
 }

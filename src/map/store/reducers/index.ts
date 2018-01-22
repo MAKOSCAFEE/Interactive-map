@@ -1,22 +1,19 @@
-import {
-  ActionReducerMap,
-  createSelector,
-  createFeatureSelector
-} from '@ngrx/store';
+import { ActionReducerMap, createSelector, createFeatureSelector } from '@ngrx/store';
 import * as fromLayers from './layers.reducer';
 import * as fromVisualizationObject from './visualization-object.reducers';
 import * as fromGeofeatures from './geo-feature.reducers';
+import * as fromLegendSets from './legend-set.reducers';
 
 export interface MapState {
-  layers: fromLayers.LayerState;
+  leafletLayers: fromLayers.LayerState;
   visualizationObjects: fromVisualizationObject.VisualizationObjectState;
-  geoFeatures: fromGeofeatures.GeoFeatureState;
+  legendSets: fromLegendSets.LegendSetState;
 }
 
 export const reducers: ActionReducerMap<MapState> = {
-  layers: fromLayers.reducer,
+  leafletLayers: fromLayers.reducer,
   visualizationObjects: fromVisualizationObject.reducer,
-  geoFeatures: fromGeofeatures.reducer
+  legendSets: fromLegendSets.reducer
 };
 
 export const getMapState = createFeatureSelector<MapState>('map');

@@ -19,14 +19,18 @@ export function transformVisualizationObject(visualizationObject) {
   let Layers: Layer[] = [];
 
   visualizationObject.mapViews.forEach(mapview => {
-    const layer = _.pick(mapview, [
-      'id',
-      'name',
-      'displayName',
-      'opacity',
-      'hidden',
-      'layer'
-    ]);
+    const layer = {
+      id: mapview.id,
+      name: mapview.id,
+      overlay: true,
+      visible: true,
+      areaRadius: mapview.areaRadius,
+      displayName: mapview.displayName,
+      opacity: mapview.opacity,
+      hidden: mapview.hidden,
+      type: mapview.layer.replace(/\d$/, '') // Replace number in thematic layers
+    };
+
     layers.push(mapview.id);
     const layerOptions = _.pick(mapview, [
       'eventClustering',
@@ -59,10 +63,12 @@ export function transformVisualizationObject(visualizationObject) {
       'interpretations',
       'program',
       'programStage',
+      'legendSet',
       'columns',
       'rows',
       'filters',
       'aggregationType',
+      'organisationUnitGroupSet',
       'startDate',
       'endDate'
     ]);

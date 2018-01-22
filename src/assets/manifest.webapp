@@ -6,7 +6,7 @@
     "icons": {
         "16": "assets/img/icon-16x16.png",
         "48": "assets/img/icon-48x48.png",
-        "128": "assets/img/icon-128x128.png"
+        "100": "assets/img/icon-100x100.png"
     },
     "developer": {
         "name": "HISPTZ",
