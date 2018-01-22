@@ -16,9 +16,7 @@ export function refineHeight(mapHeight) {
 
 export function prepareMapContainer(mapObjectId, height, width, isFullscreen) {
   const parentElement = document.getElementById('map-view-port-' + mapObjectId);
-  const mapContainer = document.getElementById(
-    mapObjectId + '-child-view-port'
-  );
+  const mapContainer = document.getElementById(mapObjectId + '-child-view-port');
   if (mapContainer) {
     mapContainer.parentNode.removeChild(mapContainer);
   }
@@ -29,7 +27,7 @@ export function prepareMapContainer(mapObjectId, height, width, isFullscreen) {
     // height = '81vh';
   }
   div.style.width = width;
-  div.style.height = height;
+  div.style.height = '100%';
   if (parentElement) {
     parentElement.appendChild(div);
   }

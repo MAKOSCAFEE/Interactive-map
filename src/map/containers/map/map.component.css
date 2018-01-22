@@ -8,6 +8,7 @@ img[title] {
 
 .map-container {
   position: relative;
+  height: 100%;
 }
 
 .map-block__left {

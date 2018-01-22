@@ -63,10 +63,11 @@ export const thematic = options => {
         (value - minValue) / (maxValue - minValue) * (radiusHigh - radiusLow) + radiusLow;
     });
     geoJsonLayer = L.geoJSON(valueFeatures, otherOptions);
+    const thematicEvents = thematicLayerEvents(columns, legend);
     geoJsonLayer.on({
-      click: thematicLayerEvents(columns, legend).onClick,
-      mouseover: thematicLayerEvents(columns, legend).mouseover,
-      mouseout: thematicLayerEvents(columns, legend).mouseout
+      click: thematicEvents.onClick,
+      mouseover: thematicEvents.mouseover,
+      mouseout: thematicEvents.mouseout
     });
   }
   const bounds = geoJsonLayer.getBounds();
