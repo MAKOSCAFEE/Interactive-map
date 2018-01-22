@@ -14,18 +14,6 @@ export class LayersEffects {
   ) {}
 
   @Effect()
-  loadLayers$ = this.actions$.ofType(layersActions.LOAD_LAYERS).pipe(
-    switchMap(() => {
-      return this.layerService
-        .getLayers()
-        .pipe(
-          map(layers => new layersActions.LoadLayersSuccess(layers)),
-          catchError(error => of(new layersActions.LoadLayersFail(error)))
-        );
-    })
-  );
-
-  @Effect()
   createLayers$ = this.actions$
     .ofType(layersActions.CREATE_LAYERS)
     .pipe(

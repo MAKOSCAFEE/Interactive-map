@@ -15,10 +15,14 @@ export interface DataSelections {
     id: string;
     name: string;
   };
+  legendSet?: any;
   columns: Dimension[];
   filters: Dimension[];
   rows: Dimension[];
   endDate?: string;
   startDate?: string;
   aggregationType: string;
+  organisationUnitGroupSet?: {
+    id: string;
+  };
 }

@@ -1,17 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as fromStore from '../../store';
 import { Layer } from '../../models/layer.model';
 import * as fromUtils from '../../utils';
-import 'leaflet';
-import 'leaflet.markercluster';
-declare var L;
+import { getTileLayer } from '../../constants/tile-layer.constant';
 import { VisualizationObject } from '../../models/visualization-object.model';
 import { MapConfiguration } from '../../models/map-configuration.model';
 import { GeoFeature } from '../../models/geo-feature.model';
-import * as _ from 'lodash';
+import * as fromLib from '../../lib';
+import { Map, LatLngExpression, control, LatLngBoundsExpression } from 'leaflet';
 
 import { of } from 'rxjs/observable/of';
 import { map, filter, tap, flatMap } from 'rxjs/operators';
@@ -21,7 +20,7 @@ import { map, filter, tap, flatMap } from 'rxjs/operators';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, AfterViewInit {
   public currentMapLayers$: Observable<Layer[]>;
   public isLoaded$: Observable<boolean>;
   public isLoading$: Observable<boolean>;
@@ -40,7 +39,7 @@ export class MapComponent implements OnInit {
   public legendMarginRight = '25px';
   public legendMarginLeft = '200px';
   private cardHeight: string = '490px';
-  private itemHeight: string = '90vh';
+  private itemHeight: string = '91.5vh';
   public subtitle: string = '';
   public pinned: boolean = false;
   public operatingLayers: Array<any> = [];
@@ -50,6 +49,7 @@ export class MapComponent implements OnInit {
   public mapOptions: any;
   public visualizationObject: any;
   public componentId = 'RBoGyrUJDOu';
+  public mapHeight: string;
   private _data$ = new BehaviorSubject<any>({});
 
   @Input()
@@ -67,18 +67,24 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
-    this.isLoading$ = this.store.select(
-      fromStore.isVisualizationObjectsLoading
-    );
+    this.isLoading$ = this.store.select(fromStore.isVisualizationObjectsLoading);
     this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
-
     this._data$.subscribe(data => {
       this.visualizationObject = data;
       this.transhformVisualizationObject(data);
     });
-    setTimeout(() => {
-      this.drawMap();
-    }, 10);
+    this.store.dispatch(new fromStore.AddContectPath());
+  }
+
+  ngAfterViewInit() {
+    this.initializeMapContainer();
+    this.initializeMapBaseLayer(this.visObject.mapConfiguration);
+    this.drawMap();
+    // Add scale control
+    this.mapAddControl({
+      type: 'scale',
+      imperial: false
+    });
   }
 
   transhformVisualizationObject(data) {
@@ -88,84 +94,134 @@ export class MapComponent implements OnInit {
       mapConfiguration: visObject['mapConfiguration'],
       layers: Layers
     };
+    if (Layers.length) {
+      this.store.dispatch(new fromStore.CreateVisualizationObject(this.visObject));
+    }
+  }
 
-    this.store.dispatch(
-      new fromStore.CreateVisualizationObject(this.visObject)
+  initializeMapContainer() {
+    const mapHeight = fromUtils.refineHeight(this.itemHeight);
+    const container = fromUtils.prepareMapContainer(
+      this.componentId,
+      mapHeight,
+      this.mapWidth,
+      this.isFullScreen
     );
+    const otherOptions = {
+      zoomControl: false,
+      scrollWheelZoom: false,
+      worldCopyJump: true
+    };
+    this.map = new Map(container, otherOptions);
+  }
+
+  initializeMapBaseLayer(mapConfiguration: MapConfiguration) {
+    const center: LatLngExpression = [
+      Number(fromLib._convertLatitudeLongitude(mapConfiguration.latitude)),
+      Number(fromLib._convertLatitudeLongitude(mapConfiguration.longitude))
+    ];
+    const zoom = mapConfiguration.zoom;
+
+    const mapTileLayer = getTileLayer(mapConfiguration.basemap);
+    const baseMapLayer = fromLib.LayerType[mapTileLayer.type](mapTileLayer);
+
+    this.map.setView(center, zoom);
+    // Add baseMap Layer;
+    this.map.addLayer(baseMapLayer);
   }
 
   drawMap() {
     this.visualizationObject$.subscribe(visualizationObject => {
       if (visualizationObject) {
-        const mapObject = fromUtils.getInitialMapObject(
-          visualizationObject.mapConfiguration
-        );
-        const layers = fromUtils.getMapLayers(
-          L,
-          visualizationObject.mapConfiguration.basemap,
-          mapObject.id,
-          visualizationObject.layers,
-          visualizationObject.geofeatures,
-          visualizationObject.analytics
-        );
-        const mapHeight = fromUtils.refineHeight(this.itemHeight);
-        const container = fromUtils.prepareMapContainer(
-          this.componentId,
-          mapHeight,
-          this.mapWidth,
-          this.isFullScreen
-        );
-        mapObject.options.layers = layers[0];
-        this.mapOptions = mapObject.options;
-        this.map = L.map(container, mapObject.options);
+        const overlayLayers = fromLib.GetOverLayLayers(visualizationObject);
+        this.map.eachLayer(layer => this.map.removeLayer(layer));
+        this.initializeMapBaseLayer(visualizationObject.mapConfiguration);
+        const layersBounds = [];
+        overlayLayers.map((layer, index) => {
+          const { bounds, legendSet } = layer;
+          if (bounds) {
+            layersBounds.push(bounds);
+          }
+          if (legendSet && legendSet.legend) {
+            this.store.dispatch(new fromStore.AddLegendSetSuccess(legendSet));
+          }
+          this.createLayer(layer, index);
+        });
+
+        if (layersBounds.length) {
+          this.layerFitBound(layersBounds);
+        }
       }
     });
   }
 
-  recenterMap(maP, layer) {
-    if (layer) {
-      if (layer instanceof L.LayerGroup) {
-        if (layer.getLayers().length === 2) {
-          layer = layer.getLayers()[0];
-        }
-      }
+  mapAddControl(mapControl) {
+    let newControl = mapControl;
 
-      const bounds = Array.isArray(layer)
-        ? new L.LatLngBounds(layer)
-        : layer.getBounds();
-      if (this._checkIfValidCoordinate(bounds)) {
-        try {
-          maP.fitBounds(bounds);
-        } catch (e) {}
-      } else {
-        this.hasError = true;
-        this.errorMessage = 'Invalid organisation unit boundaries found!';
-      }
-    } else {
-      return;
+    if (mapControl.type && control[mapControl.type]) {
+      newControl = control[mapControl.type](mapControl);
     }
+    this.map.addControl(newControl);
   }
-  private _checkIfValidCoordinate(bounds) {
-    const boundLength = Object.getOwnPropertyNames(bounds).length;
-    if (boundLength > 0) {
-      return true;
-    } else {
-      return false;
+
+  createLayer(optionsLayer, index) {
+    const { displaySettings, id, geoJsonLayer, visible } = optionsLayer;
+    this.createPane(displaySettings.labels, id, index);
+    this.setLayerVisibility(visible, geoJsonLayer);
+  }
+
+  createPane(labels, id, index) {
+    const zIndex = 600 - index * 10;
+    this.map.createPane(id);
+    this.map.getPane(id).style.zIndex = zIndex.toString();
+
+    if (labels) {
+      const paneLabelId = `${id}-labels`;
+      const labelPane = this.map.createPane(paneLabelId);
+      this.map.getPane(paneLabelId).style.zIndex = (zIndex + 1).toString();
     }
   }
 
-  /**
-   * Update map Zoom Level
-   * */
-  zoomIn(zoomType) {
-    zoomType === 'in'
-      ? this.map.zoomIn()
-      : zoomType === 'out'
-        ? this.map.zoomOut()
-        : this.map.setZoom(this.mapOptions.zoom);
+  onLayerAdd(index, optionsLayer) {}
+
+  setLayerVisibility(isVisible, layer) {
+    if (isVisible && this.map.hasLayer(layer) === false) {
+      this.map.addLayer(layer);
+    } else if (!isVisible && this.map.hasLayer(layer) === true) {
+      this.map.removeLayer(layer);
+    }
   }
 
-  getCurrentMapLayers(layers: string[]) {
-    console.log();
+  layerFitBound(bounds: LatLngBoundsExpression) {
+    this.map.fitBounds(bounds);
+  }
+
+  zoomIn(event) {
+    this.map.zoomIn();
+  }
+
+  zoomOut(event) {
+    this.map.zoomOut();
+  }
+
+  recenterMap(event) {
+    this.map.eachLayer(layer => console.log(layer.getBounds()));
+  }
+
+  toggleLegendContainerView() {
+    if (this.legendIsOpen || !this.legendIsOpen) {
+      this.legendIsOpen = true;
+    }
+  }
+
+  closeMapLegend(flag) {
+    if (flag === 'leave' && !this.pinned) {
+      this.legendIsOpen = false;
+    }
+
+    if (!flag) {
+      this.pinned = false;
+      this.legendIsOpen = false;
+    }
   }
 }
