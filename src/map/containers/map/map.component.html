@@ -22,8 +22,8 @@
       <button class="map-layers__btn" (mouseenter)="toggleLegendContainerView()">
         <img src="assets/icons/layers.png">
       </button>
-      <div class="visualization-legend__container" *ngIf="legendIsOpen" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
-        (mouseleave)="closeMapLegend('leave')">
+      <div class="visualization-legend__container" *ngIf="visualizationLegendIsOpen$ | async" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
+        (mouseleave)="toggleLegendContainerView()">
         <app-visualization-legend [mapVsualizationObject]="visObject"></app-visualization-legend>
       </div>
     </div>

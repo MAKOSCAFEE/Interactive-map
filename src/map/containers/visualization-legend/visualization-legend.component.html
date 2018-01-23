@@ -68,10 +68,10 @@
         <img src="assets/icons/upload.png" alt="">
       </a>
       <a title="Stick Legend" (click)="stickLegendContainer($event)">
-        <img *ngIf="!sticky" src="assets/icons/pin-empty.png" alt="">
-        <img *ngIf="sticky" src="assets/icons/pin-filled.png" alt="">
+        <img *ngIf="!(sticky$ | async)" src="assets/icons/pin-empty.png" alt="">
+        <img *ngIf="sticky$ | async" src="assets/icons/pin-filled.png" alt="">
       </a>
-      <a title="Close Legend">
+      <a title="Close Legend" (click)="closeLegendContainer($event)">
         <img src="assets/icons/close.png" alt="">
       </a>
     </div>

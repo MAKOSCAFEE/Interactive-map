@@ -25,6 +25,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   public isLoaded$: Observable<boolean>;
   public isLoading$: Observable<boolean>;
   public visualizationObject$: Observable<VisualizationObject>;
+  public visualizationLegendIsOpen$: Observable<boolean>;
   private mapConfiguration: MapConfiguration;
   private Layers: Layer[] = [];
   private visObject: VisualizationObject;
@@ -68,6 +69,7 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
     this.isLoading$ = this.store.select(fromStore.isVisualizationObjectsLoading);
+    this.visualizationLegendIsOpen$ = this.store.select(fromStore.isVisualizationLegendOpen);
     this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
     this._data$.subscribe(data => {
       this.visualizationObject = data;
@@ -209,19 +211,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   toggleLegendContainerView() {
-    if (this.legendIsOpen || !this.legendIsOpen) {
-      this.legendIsOpen = true;
-    }
-  }
-
-  closeMapLegend(flag) {
-    if (flag === 'leave' && !this.pinned) {
-      this.legendIsOpen = false;
-    }
-
-    if (!flag) {
-      this.pinned = false;
-      this.legendIsOpen = false;
-    }
+    this.store.dispatch(new fromStore.ToggleOpenVisualizationLegend());
   }
 }

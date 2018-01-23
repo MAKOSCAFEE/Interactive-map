@@ -19,8 +19,8 @@ export class VisualizationLegendComponent implements OnInit {
   public activeLayer: number;
   public visualizationLegends: any = [];
   public legendSetEntities: { [id: string]: LegendSet };
+  public sticky$: Observable<boolean>;
   openTileLegend: boolean = false;
-  sticky: boolean = false;
   isRemovable: boolean = false;
   toggleBoundary: boolean = true;
   boundaryLegend: Array<any> = [];
@@ -33,6 +33,7 @@ export class VisualizationLegendComponent implements OnInit {
   constructor(private store: Store<fromStore.MapState>) {}
 
   ngOnInit() {
+    this.sticky$ = this.store.select(fromStore.isVisualizationLegendPinned);
     this.store.select(fromStore.getAllLegendSetObjectsEntities).subscribe(lg => {
       this.legendSetEntities = lg;
     });
@@ -78,10 +79,11 @@ export class VisualizationLegendComponent implements OnInit {
 
   stickLegendContainer(e) {
     e.stopPropagation();
-    if (!this.sticky) {
-      this.sticky = true;
-    } else {
-      this.sticky = false;
-    }
+    this.store.dispatch(new fromStore.TogglePinVisualizationLegend());
+  }
+
+  closeLegendContainer(e) {
+    e.stopPropagation();
+    this.store.dispatch(new fromStore.CloseVisualizationLegend());
   }
 }
