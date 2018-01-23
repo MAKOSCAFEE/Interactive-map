@@ -1,6 +1,11 @@
 .map-legend__container {
   width: 100%;
   position: relative;
+  -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .map-legend-list {
@@ -553,4 +558,34 @@ table.legend-button-table tr td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.visualization-btn {
+  border-style: none;
+  cursor: pointer;
+  background-color: hsla(0, 0%, 100%, 0.85);
+  height: 34px;
+  width: 34px;
+  border-radius: 50%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.visualization-btn img {
+  display: block;
+  margin: auto;
+  height: 15px;
+}
+
+.legendFilter__container {
+  display: flex;
+}
+
+.filter__button {
+  position: absolute;
+  right: -36px;
+  text-align: center;
 }

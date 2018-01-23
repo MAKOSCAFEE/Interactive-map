@@ -64,8 +64,7 @@ export class VisualizationLegendComponent implements OnInit {
   }
 
   setActiveItem(index, e) {
-    console.log(index);
-    e.stopPropagation();
+    // e.stopPropagation();
     if (index === -1) {
       this.LegendsTileLayer = Object.keys(TILE_LAYERS).map(layerKey => TILE_LAYERS[layerKey]);
     }
@@ -85,5 +84,9 @@ export class VisualizationLegendComponent implements OnInit {
   closeLegendContainer(e) {
     e.stopPropagation();
     this.store.dispatch(new fromStore.CloseVisualizationLegend());
+  }
+
+  openFilters(e) {
+    e.stopPropagation();
   }
 }

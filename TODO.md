@@ -27,6 +27,7 @@
 
 * [*] Add Labels when there is one.(backlog)
 * [*] Add Legend Container(backlog)
+* [*] Pin legend and close as you want.
 * [ ] Create Legends for each layes and add them to redux state(backlog)
 * [*] Add icons and favicon
 * [ ] Add filter and data selection components container
