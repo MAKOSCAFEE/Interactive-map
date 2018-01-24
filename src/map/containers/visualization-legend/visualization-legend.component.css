@@ -4,7 +4,7 @@
   -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
-  width: 250px;
+  min-width: 250px;
   background-color: rgba(255, 255, 255, 0.8);
 }
 
@@ -586,6 +586,20 @@ table.legend-button-table tr td {
 
 .filter__button {
   position: absolute;
-  right: -36px;
+  right: -34px;
   text-align: center;
+}
+
+.legend-filter__container {
+  width: 100%;
+  -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.legend-filter__container .btn-group-vertical {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
 }

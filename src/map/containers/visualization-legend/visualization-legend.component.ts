@@ -20,6 +20,7 @@ export class VisualizationLegendComponent implements OnInit {
   public visualizationLegends: any = [];
   public legendSetEntities: { [id: string]: LegendSet };
   public sticky$: Observable<boolean>;
+  public showFilterContainer: boolean = false;
   openTileLegend: boolean = false;
   isRemovable: boolean = false;
   toggleBoundary: boolean = true;
@@ -88,5 +89,8 @@ export class VisualizationLegendComponent implements OnInit {
 
   openFilters(e) {
     e.stopPropagation();
+    this.showFilterContainer = true;
   }
+
+  toggleLayerView(e) {}
 }
