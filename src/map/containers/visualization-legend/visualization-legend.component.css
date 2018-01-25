@@ -64,7 +64,6 @@
   display: flex;
   width: 100%;
   padding: 0;
-  margin-top: 5px;
 }
 
 .map-legend-table-list {
@@ -566,7 +565,7 @@ table.legend-button-table tr td {
   background-color: hsla(0, 0%, 100%, 0.85);
   height: 34px;
   width: 34px;
-  border-radius: 50%;
+  border-radius: 0 50% 50% 0;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -577,7 +576,7 @@ table.legend-button-table tr td {
 .visualization-btn img {
   display: block;
   margin: auto;
-  height: 15px;
+  height: 20px;
 }
 
 .legendFilter__container {
@@ -592,6 +591,7 @@ table.legend-button-table tr td {
 
 .legend-filter__container {
   width: 100%;
+  min-width: 400px;
   -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);

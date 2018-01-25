@@ -13,7 +13,7 @@
               <img *ngIf="legend.hidden" src="assets/icons/eye-cross.png" alt="">
             </a>
           </div>
-          <div class="filter__button" *ngIf="activeLayer === i">
+          <div class="filter__button" *ngIf="activeLayer === i && !showFilterContainer" [ngStyle]="{'top': 'calc(' + buttonTop+ 'px)'}">
             <button class="visualization-btn" title="Filter by different dimensions" (click)="openFilters($event)">
               <img alt="" src="assets/icons/filter.png">
             </button>
@@ -83,12 +83,7 @@
       </div>
     </div>
   </div>
-  <div class="legend-filter__container" *ngIf="showFilterContainer">
-    <div class="btn-group-vertical">
-      <button type="button" class="btn btn-secondary">Data Selection</button>
-      <button type="button" class="btn btn-secondary">Period Filter</button>
-      <button type="button" class="btn btn-secondary">Layout Filter</button>
-      <button type="button" class="btn btn-secondary">Layout Filter</button>
-    </div>
+  <div class="legend-filter__container" *ngIf="showFilterContainer && activeLayer >=0">
+    <app-visualization-filter-section></app-visualization-filter-section>
   </div>
 </div>

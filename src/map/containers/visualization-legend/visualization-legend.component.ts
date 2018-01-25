@@ -21,6 +21,8 @@ export class VisualizationLegendComponent implements OnInit {
   public legendSetEntities: { [id: string]: LegendSet };
   public sticky$: Observable<boolean>;
   public showFilterContainer: boolean = false;
+  public buttonTop: string;
+  public buttonHeight: string;
   openTileLegend: boolean = false;
   isRemovable: boolean = false;
   toggleBoundary: boolean = true;
@@ -70,10 +72,15 @@ export class VisualizationLegendComponent implements OnInit {
       this.LegendsTileLayer = Object.keys(TILE_LAYERS).map(layerKey => TILE_LAYERS[layerKey]);
     }
 
+    this.buttonTop = e.currentTarget.offsetTop;
+    this.buttonHeight = e.currentTarget.offsetHeight;
+
     if (this.activeLayer === index) {
       this.activeLayer = -2;
+      this.showFilterContainer = false;
     } else {
       this.activeLayer = index;
+      this.showFilterContainer = false;
     }
   }
 
