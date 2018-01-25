@@ -9,7 +9,7 @@ export interface MapState {
   leafletLayers: fromLayers.LayerState;
   visualizationObjects: fromVisualizationObject.VisualizationObjectState;
   legendSets: fromLegendSets.LegendSetState;
-  visualizationLegend: fromVisualizationLegend.VisualizationState;
+  visualizationLegend: fromVisualizationLegend.VisualizationLegendState;
 }
 
 export const reducers: ActionReducerMap<MapState> = {

@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { LegendSet } from '../../models/legend-set.model';
+import { LegendSet } from '../../models/Legend-set.model';
 
 // add Context Path
 export const ADD_LEGEND_SET = '[MAP] Add Legend Set';

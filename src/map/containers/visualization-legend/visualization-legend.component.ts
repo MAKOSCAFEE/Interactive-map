@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { TILE_LAYERS } from '../../constants/tile-layer.constant';
 import * as fromStore from '../../store';
-import { LegendSet } from '../../models/legend-set.model';
+import { LegendSet } from '../../models/Legend-set.model';
 
 @Component({
   selector: 'app-visualization-legend',

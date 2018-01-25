@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import * as fromFeature from '../reducers';
-import { LegendSet } from '../../models/legend-set.model';
+import { LegendSet } from '../../models/Legend-set.model';
 import * as fromLegendSetReducers from '../reducers/legend-set.reducers';
 
 export const getLegendSetObjectState = createSelector(
