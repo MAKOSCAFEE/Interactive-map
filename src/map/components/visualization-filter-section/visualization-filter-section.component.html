@@ -40,5 +40,10 @@
     <app-data-filter *ngIf="selectedFilter === 'DATA'" [selectedItems]="selectedDataItems" (onDataFilterClose)="selectedFilter = undefined"
       (onDataUpdate)="onFilterUpdateAction($event, 'DATA')"></app-data-filter>
     <!--end of data filter-->
+
+    <!--period filter-->
+    <app-period-filter *ngIf="selectedFilter === 'PERIOD'" [selectedPeriods]="selectedPeriods" (onPeriodFilterClose)="selectedFilter = undefined"
+      (onPeriodUpdate)="onFilterUpdateAction($event, 'PERIOD')"></app-period-filter>
+    <!--end of period filter-->
   </div>
 </div>

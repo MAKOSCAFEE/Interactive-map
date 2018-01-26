@@ -41,6 +41,7 @@ export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
   showFilters: boolean;
   selectedFilter: string = "ORG_UNIT";
   selectedDataItems: any = [];
+  selectedPeriods: any = [];
   orgUnitModel: any = {
     selectionMode: "orgUnit",
     selectedLevels: [],
