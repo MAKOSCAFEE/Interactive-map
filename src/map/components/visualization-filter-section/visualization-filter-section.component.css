@@ -11,14 +11,20 @@
   cursor: pointer;
   background-color: hsla(0, 0%, 100%, 0.85);
   height: 30px;
-  width: 30px;
-  border-radius: 50%;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  display: flex;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.border-round {
+  border-radius: 50%;
+}
+
+.border-round-right {
+  border-radius: 0 50% 50% 0;
 }
 
 .data-filter-btns {
@@ -44,6 +50,14 @@
 .period-filter-btn,
 .org-unit-filter-btn {
   margin-right: 5px;
+}
+
+.layout-filter-btn span,
+.data-filter-btn span,
+.period-filter-btn span,
+.org-unit-filter-btn span {
+  font-size: 12px;
+  margin-left: 5px;
 }
 
 .data-filter-btn img {

@@ -1,16 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Component, OnInit, Input } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
-import { TILE_LAYERS } from '../../constants/tile-layer.constant';
-import * as fromStore from '../../store';
-import { LegendSet } from '../../models/Legend-set.model';
+import { TILE_LAYERS } from "../../constants/tile-layer.constant";
+import * as fromStore from "../../store";
+import { LegendSet } from "../../models/Legend-set.model";
 
 @Component({
-  selector: 'app-visualization-legend',
-  templateUrl: './visualization-legend.component.html',
-  styleUrls: ['./visualization-legend.component.css']
+  selector: "app-visualization-legend",
+  templateUrl: "./visualization-legend.component.html",
+  styleUrls: ["./visualization-legend.component.css"]
 })
 export class VisualizationLegendComponent implements OnInit {
   @Input() mapVsualizationObject: any;
@@ -99,6 +99,7 @@ export class VisualizationLegendComponent implements OnInit {
   openFilters(e) {
     e.stopPropagation();
     this.showFilterContainer = true;
+    this.store.dispatch(new fromStore.ToggleVisualizationLegendFilterSection());
   }
 
   toggleLayerView(e) {}

@@ -1,25 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from "@angular/core";
+import { animate, state, style, transition, trigger } from "@angular/animations";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import * as fromStore from "../../store";
 
 @Component({
-  selector: 'app-visualization-filter-section',
-  templateUrl: './visualization-filter-section.component.html',
-  styleUrls: ['./visualization-filter-section.component.css'],
+  selector: "app-visualization-filter-section",
+  templateUrl: "./visualization-filter-section.component.html",
+  styleUrls: ["./visualization-filter-section.component.css"],
   animations: [
-    trigger('open', [
+    trigger("open", [
       state(
-        'in',
+        "in",
         style({
           opacity: 1
         })
       ),
-      transition('void => *', [
+      transition("void => *", [
         style({
           opacity: 0
         }),
         animate(700)
       ]),
-      transition('* => void', [
+      transition("* => void", [
         animate(300),
         style({
           opacity: 0
@@ -28,24 +32,25 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ])
   ]
 })
-export class VisualizationFilterSectionComponent implements OnInit {
+export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
   @Input() selectedDimensions: any;
   @Input() visualizationType: string;
   @Input() loaded: boolean = true;
   @Output() onFilterUpdate: EventEmitter<any> = new EventEmitter<any>();
   @Output() onLayoutUpdate: EventEmitter<any> = new EventEmitter<any>();
   showFilters: boolean;
-  selectedFilter: string;
+  selectedFilter: string = "ORG_UNIT";
 
-  constructor() {
+  constructor(private store: Store<fromStore.MapState>) {}
+
+  ngOnInit() {
     this.showFilters = true;
   }
-
-  ngOnInit() {}
 
   toggleFilters(e) {
     e.stopPropagation();
     this.showFilters = !this.showFilters;
+    this.store.dispatch(new fromStore.ToggleVisualizationLegendFilterSection());
   }
 
   toggleCurrentFilter(e, selectedFilter) {
@@ -56,10 +61,14 @@ export class VisualizationFilterSectionComponent implements OnInit {
   onFilterUpdateAction(filterValue: any, filterType: string) {
     this.selectedFilter = undefined;
 
-    if (filterType === 'LAYOUT') {
+    if (filterType === "LAYOUT") {
       this.onLayoutUpdate.emit(filterValue);
     } else {
       this.onFilterUpdate.emit(filterValue);
     }
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(new fromStore.CloseVisualizationLegendFilterSection());
   }
 }

@@ -44,6 +44,14 @@ export function reducer(
       };
     }
 
+    case fromVisualizationLegend.CLOSE_VISUALIZATION_FILTER_SECTION: {
+      const filterSectionOpen = false;
+      return {
+        ...state,
+        filterSectionOpen
+      };
+    }
+
     case fromVisualizationLegend.CLOSE_PIN_VISUALIZATION_LEGEND: {
       const pinned = state.pinned;
       const open = !state.open;
