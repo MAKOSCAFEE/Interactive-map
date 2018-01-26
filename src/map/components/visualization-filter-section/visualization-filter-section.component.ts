@@ -40,6 +40,19 @@ export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
   @Output() onLayoutUpdate: EventEmitter<any> = new EventEmitter<any>();
   showFilters: boolean;
   selectedFilter: string = "ORG_UNIT";
+  selectedDataItems: any = [];
+  orgUnitModel: any = {
+    selectionMode: "orgUnit",
+    selectedLevels: [],
+    showUpdateButton: true,
+    selectedGroups: [],
+    orgUnitLevels: [],
+    orgUnitGroups: [],
+    selectedOrgUnits: [],
+    userOrgUnits: [],
+    type: "report", // can be 'data_entry'
+    selectedUserOrgUnits: []
+  };
 
   constructor(private store: Store<fromStore.MapState>) {}
 

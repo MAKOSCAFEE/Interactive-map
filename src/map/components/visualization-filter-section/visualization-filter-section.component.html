@@ -31,6 +31,14 @@
     </div>
   </div>
   <div class="visualization-filter-body dashboard-border" *ngIf="selectedFilter">
+    <!--org unit filter-->
+    <app-org-unit-filter *ngIf="selectedFilter === 'ORG_UNIT'" [orgUnitModel]="orgUnitModel" (onOrgUnitClose)="selectedFilter = undefined"
+      (onOrgUnitUpdate)="onFilterUpdateAction($event, 'ORG_UNIT')"></app-org-unit-filter>
+    <!--end of org unit filter-->
 
+    <!--data filter-->
+    <app-data-filter *ngIf="selectedFilter === 'DATA'" [selectedItems]="selectedDataItems" (onDataFilterClose)="selectedFilter = undefined"
+      (onDataUpdate)="onFilterUpdateAction($event, 'DATA')"></app-data-filter>
+    <!--end of data filter-->
   </div>
 </div>

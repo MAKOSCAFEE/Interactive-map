@@ -1,8 +1,8 @@
 .visualization-filter-section {
-  margin-top: 5px;
   width: 100%;
 }
 .visualization-filter-buttons {
+  padding: 3px 0;
   display: flex;
 }
 
@@ -37,7 +37,8 @@
 .visualization-filter-btn img {
   display: block;
   margin: auto;
-  height: 10px;
+  top: 0;
+  height: 20px;
 }
 
 .period-filter-btn img {
