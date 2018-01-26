@@ -4,7 +4,7 @@
       <img *ngIf="!showFilters" src="assets/icons/filter.png" alt="">
       <img *ngIf="showFilters" src="assets/icons/close.png" alt="">
     </button>
-    <div class="visualization-filter-list">
+    <div class="visualization-filter-list" *ngIf="showFilters">
       <button class="dashboard-btn data-filter-btn" [ngClass]="{'active-filter': selectedFilter === 'DATA'}" title="Filter by data"
         (click)="toggleCurrentFilter($event, 'DATA')">
         <img src="assets/icons/data.png" alt="">

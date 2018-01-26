@@ -3,11 +3,13 @@ import * as fromVisualizationLegend from './../actions/visualization-legend.acti
 export interface VisualizationLegendState {
   open: boolean;
   pinned: boolean;
+  filterSectionOpen: boolean;
 }
 
 export const initialState: VisualizationLegendState = {
   pinned: false,
-  open: false
+  open: false,
+  filterSectionOpen: false
 };
 
 export function reducer(
@@ -34,6 +36,14 @@ export function reducer(
       };
     }
 
+    case fromVisualizationLegend.TOGGLE_VISUALIZATION_FILTER_SECTION: {
+      const filterSectionOpen = !state.filterSectionOpen;
+      return {
+        ...state,
+        filterSectionOpen
+      };
+    }
+
     case fromVisualizationLegend.CLOSE_PIN_VISUALIZATION_LEGEND: {
       const pinned = state.pinned;
       const open = !state.open;
@@ -55,3 +65,5 @@ export function reducer(
 
 export const getVisualizationLegendOpen = (state: VisualizationLegendState) => state.open;
 export const getVisualizationLegendPinned = (state: VisualizationLegendState) => state.pinned;
+export const getVisualizationLegendFilterSectionOpen = (state: VisualizationLegendState) =>
+  state.filterSectionOpen;

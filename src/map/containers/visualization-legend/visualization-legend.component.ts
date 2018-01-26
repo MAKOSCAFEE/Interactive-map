@@ -20,6 +20,7 @@ export class VisualizationLegendComponent implements OnInit {
   public visualizationLegends: any = [];
   public legendSetEntities: { [id: string]: LegendSet };
   public sticky$: Observable<boolean>;
+  public isFilterSectionOpen$: Observable<boolean>;
   public showFilterContainer: boolean = false;
   public buttonTop: string;
   public buttonHeight: string;
@@ -37,6 +38,7 @@ export class VisualizationLegendComponent implements OnInit {
 
   ngOnInit() {
     this.sticky$ = this.store.select(fromStore.isVisualizationLegendPinned);
+    this.isFilterSectionOpen$ = this.store.select(fromStore.isVisualizationLegendFilterSectionOpen);
     this.store.select(fromStore.getAllLegendSetObjectsEntities).subscribe(lg => {
       this.legendSetEntities = lg;
     });

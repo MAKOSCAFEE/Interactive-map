@@ -17,3 +17,8 @@ export const isVisualizationLegendPinned = createSelector(
   getVisualizationLegendState,
   fromVisualizationLegend.getVisualizationLegendPinned
 );
+
+export const isVisualizationLegendFilterSectionOpen = createSelector(
+  getVisualizationLegendState,
+  fromVisualizationLegend.getVisualizationLegendFilterSectionOpen
+);
