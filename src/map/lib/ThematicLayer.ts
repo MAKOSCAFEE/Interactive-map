@@ -47,7 +47,9 @@ export const thematic = options => {
       ? createLegendFromLegendSet(legendSet)
       : createLegendFromConfig(orderedValues, legendProperties);
     const getLegendItem = curry(getLegendItemForValue)(legend.items);
-    legend['period'] = analyticsData.metaData.dimensions.pe[0];
+    legend['period'] =
+      (analyticsData.metaData.dimensions && analyticsData.metaData.dimensions.pe[0]) ||
+      analyticsData.metaData.pe[0];
 
     valueFeatures.forEach(({ id, properties }) => {
       const value = valueById[id];

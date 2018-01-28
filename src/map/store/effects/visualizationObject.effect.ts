@@ -128,4 +128,17 @@ export class VisualizationObjectEffects {
   //       // console.log('Is actually Listening:::', layers);
   //     })
   //   );
+
+  @Effect({ dispatch: false })
+  dispatchCreateVizObjectComplete$ = this.actions$
+    .ofType(visualizationObjectActions.ADD_VISUALIZATION_OBJECT_COMPLETE)
+    .pipe(
+      tap((action: visualizationObjectActions.AddVisualizationObjectComplete) => {
+        const visualizationObject = action.payload;
+        // console.log('Is actually Listening:::', visualizationObject);
+        this.store.dispatch(
+          new visualizationObjectActions.AddVisualizationObjectCompleteSuccess(visualizationObject)
+        );
+      })
+    );
 }

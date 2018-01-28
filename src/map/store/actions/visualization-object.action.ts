@@ -20,6 +20,11 @@ export const ADD_LAYER = '[Map] Add Layer to visualization object';
 export const ADD_GEOFEATURES_VIZ = '[Map] Add Geofeatures to visualization object';
 export const REMOVE_LAYER = '[Map] Remove Layer from visualization object';
 export const HIDE_LAYER = '[Map] Hide Layer';
+export const ADD_VISUALIZATION_OBJECT_COMPLETE = '[Map] Add complete visualization object';
+export const ADD_VISUALIZATION_OBJECT_COMPLETE_SUCCESS =
+  '[Map] Add complete visualization object success';
+export const ADD_VISUALIZATION_OBJECT_COMPLETE_FAIL =
+  '[Map] Add complete visualization object fail';
 export const LOAD_VISUALIZATION_OBJECT = '[Map] Load visualization object';
 export const LOAD_VISUALIZATION_OBJECT_SUCCESS = '[Map] Load visualization object success';
 export const LOAD_VISUALIZATION_OBJECT_FAIL = '[Map] Load visualization object Fail';
@@ -120,6 +125,21 @@ export class LoadVisualizationObjectSuccess implements Action {
 
 export class LoadVisualizationObjectFail implements Action {
   readonly type = LOAD_VISUALIZATION_OBJECT_FAIL;
+  constructor(public payload: VisualizationObject) {}
+}
+
+export class AddVisualizationObjectComplete implements Action {
+  readonly type = ADD_VISUALIZATION_OBJECT_COMPLETE;
+  constructor(public payload: VisualizationObject) {}
+}
+
+export class AddVisualizationObjectCompleteSuccess implements Action {
+  readonly type = ADD_VISUALIZATION_OBJECT_COMPLETE_SUCCESS;
+  constructor(public payload: VisualizationObject) {}
+}
+
+export class AddVisualizationObjectCompleteFail implements Action {
+  readonly type = ADD_VISUALIZATION_OBJECT_COMPLETE_FAIL;
   constructor(public payload: any) {}
 }
 
@@ -143,4 +163,7 @@ export type VisualizationObjectAction =
   | UpdateVizAnalytics
   | LoadVizObjectGeoFeature
   | LoadVizObjectGeoFeatureFail
-  | LoadVizObjectGeoFeatureSuccess;
+  | LoadVizObjectGeoFeatureSuccess
+  | AddVisualizationObjectComplete
+  | AddVisualizationObjectCompleteSuccess
+  | AddVisualizationObjectCompleteFail;

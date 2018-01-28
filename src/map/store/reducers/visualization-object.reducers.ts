@@ -38,13 +38,28 @@ export function reducer(
         (entitie: { [id: string]: VisualizationObject }, vizObj: VisualizationObject) => {
           return {
             ...entitie,
-            [vizObj.mapConfiguration.id]: vizObj
+            [vizObj.componentId]: vizObj
           };
         },
         {
           ...state.entities
         }
       );
+      return {
+        ...state,
+        loaded: true,
+        loading: false,
+        entities
+      };
+    }
+
+    case fromVisualizationObject.ADD_VISUALIZATION_OBJECT_COMPLETE_SUCCESS: {
+      const vizObj = action.payload;
+      const entities = {
+        ...state.entities,
+        [vizObj.componentId]: vizObj
+      };
+
       return {
         ...state,
         loaded: true,
@@ -66,10 +81,10 @@ export function reducer(
     case fromVisualizationObject.UPDATE_VISUALIZATION_OBJECT_SUCCESS: {
       const visualizationObject = action.payload;
       const currentLayer = visualizationObject.layers[0].id;
-      const currentMap = visualizationObject.mapConfiguration.id;
+      const currentMap = visualizationObject.componentId;
       const entities = {
         ...state.entities,
-        [visualizationObject.mapConfiguration.id]: visualizationObject
+        [visualizationObject.componentId]: visualizationObject
       };
       return {
         ...state,
@@ -82,14 +97,14 @@ export function reducer(
     }
 
     case fromVisualizationObject.ADD_GEOFEATURES_VIZ: {
-      const { mapConfiguration, geofeatures } = action.payload;
+      const { componentId, mapConfiguration, geofeatures } = action.payload;
       const visualizationObject = {
-        ...state.entities[mapConfiguration.id],
+        ...state.entities[componentId],
         geofeatures
       };
       const entities = {
         ...state.entities,
-        [visualizationObject.mapConfiguration.id]: visualizationObject
+        [componentId]: visualizationObject
       };
       return {
         ...state,
@@ -100,14 +115,14 @@ export function reducer(
     }
 
     case fromVisualizationObject.ADD_LEGEND_SET_VIZ: {
-      const { mapConfiguration, legendSets } = action.payload;
+      const { componentId, mapConfiguration, legendSets } = action.payload;
       const visualizationObject = {
-        ...state.entities[mapConfiguration.id],
+        ...state.entities[componentId],
         legendSets
       };
       const entities = {
         ...state.entities,
-        [visualizationObject.mapConfiguration.id]: visualizationObject
+        [componentId]: visualizationObject
       };
       return {
         ...state,
@@ -118,14 +133,14 @@ export function reducer(
     }
 
     case fromVisualizationObject.ADD_ANALYTICS_VIZ: {
-      const { mapConfiguration, analytics } = action.payload;
+      const { componentId, mapConfiguration, analytics } = action.payload;
       const visualizationObject = {
-        ...state.entities[mapConfiguration.id],
+        ...state.entities[componentId],
         analytics
       };
       const entities = {
         ...state.entities,
-        [visualizationObject.mapConfiguration.id]: visualizationObject
+        [componentId]: visualizationObject
       };
       return {
         ...state,
