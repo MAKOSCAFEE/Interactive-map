@@ -25,6 +25,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   public isLoaded$: Observable<boolean>;
   public isLoading$: Observable<boolean>;
   public visualizationObject$: Observable<VisualizationObject>;
+  public visualizationObjectEntities$: Observable<any>;
+  public visualizationLegendIsOpen$: Observable<boolean>;
   private mapConfiguration: MapConfiguration;
   private Layers: Layer[] = [];
   private visObject: VisualizationObject;
@@ -51,11 +53,21 @@ export class MapComponent implements OnInit, AfterViewInit {
   public componentId = 'RBoGyrUJDOu';
   public mapHeight: string;
   private _data$ = new BehaviorSubject<any>({});
+  private _vizObject$ = new BehaviorSubject<any>({});
 
   @Input()
   set data(value) {
     // set the latest value for _data$ BehaviorSubject
     this._data$.next(value);
+  }
+
+  @Input()
+  set vizObject(value) {
+    this._vizObject$.next(value);
+  }
+
+  get vizObject() {
+    return this._vizObject$.getValue();
   }
 
   get data() {
@@ -68,10 +80,21 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
     this.isLoading$ = this.store.select(fromStore.isVisualizationObjectsLoading);
+    this.visualizationLegendIsOpen$ = this.store.select(fromStore.isVisualizationLegendOpen);
     this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
+    this.visualizationObjectEntities$ = this.store.select(
+      fromStore.getAllVisualizationObjectsEntities
+    );
     this._data$.subscribe(data => {
       this.visualizationObject = data;
-      this.transhformVisualizationObject(data);
+      this.transhformFavourites(data);
+    });
+
+    this._vizObject$.subscribe(vizObj => {
+      if (vizObj) {
+        this.componentId = vizObj.id;
+        this.transformVisualizationObject(vizObj);
+      }
     });
     this.store.dispatch(new fromStore.AddContectPath());
   }
@@ -87,16 +110,28 @@ export class MapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  transhformVisualizationObject(data) {
-    const { visObject, Layers } = fromUtils.transformVisualizationObject(data);
+  transhformFavourites(data) {
+    const { visObject, Layers } = fromUtils.transformFavourites(data);
     this.visObject = {
       ...this.visObject,
+      componentId: this.componentId,
       mapConfiguration: visObject['mapConfiguration'],
       layers: Layers
     };
+
     if (Layers.length) {
       this.store.dispatch(new fromStore.CreateVisualizationObject(this.visObject));
     }
+  }
+
+  transformVisualizationObject(data) {
+    const { visObject } = fromUtils.transformVisualizationObject(data);
+    this.visObject = {
+      ...this.visObject,
+      componentId: this.componentId,
+      ...visObject
+    };
+    this.store.dispatch(new fromStore.AddVisualizationObjectComplete(this.visObject));
   }
 
   initializeMapContainer() {
@@ -131,7 +166,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   drawMap() {
-    this.visualizationObject$.subscribe(visualizationObject => {
+    this.visualizationObjectEntities$.subscribe(visualizationEntities => {
+      const visualizationObject = visualizationEntities[this.componentId];
       if (visualizationObject) {
         const overlayLayers = fromLib.GetOverLayLayers(visualizationObject);
         this.map.eachLayer(layer => this.map.removeLayer(layer));
@@ -209,19 +245,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   toggleLegendContainerView() {
-    if (this.legendIsOpen || !this.legendIsOpen) {
-      this.legendIsOpen = true;
-    }
-  }
-
-  closeMapLegend(flag) {
-    if (flag === 'leave' && !this.pinned) {
-      this.legendIsOpen = false;
-    }
-
-    if (!flag) {
-      this.pinned = false;
-      this.legendIsOpen = false;
-    }
+    this.store.dispatch(new fromStore.ToggleOpenVisualizationLegend());
   }
 }

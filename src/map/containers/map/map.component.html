@@ -22,11 +22,11 @@
       <button class="map-layers__btn" (mouseenter)="toggleLegendContainerView()">
         <img src="assets/icons/layers.png">
       </button>
-      <div class="visualization-legend__container" *ngIf="legendIsOpen" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
-        (mouseleave)="closeMapLegend('leave')">
+      <div class="visualization-legend__container" *ngIf="visualizationLegendIsOpen$ | async" [ngStyle]="{'max-height': 'calc(' + mapHeight + ' - 150px)'}"
+        (mouseleave)="toggleLegendContainerView()">
         <app-visualization-legend [mapVsualizationObject]="visObject"></app-visualization-legend>
       </div>
     </div>
   </div>
+  <div id="map-view-port-{{componentId}}" style="width:100%; height: 100%;" [hidden]="isLoading$ | async"></div>
 </div>
-<div id="map-view-port-{{componentId}}" style="width:100%;margin-top: -10px" [hidden]="isLoading$ | async"></div>

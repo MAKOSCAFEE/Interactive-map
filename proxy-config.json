@@ -1,12 +1,12 @@
 {
   "/api": {
-    "target": "https://play.hisptz.org/27/",
+    "target": "https://play.hisptz.org/27",
     "secure": "false",
     "auth": "system:System123",
     "changeOrigin": true
   },
   "/": {
-    "target": "https://play.hisptz.org/27/",
+    "target": "https://play.hisptz.org/27",
     "secure": "false",
     "auth": "system:System123",
     "changeOrigin": true

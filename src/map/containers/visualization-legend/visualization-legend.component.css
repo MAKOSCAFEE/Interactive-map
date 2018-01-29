@@ -1,6 +1,14 @@
 .map-legend__container {
   width: 100%;
   position: relative;
+  -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  min-width: 250px;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .map-legend-list {
@@ -35,9 +43,6 @@
   font-size: 15px;
 }
 
-.map-legend-title-options {
-}
-
 .map-legend-title-options a {
   cursor: pointer;
 }
@@ -59,7 +64,6 @@
   display: flex;
   width: 100%;
   padding: 0;
-  margin-top: 5px;
 }
 
 .map-legend-table-list {
@@ -553,4 +557,49 @@ table.legend-button-table tr td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.visualization-btn {
+  border-style: none;
+  cursor: pointer;
+  background-color: hsla(0, 0%, 100%, 0.85);
+  height: 34px;
+  width: 34px;
+  border-radius: 0 50% 50% 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.visualization-btn img {
+  display: block;
+  margin: auto;
+  height: 20px;
+}
+
+.legendFilter__container {
+  display: flex;
+}
+
+.filter__button {
+  position: absolute;
+  right: -34px;
+  text-align: center;
+}
+
+.legend-filter__container {
+  width: 100%;
+  min-width: 400px;
+  -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.legend-filter__container .btn-group-vertical {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
 }

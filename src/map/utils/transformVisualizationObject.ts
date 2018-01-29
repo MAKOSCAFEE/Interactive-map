@@ -5,7 +5,10 @@ import { Layer } from '../models/layer.model';
 
 export function transformVisualizationObject(visualizationObject) {
   let visObject = {};
-  const mapConfiguration: MapConfiguration = _.pick(visualizationObject, [
+  let geofeatures = {};
+  let analytics = {};
+  const mapconfig = visualizationObject.details.mapConfiguration;
+  const mapConfiguration: MapConfiguration = _.pick(mapconfig, [
     'id',
     'name',
     'subtitle',
@@ -15,38 +18,41 @@ export function transformVisualizationObject(visualizationObject) {
     'zoom'
   ]);
 
-  const layers: string[] = [];
-  let Layers: Layer[] = [];
+  let layers: Layer[] = [];
 
-  visualizationObject.mapViews.forEach(mapview => {
+  const vizObjLayers = visualizationObject.layers;
+
+  vizObjLayers.forEach(mapview => {
+    const settings = mapview.settings;
     const layer = {
-      id: mapview.id,
-      name: mapview.id,
+      id: settings.id,
+      name: settings.name,
       overlay: true,
       visible: true,
-      areaRadius: mapview.areaRadius,
-      displayName: mapview.displayName,
-      opacity: mapview.opacity,
-      hidden: mapview.hidden,
-      type: mapview.layer.replace(/\d$/, '') // Replace number in thematic layers
+      areaRadius: settings.areaRadius,
+      displayName: settings.displayName,
+      opacity: settings.opacity,
+      hidden: settings.hidden,
+      type: settings.layer.replace(/\d$/, '') // Replace number in thematic layers
     };
 
-    layers.push(mapview.id);
-    const layerOptions = _.pick(mapview, [
+    const layerOptions = _.pick(settings, [
       'eventClustering',
       'eventPointRadius',
       'eventPointColor',
       'radiusHigh',
       'radiusLow'
     ]);
-    const legendProperties = _.pick(mapview, [
+
+    const legendProperties = _.pick(settings, [
       'colorLow',
       'colorHigh',
       'colorScale',
       'classes',
       'method'
     ]);
-    const displaySettings = _.pick(mapview, [
+
+    const displaySettings = _.pick(settings, [
       'labelFontColor',
       'labelFontSize',
       'labelFontStyle',
@@ -55,7 +61,8 @@ export function transformVisualizationObject(visualizationObject) {
       'hideTitle',
       'hideSubtitle'
     ]);
-    const dataSelections = _.pick(mapview, [
+
+    const dataSelections = _.pick(settings, [
       'config',
       'parentLevel',
       'completedOnly',
@@ -72,6 +79,7 @@ export function transformVisualizationObject(visualizationObject) {
       'startDate',
       'endDate'
     ]);
+
     const layerObj = {
       ...layer,
       layerOptions,
@@ -79,15 +87,23 @@ export function transformVisualizationObject(visualizationObject) {
       displaySettings,
       dataSelections
     };
-    Layers = [...Layers, layerObj];
+
+    const geoFeature = { [settings.id]: settings.geoFeature };
+    const analytic = { [settings.id]: mapview.analytics };
+    geofeatures = { ...geofeatures, ...geoFeature };
+    analytics = { ...analytics, ...analytic };
+    layers = [...layers, layerObj];
   });
+
   visObject = {
     ...visObject,
     mapConfiguration,
-    layers
+    layers,
+    geofeatures,
+    analytics
   };
+
   return {
-    visObject,
-    Layers
+    visObject
   };
 }

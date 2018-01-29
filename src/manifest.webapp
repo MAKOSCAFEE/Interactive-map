@@ -1,0 +1,21 @@
+{
+    "version": "0.0",
+    "name": "Interactive Maps",
+    "description": "Interactive Maps for DHIS2",
+    "launch_path": "index.html",
+    "icons": {
+        "16": "assets/img/icon-16x16.png",
+        "48": "assets/img/icon-48x48.png",
+        "100": "assets/img/icon-100x100.png"
+    },
+    "developer": {
+        "name": "HISPTZ",
+        "url": "https://hisptz.org/"
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": "../../../"
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import * as fromServices from '../services';
+import { visualizationObject } from '../data/sample';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
@@ -15,6 +16,7 @@ export class AppComponent implements OnInit {
   public favorites: any = [];
   public searchOptions = [];
   public favForm: FormGroup;
+  public visualizationObj: any = visualizationObject;
   public visualObject: any = {
     id: 'UjHKZ2lZJ3T',
     latitude: '6.489301',

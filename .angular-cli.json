@@ -7,7 +7,7 @@
     {
       "root": "src",
       "outDir": "dist",
-      "assets": ["assets", "favicon.ico"],
+      "assets": ["assets", "favicon.ico", "manifest.webapp"],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -17,6 +17,8 @@
       "prefix": "app",
       "styles": [
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
+        "../node_modules/angular-tree-component/dist/angular-tree-component.css",
+        "../node_modules/dragula/dist/dragula.css",
         "../node_modules/leaflet/dist/leaflet.css",
         "styles.css"
       ],

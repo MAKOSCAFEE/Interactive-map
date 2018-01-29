@@ -21,4 +21,19 @@
 * [ ] Create Legends for each layes and add them to redux state(backlog)
 * [x] Refactor Visualization effects so they can be independent and autonomous as possible
 
-## 22/1/2018 ?
+## 22/1/2018
+
+### branch feature/legend-components
+
+* [*] Add Labels when there is one.(backlog)
+* [*] Add Legend Container(backlog)
+* [*] Pin legend and close as you want.
+* [ ] Create Legends for each layes and add them to redux state(backlog)
+* [*] Add icons and favicon
+* [ ] Add filter and data selection components container
+* [ ] Add period filter component
+* [ ] Add legends for event and boundary layer
+* [ ] Add data selection component
+* [ ] Add layout components
+* [ ] Add OrgUnit component
+* [ ] Add menu component

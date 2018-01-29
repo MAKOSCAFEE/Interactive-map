@@ -1,16 +1,16 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Component, OnInit, Input } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs/Observable";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
-import { TILE_LAYERS } from '../../constants/tile-layer.constant';
-import * as fromStore from '../../store';
-import { LegendSet } from '../../models/legend-set.model';
+import { TILE_LAYERS } from "../../constants/tile-layer.constant";
+import * as fromStore from "../../store";
+import { LegendSet } from "../../models/Legend-set.model";
 
 @Component({
-  selector: 'app-visualization-legend',
-  templateUrl: './visualization-legend.component.html',
-  styleUrls: ['./visualization-legend.component.css']
+  selector: "app-visualization-legend",
+  templateUrl: "./visualization-legend.component.html",
+  styleUrls: ["./visualization-legend.component.css"]
 })
 export class VisualizationLegendComponent implements OnInit {
   @Input() mapVsualizationObject: any;
@@ -19,8 +19,12 @@ export class VisualizationLegendComponent implements OnInit {
   public activeLayer: number;
   public visualizationLegends: any = [];
   public legendSetEntities: { [id: string]: LegendSet };
+  public sticky$: Observable<boolean>;
+  public isFilterSectionOpen$: Observable<boolean>;
+  public showFilterContainer: boolean = false;
+  public buttonTop: string;
+  public buttonHeight: string;
   openTileLegend: boolean = false;
-  sticky: boolean = false;
   isRemovable: boolean = false;
   toggleBoundary: boolean = true;
   boundaryLegend: Array<any> = [];
@@ -33,6 +37,8 @@ export class VisualizationLegendComponent implements OnInit {
   constructor(private store: Store<fromStore.MapState>) {}
 
   ngOnInit() {
+    this.sticky$ = this.store.select(fromStore.isVisualizationLegendPinned);
+    this.isFilterSectionOpen$ = this.store.select(fromStore.isVisualizationLegendFilterSectionOpen);
     this.store.select(fromStore.getAllLegendSetObjectsEntities).subscribe(lg => {
       this.legendSetEntities = lg;
     });
@@ -63,25 +69,38 @@ export class VisualizationLegendComponent implements OnInit {
   }
 
   setActiveItem(index, e) {
-    console.log(index);
-    e.stopPropagation();
+    // e.stopPropagation();
     if (index === -1) {
       this.LegendsTileLayer = Object.keys(TILE_LAYERS).map(layerKey => TILE_LAYERS[layerKey]);
     }
 
+    this.buttonTop = e.currentTarget.offsetTop;
+    this.buttonHeight = e.currentTarget.offsetHeight;
+
     if (this.activeLayer === index) {
       this.activeLayer = -2;
+      this.showFilterContainer = false;
     } else {
       this.activeLayer = index;
+      this.showFilterContainer = false;
     }
   }
 
   stickLegendContainer(e) {
     e.stopPropagation();
-    if (!this.sticky) {
-      this.sticky = true;
-    } else {
-      this.sticky = false;
-    }
+    this.store.dispatch(new fromStore.TogglePinVisualizationLegend());
   }
+
+  closeLegendContainer(e) {
+    e.stopPropagation();
+    this.store.dispatch(new fromStore.CloseVisualizationLegend());
+  }
+
+  openFilters(e) {
+    e.stopPropagation();
+    this.showFilterContainer = true;
+    this.store.dispatch(new fromStore.ToggleVisualizationLegendFilterSection());
+  }
+
+  toggleLayerView(e) {}
 }
