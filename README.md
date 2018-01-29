@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/hisptz/interactive-maps.svg?branch=master)](https://travis-ci.org/hisptz/interactive-maps)
+[![Build Status](https://travis-ci.org/hisptz/interactive-maps.svg?branch=develop)](https://travis-ci.org/hisptz/interactive-maps)
 
 # InteractiveMaps
 
