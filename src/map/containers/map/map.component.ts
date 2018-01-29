@@ -92,6 +92,7 @@ export class MapComponent implements OnInit, AfterViewInit {
 
     this._vizObject$.subscribe(vizObj => {
       if (vizObj) {
+        this.componentId = vizObj.id;
         this.transformVisualizationObject(vizObj);
       }
     });
