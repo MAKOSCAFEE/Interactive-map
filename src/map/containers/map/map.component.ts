@@ -80,7 +80,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
     this.isLoading$ = this.store.select(fromStore.isVisualizationObjectsLoading);
-    this.visualizationLegendIsOpen$ = this.store.select(fromStore.isVisualizationLegendOpen);
     this.visualizationObjectEntities$ = this.store.select(
       fromStore.getAllVisualizationObjectsEntities
     );
@@ -92,6 +91,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     this._vizObject$.subscribe(vizObj => {
       if (vizObj) {
         this.componentId = vizObj.id;
+        this.store.dispatch(new fromStore.InitiealizeVisualizationLegend(vizObj.id));
+        this.visualizationLegendIsOpen$ = this.store.select(
+          fromStore.isVisualizationLegendOpen(vizObj.id)
+        );
         this.transformVisualizationObject(vizObj);
       }
     });
@@ -247,6 +250,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   toggleLegendContainerView() {
-    this.store.dispatch(new fromStore.ToggleOpenVisualizationLegend());
+    this.store.dispatch(new fromStore.ToggleOpenVisualizationLegend(this.componentId));
   }
 }
