@@ -81,7 +81,6 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
     this.isLoading$ = this.store.select(fromStore.isVisualizationObjectsLoading);
     this.visualizationLegendIsOpen$ = this.store.select(fromStore.isVisualizationLegendOpen);
-    this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
     this.visualizationObjectEntities$ = this.store.select(
       fromStore.getAllVisualizationObjectsEntities
     );
@@ -166,8 +165,11 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   drawMap() {
-    this.visualizationObjectEntities$.subscribe(visualizationEntities => {
-      const visualizationObject = visualizationEntities[this.componentId];
+    this.visualizationObject$ = this.store.select(
+      fromStore.getCurrentVisualizationObject(this.componentId)
+    );
+
+    this.visualizationObject$.subscribe(visualizationObject => {
       if (visualizationObject) {
         const overlayLayers = fromLib.GetOverLayLayers(visualizationObject);
         this.map.eachLayer(layer => this.map.removeLayer(layer));
