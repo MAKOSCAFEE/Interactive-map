@@ -80,8 +80,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.isLoaded$ = this.store.select(fromStore.isVisualizationObjectsLoaded);
     this.isLoading$ = this.store.select(fromStore.isVisualizationObjectsLoading);
-    this.visualizationLegendIsOpen$ = this.store.select(fromStore.isVisualizationLegendOpen);
-    this.visualizationObject$ = this.store.select(fromStore.getCurrentMap);
     this.visualizationObjectEntities$ = this.store.select(
       fromStore.getAllVisualizationObjectsEntities
     );
@@ -93,6 +91,10 @@ export class MapComponent implements OnInit, AfterViewInit {
     this._vizObject$.subscribe(vizObj => {
       if (vizObj) {
         this.componentId = vizObj.id;
+        this.store.dispatch(new fromStore.InitiealizeVisualizationLegend(vizObj.id));
+        this.visualizationLegendIsOpen$ = this.store.select(
+          fromStore.isVisualizationLegendOpen(vizObj.id)
+        );
         this.transformVisualizationObject(vizObj);
       }
     });
@@ -166,26 +168,33 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   drawMap() {
-    this.visualizationObjectEntities$.subscribe(visualizationEntities => {
-      const visualizationObject = visualizationEntities[this.componentId];
+    this.visualizationObject$ = this.store.select(
+      fromStore.getCurrentVisualizationObject(this.componentId)
+    );
+
+    this.visualizationObject$.subscribe(visualizationObject => {
       if (visualizationObject) {
         const overlayLayers = fromLib.GetOverLayLayers(visualizationObject);
         this.map.eachLayer(layer => this.map.removeLayer(layer));
         this.initializeMapBaseLayer(visualizationObject.mapConfiguration);
         const layersBounds = [];
+        let legendSets = [];
         overlayLayers.map((layer, index) => {
           const { bounds, legendSet } = layer;
           if (bounds) {
             layersBounds.push(bounds);
           }
           if (legendSet && legendSet.legend) {
-            this.store.dispatch(new fromStore.AddLegendSetSuccess(legendSet));
+            legendSets = [...legendSets, legendSet];
           }
           this.createLayer(layer, index);
         });
 
         if (layersBounds.length) {
           this.layerFitBound(layersBounds);
+        }
+        if (legendSets.length) {
+          this.store.dispatch(new fromStore.AddLegendSet({ [this.componentId]: legendSets }));
         }
       }
     });
@@ -245,6 +254,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   toggleLegendContainerView() {
-    this.store.dispatch(new fromStore.ToggleOpenVisualizationLegend());
+    this.store.dispatch(new fromStore.ToggleOpenVisualizationLegend(this.componentId));
   }
 }

@@ -1,7 +1,7 @@
 // Boundary layer
-import L from 'leaflet';
+import * as L from 'leaflet';
 import { toGeoJson, geoJsonOptions } from './GeoJson';
-import uniqBy from 'lodash/fp/uniqBy';
+import * as _ from 'lodash';
 import { GeoJson } from 'leaflet';
 import { Feature, GeometryObject } from 'geojson';
 
@@ -16,7 +16,7 @@ export function boundary(options) {
   if (!features.length) {
     return;
   }
-  const levels = uniqBy(f => f.properties.level, features)
+  const levels = _.uniqBy(f => f.properties.level, features)
     .map(f => f.properties.level)
     .sort();
   const levelStyle = levels.reduce(

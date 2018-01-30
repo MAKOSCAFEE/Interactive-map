@@ -1,30 +1,24 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { IconLayers, IconMap, IconPlus, IconMinus, IconHome } from "angular-feather";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
-import { StoreModule } from "@ngrx/store";
-import { EffectsModule } from "@ngrx/effects";
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
-import { reducers, effects } from "./store";
+import { reducers, effects } from './store';
 // containers
-import * as fromContainers from "./containers";
+import * as fromContainers from './containers';
 // components
-import * as fromComponents from "./components";
+import * as fromComponents from './components';
 
-import * as fromServices from "./services";
+import * as fromServices from './services';
 
-import * as fromModules from "./modules";
+import * as fromModules from './modules';
 
 @NgModule({
   imports: [
-    IconLayers,
-    IconMap,
-    IconPlus,
-    IconMinus,
-    IconHome,
     CommonModule,
     ...fromModules.modules,
-    StoreModule.forFeature("map", reducers),
+    StoreModule.forFeature('map', reducers),
     EffectsModule.forFeature(effects)
   ],
   providers: [...fromServices.services],

@@ -1,29 +1,29 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from "@angular/core";
-import { animate, state, style, transition, trigger } from "@angular/animations";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs/Observable";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import * as fromStore from "../../store";
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import * as fromStore from '../../store';
 
 @Component({
-  selector: "app-visualization-filter-section",
-  templateUrl: "./visualization-filter-section.component.html",
-  styleUrls: ["./visualization-filter-section.component.css"],
+  selector: 'app-visualization-filter-section',
+  templateUrl: './visualization-filter-section.component.html',
+  styleUrls: ['./visualization-filter-section.component.css'],
   animations: [
-    trigger("open", [
+    trigger('open', [
       state(
-        "in",
+        'in',
         style({
           opacity: 1
         })
       ),
-      transition("void => *", [
+      transition('void => *', [
         style({
           opacity: 0
         }),
         animate(700)
       ]),
-      transition("* => void", [
+      transition('* => void', [
         animate(300),
         style({
           opacity: 0
@@ -36,14 +36,15 @@ export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
   @Input() selectedDimensions: any;
   @Input() visualizationType: string;
   @Input() loaded: boolean = true;
+  @Input() mapVisualizationObject;
   @Output() onFilterUpdate: EventEmitter<any> = new EventEmitter<any>();
   @Output() onLayoutUpdate: EventEmitter<any> = new EventEmitter<any>();
   showFilters: boolean;
-  selectedFilter: string = "ORG_UNIT";
+  selectedFilter: string = 'ORG_UNIT';
   selectedDataItems: any = [];
   selectedPeriods: any = [];
   orgUnitModel: any = {
-    selectionMode: "orgUnit",
+    selectionMode: 'orgUnit',
     selectedLevels: [],
     showUpdateButton: true,
     selectedGroups: [],
@@ -51,7 +52,7 @@ export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
     orgUnitGroups: [],
     selectedOrgUnits: [],
     userOrgUnits: [],
-    type: "report", // can be 'data_entry'
+    type: 'report', // can be 'data_entry'
     selectedUserOrgUnits: []
   };
 
@@ -64,7 +65,9 @@ export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
   toggleFilters(e) {
     e.stopPropagation();
     this.showFilters = !this.showFilters;
-    this.store.dispatch(new fromStore.ToggleVisualizationLegendFilterSection());
+    this.store.dispatch(
+      new fromStore.ToggleVisualizationLegendFilterSection(this.mapVisualizationObject.componentId)
+    );
   }
 
   toggleCurrentFilter(e, selectedFilter) {
@@ -75,7 +78,7 @@ export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
   onFilterUpdateAction(filterValue: any, filterType: string) {
     this.selectedFilter = undefined;
 
-    if (filterType === "LAYOUT") {
+    if (filterType === 'LAYOUT') {
       this.onLayoutUpdate.emit(filterValue);
     } else {
       this.onFilterUpdate.emit(filterValue);
@@ -83,6 +86,8 @@ export class VisualizationFilterSectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new fromStore.CloseVisualizationLegendFilterSection());
+    this.store.dispatch(
+      new fromStore.CloseVisualizationLegendFilterSection(this.mapVisualizationObject.componentId)
+    );
   }
 }
