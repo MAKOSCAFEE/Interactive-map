@@ -43,25 +43,12 @@ export class VisualizationLegendComponent implements OnInit {
     this.isFilterSectionOpen$ = this.store.select(
       fromStore.isVisualizationLegendFilterSectionOpen(this.mapVisualizationObject.componentId)
     );
-    this.store.select(fromStore.getAllLegendSetObjectsEntities).subscribe(lg => {
-      this.legendSetEntities = lg;
-    });
     const layers = this.mapVisualizationObject.layers;
-    if (layers.length) {
-      this.visualizationLegends = layers.reduce((vizLg = [], currentLayer, index) => {
-        const { type, id, name } = currentLayer;
-        const displayName = this.legendSetEntities[id].legend.title;
-        if (this.legendSetEntities[id]) {
-          const legendObject = {
-            ...this.legendSetEntities[id],
-            displayName,
-            name: currentLayer.displayName,
-            type
-          };
-          return [...vizLg, legendObject];
-        }
-      }, []);
-    }
+    this.store
+      .select(fromStore.getCurrentLegendSets(this.mapVisualizationObject.componentId))
+      .subscribe(visualizationLengends => {
+        this.visualizationLegends = visualizationLengends;
+      });
   }
 
   showButtonIcons() {

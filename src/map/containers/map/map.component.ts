@@ -178,19 +178,23 @@ export class MapComponent implements OnInit, AfterViewInit {
         this.map.eachLayer(layer => this.map.removeLayer(layer));
         this.initializeMapBaseLayer(visualizationObject.mapConfiguration);
         const layersBounds = [];
+        let legendSets = [];
         overlayLayers.map((layer, index) => {
           const { bounds, legendSet } = layer;
           if (bounds) {
             layersBounds.push(bounds);
           }
           if (legendSet && legendSet.legend) {
-            this.store.dispatch(new fromStore.AddLegendSetSuccess(legendSet));
+            legendSets = [...legendSets, legendSet];
           }
           this.createLayer(layer, index);
         });
 
         if (layersBounds.length) {
           this.layerFitBound(layersBounds);
+        }
+        if (legendSets.length) {
+          this.store.dispatch(new fromStore.AddLegendSet({ [this.componentId]: legendSets }));
         }
       }
     });

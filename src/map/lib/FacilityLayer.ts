@@ -47,6 +47,7 @@ export const facility = options => {
     geoJsonLayer = L.geoJSON(features, otherOptions);
     legend = {
       title: 'Facilities',
+      type: 'facility',
       items: Object.keys(groupSet).map(id => ({
         image: `${contextPath}/images/orgunitgroup/${groupSet[id].symbol}`,
         name: groupSet[id].name

@@ -38,8 +38,8 @@ export const thematic = options => {
     const dataItem = getDataItemsFromColumns(columns)[0];
     const name = options.name || dataItem.name;
     legend = legendSet
-      ? createLegendFromLegendSet(legendSet)
-      : createLegendFromConfig(orderedValues, legendProperties);
+      ? createLegendFromLegendSet(legendSet, options.displayName, options.type)
+      : createLegendFromConfig(orderedValues, legendProperties, options.displayName, options.type);
     const getLegendItem = _.curry(getLegendItemForValue)(legend.items);
     legend['period'] =
       (analyticsData.metaData.dimensions && analyticsData.metaData.dimensions.pe[0]) ||
@@ -106,17 +106,18 @@ const getOrderedValues = data => {
   return rows.map(row => parseFloat(row[valueIndex])).sort((a, b) => a - b);
 };
 
-const createLegendFromLegendSet = legendSet => {
+const createLegendFromLegendSet = (legendSet, displayName, type) => {
   const { name, legends } = legendSet;
   const pickSome = ['name', 'startValue', 'endValue', 'color'];
   const items = _.sortBy(legends, 'startValues').map(legend => _.pick(legend, pickSome));
   return {
-    title: name,
+    title: name || displayName,
+    type,
     items
   };
 };
 
-const createLegendFromConfig = (data, config) => {
+const createLegendFromConfig = (data, config, displayName, type) => {
   const { method, classes, colorScale, colorLow, colorHigh } = config;
   const items = getLegendItems(data, method, classes);
   let colors;
@@ -131,6 +132,8 @@ const createLegendFromConfig = (data, config) => {
   }
 
   return {
+    title: displayName,
+    type,
     items: items.map((item, index) => ({
       ...item,
       color: colors[index]
